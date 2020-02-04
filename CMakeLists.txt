@@ -7,6 +7,6 @@ project(OpenASN VERSION 0.1
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-message(STATUS "Building OpenASN version: ${VERSION}")
+message(STATUS "Building OpenASN version: ${CMAKE_PROJECT_VERSION}")
 
 add_subdirectory(src/parser)
