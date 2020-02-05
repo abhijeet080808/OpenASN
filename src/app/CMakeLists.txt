@@ -6,6 +6,11 @@ add_executable(${EXE_NAME} ${SOURCES})
 
 #target_compile_options
 
-#target_include_directories
+target_include_directories(${EXE_NAME}
+  PRIVATE
+    ${PROJECT_SOURCE_DIR}/src
+)
 
-#target_link_libraries
+target_link_libraries(${EXE_NAME}
+    parser
+)

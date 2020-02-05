@@ -1,8 +1,11 @@
+#include "parser/Parser.hh"
+
 #include <iostream>
 
-//using namespace OpenASN1;
+using namespace OpenASN;
 
 int main()
 {
-  std::cout << "Hello";
+  Parser p;
+  p.Parse("Hello");
 }
