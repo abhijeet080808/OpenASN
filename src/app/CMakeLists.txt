@@ -12,5 +12,6 @@ target_include_directories(${EXE_NAME}
 )
 
 target_link_libraries(${EXE_NAME}
+    cxxopts
     parser
 )
