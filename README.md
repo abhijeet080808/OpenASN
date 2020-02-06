@@ -1,3 +1,3 @@
 # OpenASN
 
-C++ ASN.1 Library
+C++ ASN.1 Compiler
