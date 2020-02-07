@@ -28,14 +28,29 @@ Parse(const std::string& asnFilePath)
     ParserState state = ParserState::START;
     Production production;
 
-    do
+    while (1)
     {
-      std::string asn_word;
-      asn_buf >> asn_word;
+      std::stringstream asn_word;
+      char c;
+      while (asn_buf.get(c))
+      {
+        if (c == ' ')
+        {
+          break;
+        }
+        else if (c == '\n')
+        {
+          break;
+        }
+        else
+        {
+          asn_word << c;
+        }
+      }
 
-      consume(asn_word, state, production);
+      consume(asn_word.str(), state, production);
+
     }
-    while (asn_buf);
   }
 }
 
