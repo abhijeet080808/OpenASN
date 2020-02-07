@@ -1,4 +1,4 @@
-#include "parser/Parser.hh"
+#include "parser/AsnParser.hh"
 
 #include "cxxopts.hpp"
 
@@ -58,7 +58,7 @@ int main(int argc, char* argv[])
     exit(1);
   }
 
-  Parser p;
+  AsnParser p;
 
   for (const auto& f : asn_files)
   {
