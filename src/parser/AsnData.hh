@@ -6,7 +6,7 @@
 
 namespace OpenASN
 {
-  // Data pertaining to a single ASN.1 file
+  // Data pertaining to a single ASN.1 file split into Words
   class AsnData
   {
     public:
@@ -22,8 +22,7 @@ namespace OpenASN
         SUCCEEDED_BY_NEWLINE
       };
 
-      using Word = std::optional<std::tuple<
-        PrecedingInfo, std::string, SucceedingInfo>>;
+      using Word = std::tuple<PrecedingInfo, std::string, SucceedingInfo>;
 
     public:
       AsnData();
@@ -34,20 +33,18 @@ namespace OpenASN
 
       size_t GetSize();
 
-      Word PeekPrev();
-      Word PeekCurrent();
-      Word PeekNext();
+      std::optional<Word> PeekPrev();
+      std::optional<Word> PeekCurrent();
+      std::optional<Word> PeekNext();
 
-      // also increments index by 1 so that next Get will return
-      // the next element
-      Word Get();
+      // Also increments index by 1 so that next Get will return
+      // the next Word
+      std::optional<Word> Get();
 
       void ResetCurrentIndex();
 
     private:
-      std::vector<std::tuple<PrecedingInfo,
-                             std::string,
-                             SucceedingInfo>> mAsnData;
-      size_t mCurrentAsnDataIndex;
+      std::vector<Word> mAsnWords;
+      size_t mCurrentAsnWordIndex;
   };
 }

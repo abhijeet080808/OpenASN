@@ -4,8 +4,8 @@ using namespace OpenASN;
 
 AsnData::
 AsnData()
-  : mAsnData(),
-    mCurrentAsnDataIndex(0)
+  : mAsnWords(),
+    mCurrentAsnWordIndex(0)
 {
 }
 
@@ -15,59 +15,59 @@ Insert(PrecedingInfo precedingInfo,
        const std::string& asnWord,
        SucceedingInfo succeedingInfo)
 {
-  mAsnData.push_back(std::make_tuple(precedingInfo, asnWord, succeedingInfo));
+  mAsnWords.push_back(std::make_tuple(precedingInfo, asnWord, succeedingInfo));
 }
 
 size_t
 AsnData::
 GetSize()
 {
-  return mAsnData.size();
+  return mAsnWords.size();
 }
 
-AsnData::Word
+std::optional<AsnData::Word>
 AsnData::
 PeekPrev()
 {
-  if (mAsnData.size() > mCurrentAsnDataIndex - 1)
+  if (mAsnWords.size() > mCurrentAsnWordIndex - 1)
   {
-    return mAsnData.at(mCurrentAsnDataIndex - 1);
+    return mAsnWords.at(mCurrentAsnWordIndex - 1);
   }
 
   return std::nullopt;
 }
 
-AsnData::Word
+std::optional<AsnData::Word>
 AsnData::
 PeekCurrent()
 {
-  if (mAsnData.size() > mCurrentAsnDataIndex)
+  if (mAsnWords.size() > mCurrentAsnWordIndex)
   {
-    return mAsnData.at(mCurrentAsnDataIndex);
+    return mAsnWords.at(mCurrentAsnWordIndex);
   }
 
   return std::nullopt;
 }
 
-AsnData::Word
+std::optional<AsnData::Word>
 AsnData::
 PeekNext()
 {
-  if (mAsnData.size() > mCurrentAsnDataIndex + 1)
+  if (mAsnWords.size() > mCurrentAsnWordIndex + 1)
   {
-    return mAsnData.at(mCurrentAsnDataIndex + 1);
+    return mAsnWords.at(mCurrentAsnWordIndex + 1);
   }
 
   return std::nullopt;
 }
 
-AsnData::Word
+std::optional<AsnData::Word>
 AsnData::
 Get()
 {
-  if (mAsnData.size() > mCurrentAsnDataIndex)
+  if (mAsnWords.size() > mCurrentAsnWordIndex)
   {
-    return mAsnData.at(mCurrentAsnDataIndex++);
+    return mAsnWords.at(mCurrentAsnWordIndex++);
   }
 
   return std::nullopt;
@@ -77,5 +77,5 @@ void
 AsnData::
 ResetCurrentIndex()
 {
-  mCurrentAsnDataIndex = 0;
+  mCurrentAsnWordIndex = 0;
 }
