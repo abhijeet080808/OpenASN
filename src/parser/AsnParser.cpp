@@ -65,7 +65,7 @@ Parse(const std::string& asnFilePath)
         else if (IsWhitespace(c))
         {
           // newline has priority until the first word is reached
-          // for the current line, so if it is PRECEDED_BY_NEWLINE
+          // for the current line, so if it is PRECEDED_BY_NEWLINE,
           // let it remain so
           //
           // if it is already PRECEDED_BY_WHITESPACE, nothing to change
@@ -80,17 +80,19 @@ Parse(const std::string& asnFilePath)
       {
         if (IsNewline(c))
         {
-          parsed_asn_data.Insert(preceding_info,
-                                 std::string(asn_word.begin(), asn_word.end()),
-                                 AsnData::SucceedingInfo::SUCCEEDED_BY_NEWLINE);
+          parsed_asn_data.Insert(
+              preceding_info,
+              std::string(asn_word.begin(), asn_word.end()),
+              AsnData::SucceedingInfo::SUCCEEDED_BY_NEWLINE);
           asn_word.clear();
           preceding_info = AsnData::PrecedingInfo::PRECEDED_BY_NEWLINE;
         }
         else if (IsWhitespace(c))
         {
-          parsed_asn_data.Insert(preceding_info,
-                                 std::string(asn_word.begin(), asn_word.end()),
-                                 AsnData::SucceedingInfo::SUCCEEDED_BY_WHITESPACE);
+          parsed_asn_data.Insert(
+              preceding_info,
+              std::string(asn_word.begin(), asn_word.end()),
+              AsnData::SucceedingInfo::SUCCEEDED_BY_WHITESPACE);
           asn_word.clear();
           preceding_info = AsnData::PrecedingInfo::PRECEDED_BY_WHITESPACE;
         }
@@ -113,44 +115,11 @@ Parse(const std::string& asnFilePath)
     for (size_t i = 0; i < parsed_asn_data.GetSize(); i++)
     {
       auto asn_word = parsed_asn_data.Get();
-      std::cout << (std::get<0>(asn_word) == AsnData::PrecedingInfo::PRECEDED_BY_WHITESPACE ? " " : "\n")
+      std::cout << (std::get<0>(asn_word) ==
+                    AsnData::PrecedingInfo::PRECEDED_BY_WHITESPACE ? " " : "\n")
                 << std::get<1>(asn_word)
-                << (std::get<2>(asn_word) == AsnData::SucceedingInfo::SUCCEEDED_BY_WHITESPACE ? " " : "\n");
-    }
-
-    ParserState state = ParserState::START;
-    Production production;
-
-
-    //consume(asn_word.str(), state, production);
-
-  }
-}
-
-void
-AsnParser::
-consume(const std::string& asnWord,
-        ParserState& state,
-        Production& production)
-{
-  std::cout << asnWord << std::endl;
-
-  if (state == START)
-  {
-    production.mName = asnWord;
-    state = READ_PRODUCTION_NAME;
-    return;
-  }
-
-  if (state == READ_PRODUCTION_NAME)
-  {
-    if (asnWord == ":=")
-    {
-      return;
-    }
-    else
-    {
-      return;
+                << (std::get<2>(asn_word) ==
+                    AsnData::SucceedingInfo::SUCCEEDED_BY_WHITESPACE ? " " : "\n");
     }
   }
 }
