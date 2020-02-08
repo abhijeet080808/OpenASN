@@ -1,6 +1,8 @@
 set(LIB_NAME parser)
 
-set(SOURCES AsnParser.cpp)
+set(SOURCES AsnData.cpp
+            AsnParser.cpp
+)
 
 add_library(${LIB_NAME} ${SOURCES})
 
