@@ -6,8 +6,7 @@
 
 namespace OpenASN
 {
-  // X.680 08/2015 sec 13.1
-  class Parser
+  class ModuleParser
   {
     private:
       enum ModuleParserState
@@ -18,7 +17,7 @@ namespace OpenASN
         READ_ENCODING_REFERENCE_DEFAULT,
         READ_TAG_DEFAULT,
         READ_EXTENSION_DEFAULT,
-        READ_DOUBLE_COLON_EQUAL,
+        READ_ASSIGNMENT_CHAR_SEQUENCE, // "::="
         READ_BEGIN,
         READ_MODULE_BODY,
         READ_ENCODING_CONTROL_SECTIONS,
