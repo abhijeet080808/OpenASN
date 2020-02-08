@@ -2,6 +2,8 @@ set(LIB_NAME parser)
 
 set(SOURCES AsnData.cpp
             AsnParser.cpp
+            ModuleDefinition.cpp
+            ModuleDefinitionModuleIdentifier.cpp
 )
 
 add_library(${LIB_NAME} ${SOURCES})

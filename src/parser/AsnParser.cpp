@@ -1,6 +1,7 @@
 #include "AsnParser.hh"
 
 #include "AsnData.hh"
+#include "ModuleDefinition.hh"
 
 #include <fstream>
 #include <iostream>
@@ -112,14 +113,23 @@ Parse(const std::string& asnFilePath)
       preceding_info = AsnData::PrecedingInfo::PRECEDED_BY_NEWLINE;
     }
 
-    for (size_t i = 0; i < parsed_asn_data.GetSize(); i++)
+    auto parsed_asn_word = parsed_asn_data.Get();
+    while (parsed_asn_word.has_value())
     {
-      auto asn_word = parsed_asn_data.Get();
-      std::cout << (std::get<0>(asn_word) ==
+      std::cout << (std::get<0>(parsed_asn_word.value()) ==
                     AsnData::PrecedingInfo::PRECEDED_BY_WHITESPACE ? " " : "\n")
-                << std::get<1>(asn_word)
-                << (std::get<2>(asn_word) ==
+                << std::get<1>(parsed_asn_word.value())
+                << (std::get<2>(parsed_asn_word.value()) ==
                     AsnData::SucceedingInfo::SUCCEEDED_BY_WHITESPACE ? " " : "\n");
+
+      parsed_asn_word = parsed_asn_data.Get();
     }
+
+    parsed_asn_data.ResetCurrentIndex();
+
+    ModuleDefinition module;
+    bool ret = module.Parse(parsed_asn_data);
+
+    std::cout << "Parse result: " << (ret ? "SUCCESS" : "FAILURE") << std::endl;
   }
 }

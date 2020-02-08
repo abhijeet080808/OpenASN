@@ -25,32 +25,52 @@ GetSize()
   return mAsnData.size();
 }
 
-std::tuple<AsnData::PrecedingInfo, std::string, AsnData::SucceedingInfo>
+AsnData::Word
 AsnData::
 PeekPrev()
 {
-  return mAsnData.at(mCurrentAsnDataIndex - 1);
+  if (mAsnData.size() > mCurrentAsnDataIndex - 1)
+  {
+    return mAsnData.at(mCurrentAsnDataIndex - 1);
+  }
+
+  return std::nullopt;
 }
 
-std::tuple<AsnData::PrecedingInfo, std::string, AsnData::SucceedingInfo>
+AsnData::Word
 AsnData::
 PeekCurrent()
 {
-  return mAsnData.at(mCurrentAsnDataIndex);
+  if (mAsnData.size() > mCurrentAsnDataIndex)
+  {
+    return mAsnData.at(mCurrentAsnDataIndex);
+  }
+
+  return std::nullopt;
 }
 
-std::tuple<AsnData::PrecedingInfo, std::string, AsnData::SucceedingInfo>
+AsnData::Word
 AsnData::
 PeekNext()
 {
-  return mAsnData.at(mCurrentAsnDataIndex + 1);
+  if (mAsnData.size() > mCurrentAsnDataIndex + 1)
+  {
+    return mAsnData.at(mCurrentAsnDataIndex + 1);
+  }
+
+  return std::nullopt;
 }
 
-std::tuple<AsnData::PrecedingInfo, std::string, AsnData::SucceedingInfo>
+AsnData::Word
 AsnData::
 Get()
 {
-  return mAsnData.at(mCurrentAsnDataIndex++);
+  if (mAsnData.size() > mCurrentAsnDataIndex)
+  {
+    return mAsnData.at(mCurrentAsnDataIndex++);
+  }
+
+  return std::nullopt;
 }
 
 void

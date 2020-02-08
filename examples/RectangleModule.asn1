@@ -1,9 +1,20 @@
 RectangleModule DEFINITIONS ::=
 BEGIN
- 
+
+-- ModuleBody starts here
+-- AssignmentList of 2 Assignment of type TypeAssignment using BuiltinType
+
+Colored ::= BOOLEAN
+
 Rectangle ::= SEQUENCE {
-    height  INTEGER,        -- Height of the rectangle
-    width   INTEGER         -- Width of the rectangle
+    -- ComponentTypeLists of 3 ComponentType of type NamedType using BuiltinType
+    height    INTEGER,        -- Height of the rectangle
+    width     INTEGER,        -- Width of the rectangle
+    bordered  BOOLEAN
 }
- 
+
+-- ModuleBody ends here
+
 END
+
+/* Validate using https://asn1.io/asn1playground/ */

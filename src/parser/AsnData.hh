@@ -1,5 +1,6 @@
 #pragma once
 
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -21,6 +22,9 @@ namespace OpenASN
         SUCCEEDED_BY_NEWLINE
       };
 
+      using Word = std::optional<std::tuple<
+        PrecedingInfo, std::string, SucceedingInfo>>;
+
     public:
       AsnData();
 
@@ -30,11 +34,13 @@ namespace OpenASN
 
       size_t GetSize();
 
-      std::tuple<PrecedingInfo, std::string, SucceedingInfo> PeekPrev();
-      std::tuple<PrecedingInfo, std::string, SucceedingInfo> PeekCurrent();
-      std::tuple<PrecedingInfo, std::string, SucceedingInfo> PeekNext();
+      Word PeekPrev();
+      Word PeekCurrent();
+      Word PeekNext();
 
-      std::tuple<PrecedingInfo, std::string, SucceedingInfo> Get();
+      // also increments index by 1 so that next Get will return
+      // the next element
+      Word Get();
 
       void ResetCurrentIndex();
 
