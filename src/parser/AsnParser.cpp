@@ -3,8 +3,9 @@
 #include "AsnData.hh"
 #include "ModuleDefinition.hh"
 
+#include "spdlog/spdlog.h"
+
 #include <fstream>
-#include <iostream>
 #include <iterator>
 #include <sstream>
 
@@ -33,7 +34,8 @@ void
 AsnParser::
 Parse(const std::string& asnFilePath)
 {
-  std::cout << "Parsing " << asnFilePath << std::endl;
+  SPDLOG_INFO("Parsing {}",
+              asnFilePath);
 
   std::vector<char> asn_file_data;
   AsnData parsed_asn_data;
@@ -46,7 +48,8 @@ Parse(const std::string& asnFilePath)
 
   if (asn_file_data.empty())
   {
-    std::cout << "Parsing failed" << std::endl;
+    SPDLOG_ERROR("Parsing of empty file {} failed",
+                 asnFilePath);
   }
   else
   {
@@ -114,14 +117,18 @@ Parse(const std::string& asnFilePath)
       preceding_info = AsnData::PrecedingInfo::PRECEDED_BY_NEWLINE;
     }
 
+    SPDLOG_INFO("Parsed file split into {} asn words",
+                parsed_asn_data.GetSize());
+
     auto parsed_asn_word = parsed_asn_data.Get();
     while (parsed_asn_word.has_value())
     {
-      std::cout << (std::get<0>(parsed_asn_word.value()) ==
-                    AsnData::PrecedingInfo::PRECEDED_BY_WHITESPACE ? " " : "\n")
-                << std::get<1>(parsed_asn_word.value())
-                << (std::get<2>(parsed_asn_word.value()) ==
-                    AsnData::SucceedingInfo::SUCCEEDED_BY_WHITESPACE ? " " : "\n");
+      SPDLOG_DEBUG("{}{}{}",
+                   std::get<0>(parsed_asn_word.value()) ==
+                     AsnData::PrecedingInfo::PRECEDED_BY_WHITESPACE ? "<SPC>" : "<NL>",
+                  std::get<1>(parsed_asn_word.value()),
+                  std::get<2>(parsed_asn_word.value()) ==
+                     AsnData::SucceedingInfo::SUCCEEDED_BY_WHITESPACE ? "<SPC>" : "<NL>");
 
       parsed_asn_word = parsed_asn_data.Get();
     }
@@ -132,6 +139,13 @@ Parse(const std::string& asnFilePath)
     bool ret = module_definition.Parse(parsed_asn_data,
                                        std::vector<std::string>{ "END" });
 
-    std::cout << "Parse result: " << (ret ? "SUCCESS" : "FAILURE") << std::endl;
+    if (ret)
+    {
+      SPDLOG_INFO("Parsing of asn words completed successfully");
+    }
+    else
+    {
+      SPDLOG_ERROR("Parsing of asn words failed");
+    }
   }
 }

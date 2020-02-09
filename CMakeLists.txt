@@ -37,6 +37,20 @@ if(NOT spdlog_POPULATED)
   message(STATUS "GIT library spdlog downloaded to: ${spdlog_SOURCE_DIR}")
 endif()
 
+# SPDLOG_* macros on this log level or higher will be processed during
+# compile time
+#
+# From spdlog/common.h -
+#
+# define SPDLOG_LEVEL_TRACE 0
+# define SPDLOG_LEVEL_DEBUG 1
+# define SPDLOG_LEVEL_INFO 2
+# define SPDLOG_LEVEL_WARN 3
+# define SPDLOG_LEVEL_ERROR 4
+# define SPDLOG_LEVEL_CRITICAL 5
+# define SPDLOG_LEVEL_OFF 6
+add_compile_definitions(SPDLOG_ACTIVE_LEVEL=1)
+
 message(STATUS "Building OpenASN version: ${CMAKE_PROJECT_VERSION}")
 
 configure_file(version_config.hh.in ${CMAKE_BINARY_DIR}/gen/version_config.hh )
