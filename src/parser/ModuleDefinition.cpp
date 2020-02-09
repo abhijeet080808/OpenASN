@@ -4,9 +4,16 @@ using namespace OpenASN;
 
 bool
 ModuleDefinition::
-Parse(AsnData& asnData)
+Parse(AsnData& asnData, const std::vector<std::string>& endStop)
 {
-  if (!mModuleIdentifier.Parse(asnData))
+  std::vector<std::string> end_stop{ "DEFINITIONS" };
+  end_stop.insert(std::end(end_stop), std::begin(endStop), std::end(endStop));
+
+  if (mModuleIdentifier.Parse(asnData, end_stop))
+  {
+    // ok
+  }
+  else
   {
     return false;
   }

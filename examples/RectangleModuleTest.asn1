@@ -1,0 +1,12 @@
+RectangleModule DEFINITIONS ::=
+BEGIN
+
+Colored ::= BOOLEAN
+
+Rectangle ::= SEQUENCE {
+    height    INTEGER,
+    width     INTEGER,
+    bordered  BOOLEAN
+}
+
+END

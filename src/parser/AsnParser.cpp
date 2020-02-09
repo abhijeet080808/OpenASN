@@ -5,6 +5,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include <sstream>
 
 using namespace OpenASN;
@@ -127,8 +128,9 @@ Parse(const std::string& asnFilePath)
 
     parsed_asn_data.ResetCurrentIndex();
 
-    ModuleDefinition module;
-    bool ret = module.Parse(parsed_asn_data);
+    ModuleDefinition module_definition;
+    bool ret = module_definition.Parse(parsed_asn_data,
+                                       std::vector<std::string>{ "END" });
 
     std::cout << "Parse result: " << (ret ? "SUCCESS" : "FAILURE") << std::endl;
   }

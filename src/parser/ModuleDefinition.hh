@@ -2,7 +2,7 @@
 
 #include "AsnData.hh"
 
-#include "ModuleDefinitionModuleIdentifier.hh"
+#include "ModuleIdentifier.hh"
 
 namespace OpenASN
 {
@@ -10,10 +10,10 @@ namespace OpenASN
   class ModuleDefinition
   {
     public:
-      bool Parse(AsnData& asnData);
+      bool Parse(AsnData& asnData, const std::vector<std::string>& endStop);
 
     public:
-      ModuleDefinitionModuleIdentifier mModuleIdentifier;
+      ModuleIdentifier mModuleIdentifier;
       // EncodingReferenceDefault
       // TagDefault
       // ExtensionDefault
