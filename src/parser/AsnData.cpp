@@ -61,16 +61,11 @@ PeekNext()
   return std::nullopt;
 }
 
-std::optional<AsnData::Word>
+void
 AsnData::
-Get()
+IncrementCurrentIndex()
 {
-  if (mAsnWords.size() > mCurrentAsnWordIndex)
-  {
-    return mAsnWords.at(mCurrentAsnWordIndex++);
-  }
-
-  return std::nullopt;
+  ++mCurrentAsnWordIndex;
 }
 
 void

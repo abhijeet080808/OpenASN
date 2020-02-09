@@ -1,15 +1,25 @@
 #include "DefinitiveIdentification.hh"
 
+#include "LoggingMacros.hh"
+#include "spdlog/spdlog.h"
+
 using namespace OpenASN;
 
 bool
 DefinitiveIdentification::
 Parse(AsnData& asnData, const std::vector<std::string>& endStop)
 {
+  LOG_START("DefinitiveOID", asnData);
   DefinitiveOID definitive_oid;
   if (definitive_oid.Parse(asnData, endStop))
   {
     mDefinitiveOID = definitive_oid;
+    LOG_PASS("DefinitiveOID", asnData);
+    return true;
+  }
+  else
+  {
+    LOG_FAIL("DefinitiveOID", asnData);
   }
 
   /*

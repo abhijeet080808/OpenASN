@@ -38,10 +38,7 @@ namespace OpenASN
       std::optional<Word> PeekCurrent();
       std::optional<Word> PeekNext();
 
-      // Also increments index by 1 so that next Get will return
-      // the next Word
-      std::optional<Word> Get();
-
+      void IncrementCurrentIndex();
       void ResetCurrentIndex();
 
     private:

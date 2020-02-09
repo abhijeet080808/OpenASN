@@ -3,6 +3,7 @@
 #include "AsnData.hh"
 #include "ModuleDefinition.hh"
 
+#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 #include <fstream>
@@ -120,32 +121,36 @@ Parse(const std::string& asnFilePath)
     SPDLOG_INFO("Parsed file split into {} asn words",
                 parsed_asn_data.GetSize());
 
-    auto parsed_asn_word = parsed_asn_data.Get();
+    auto parsed_asn_word = parsed_asn_data.PeekCurrent();
     while (parsed_asn_word.has_value())
     {
       SPDLOG_DEBUG("{}{}{}",
-                   std::get<0>(parsed_asn_word.value()) ==
-                     AsnData::PrecedingInfo::PRECEDED_BY_WHITESPACE ? "<SPC>" : "<NL>",
-                  std::get<1>(parsed_asn_word.value()),
-                  std::get<2>(parsed_asn_word.value()) ==
-                     AsnData::SucceedingInfo::SUCCEEDED_BY_WHITESPACE ? "<SPC>" : "<NL>");
+          std::get<0>(parsed_asn_word.value()) ==
+            AsnData::PrecedingInfo::PRECEDED_BY_WHITESPACE ?
+              "<SPC>" : "<CR/LF>",
+          std::get<1>(parsed_asn_word.value()),
+          std::get<2>(parsed_asn_word.value()) ==
+            AsnData::SucceedingInfo::SUCCEEDED_BY_WHITESPACE ?
+              "<SPC>" : "<CR/LF>");
 
-      parsed_asn_word = parsed_asn_data.Get();
+      parsed_asn_data.IncrementCurrentIndex();
+      parsed_asn_word = parsed_asn_data.PeekCurrent();
     }
 
     parsed_asn_data.ResetCurrentIndex();
 
     ModuleDefinition module_definition;
+    LOG_START("ModuleDefinition", parsed_asn_data);
     bool ret = module_definition.Parse(parsed_asn_data,
                                        std::vector<std::string>{ "END" });
 
     if (ret)
     {
-      SPDLOG_INFO("Parsing of asn words completed successfully");
+      LOG_PASS("ModuleDefinition", parsed_asn_data);
     }
     else
     {
-      SPDLOG_ERROR("Parsing of asn words failed");
+      LOG_FAIL("ModuleDefinition", parsed_asn_data);
     }
   }
 }

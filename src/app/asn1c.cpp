@@ -67,7 +67,8 @@ int main(int argc, char* argv[])
   }
 
   spdlog::set_level(spdlog::level::debug);
-  spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e %z] [%P:%t] [%L] [%s->%!()] %v");
+  // [2020-02-09 21:15:00.169] [66212] [I main() asn1c.cpp] Log text
+  spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%P] [%L %!() %s] %v");
 
   const size_t len = strlen(PROJECT_NAME) +
                      strlen(PROJECT_VERSION) +
