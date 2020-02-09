@@ -5,7 +5,7 @@
 
 using namespace OpenASN;
 
-bool
+ParseResult
 ModuleDefinition::
 Parse(AsnData& asnData, const std::vector<std::string>& endStop)
 {
@@ -20,7 +20,7 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   else
   {
     LOG_FAIL("ModuleIdentifier", asnData);
-    return false;
+    return ParseResult::FAILED;
   }
 
   LOG_START("DEFINITIONS", asnData);
@@ -33,7 +33,7 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   else
   {
     LOG_FAIL("DEFINITIONS", asnData);
-    return false;
+    return ParseResult::FAILED;
   }
 
   LOG_START("::=", asnData);
@@ -46,7 +46,7 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   else
   {
     LOG_FAIL("::=", asnData);
-    return false;
+    return ParseResult::FAILED;
   }
 
   LOG_START("BEGIN", asnData);
@@ -59,9 +59,9 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   else
   {
     LOG_FAIL("BEGIN", asnData);
-    return false;
+    return ParseResult::FAILED;
   }
 
-  return true;
+  return ParseResult::PASSED;
 }
 

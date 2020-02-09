@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AsnData.hh"
+#include "CommonDefs.hh"
 
 #include "ModuleIdentifier.hh"
 
@@ -10,7 +11,8 @@ namespace OpenASN
   class ModuleDefinition
   {
     public:
-      bool Parse(AsnData& asnData, const std::vector<std::string>& endStop);
+      ParseResult Parse(AsnData& asnData,
+                        const std::vector<std::string>& endStop);
 
     public:
       ModuleIdentifier mModuleIdentifier;

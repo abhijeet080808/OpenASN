@@ -141,16 +141,8 @@ Parse(const std::string& asnFilePath)
 
     ModuleDefinition module_definition;
     LOG_START("ModuleDefinition", parsed_asn_data);
-    bool ret = module_definition.Parse(parsed_asn_data,
+    auto res = module_definition.Parse(parsed_asn_data,
                                        std::vector<std::string>{ "END" });
-
-    if (ret)
-    {
-      LOG_PASS("ModuleDefinition", parsed_asn_data);
-    }
-    else
-    {
-      LOG_FAIL("ModuleDefinition", parsed_asn_data);
-    }
+    LOG_RESULT(res, "ModuleDefinition", parsed_asn_data);
   }
 }
