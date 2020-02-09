@@ -1,6 +1,9 @@
 #include "parser/AsnParser.hh"
 
 #include "cxxopts.hpp"
+#include "version_config.hh"
+
+#include "spdlog/spdlog.h"
 
 #include <iostream>
 
@@ -8,7 +11,12 @@ using namespace OpenASN;
 
 int main(int argc, char* argv[])
 {
-  cxxopts::Options options(argv[0], "C++ ASN.1 Compiler");
+  cxxopts::Options options(argv[0],
+                           std::string(PROJECT_NAME) +
+                           std::string(" v") +
+                           std::string(PROJECT_VERSION) +
+                           std::string(" - ") +
+                           std::string(PROJECT_DESCRIPTION));
 
   std::vector<std::string> asn_files;
 
@@ -57,6 +65,23 @@ int main(int argc, char* argv[])
     std::cout << "Error parsing options: " << e.what() << std::endl;
     exit(1);
   }
+
+  spdlog::set_level(spdlog::level::debug);
+  spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e %z] [%P:%t] [%L] [%s->%!()] %v");
+
+  const size_t len = strlen(PROJECT_NAME) +
+                     strlen(PROJECT_VERSION) +
+                     strlen(PROJECT_DESCRIPTION) +
+                     5;
+  std::string banner_header(len, '=');
+
+  SPDLOG_INFO(banner_header);
+  SPDLOG_INFO("{} v{} - {}",
+              PROJECT_NAME,
+              PROJECT_VERSION,
+              PROJECT_DESCRIPTION);
+  SPDLOG_INFO(banner_header);
+  SPDLOG_INFO(PROJECT_HOMEPAGE_URL);
 
   AsnParser p;
 
