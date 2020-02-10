@@ -3,6 +3,7 @@
 #include "AsnData.hh"
 
 #include "ModuleIdentifier.hh"
+#include "ModuleBody.hh"
 
 namespace OpenASN
 {
@@ -17,7 +18,7 @@ namespace OpenASN
       // EncodingReferenceDefault
       // TagDefault
       // ExtensionDefault
-      // ModuleBody
+      ModuleBody mModuleBody;
       // EncodingControlSections
   };
 }

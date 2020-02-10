@@ -100,6 +100,17 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     return false;
   }
 
+  LOG_START("ModuleBody", asnData);
+  if (mModuleBody.Parse(asnData, end_stop))
+  {
+    LOG_PASS("ModuleBody", asnData);
+  }
+  else
+  {
+    LOG_FAIL("ModuleBody", asnData);
+    return false;
+  }
+
   return true;
 }
 

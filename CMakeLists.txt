@@ -51,6 +51,8 @@ endif()
 # define SPDLOG_LEVEL_OFF 6
 add_compile_definitions(SPDLOG_ACTIVE_LEVEL=1)
 
+add_compile_options(-Wall -Wextra -pedantic -Werror)
+
 message(STATUS "Building OpenASN version: ${CMAKE_PROJECT_VERSION}")
 
 configure_file(version_config.hh.in ${CMAKE_BINARY_DIR}/gen/version_config.hh )

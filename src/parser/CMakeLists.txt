@@ -2,16 +2,25 @@ set(LIB_NAME parser)
 
 set(SOURCES AsnData.cpp
             AsnParser.cpp
+            Assignment.cpp
+            AssignmentList.cpp
+            BooleanType.cpp
+            BuiltinType.cpp
+            ComponentTypeLists.cpp
             DefinitiveIdentification.cpp
             DefinitiveObjIdComponent.cpp
             DefinitiveObjIdComponentList.cpp
             DefinitiveOID.cpp
             Identifier.cpp
+            ModuleBody.cpp
             ModuleDefinition.cpp
             ModuleIdentifier.cpp
             NamedType.cpp
             NameForm.cpp
             ParseHelper.cpp
+            SequenceType.cpp
+            TypeAssignment.cpp
+            Type.cpp
             TypeReference.cpp
 )
 
