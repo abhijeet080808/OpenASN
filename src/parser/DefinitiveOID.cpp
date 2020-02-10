@@ -9,6 +9,9 @@ bool
 DefinitiveOID::
 Parse(AsnData& asnData, const std::vector<std::string>& endStop)
 {
+  // DefinitiveOID ::=
+  // "{" DefinitiveObjIdComponentList "}"
+
   LOG_START("{", asnData);
   auto asn_word = asnData.PeekCurrent();
   if (asn_word && std::get<1>(asn_word.value()) == "{")

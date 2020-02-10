@@ -11,6 +11,10 @@ bool
 ModuleIdentifier::
 Parse(AsnData& asnData, const std::vector<std::string>& endStop)
 {
+  // ModuleIdentifier ::=
+  // modulereference
+  // DefinitiveIdentification
+
   LOG_START("ModuleReference", asnData);
   auto asn_word = asnData.PeekCurrent();
   if (asn_word)

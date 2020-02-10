@@ -9,6 +9,11 @@ bool
 DefinitiveIdentification::
 Parse(AsnData& asnData, const std::vector<std::string>& endStop)
 {
+  // DefinitiveIdentification ::=
+  //   DefinitiveOID
+  // | DefinitiveOIDandIRI
+  // | empty
+
   LOG_START("DefinitiveOID", asnData);
   DefinitiveOID definitive_oid;
   if (definitive_oid.Parse(asnData, endStop))

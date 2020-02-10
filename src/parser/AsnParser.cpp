@@ -2,6 +2,7 @@
 
 #include "AsnData.hh"
 #include "ModuleDefinition.hh"
+#include "ParseHelper.hh"
 
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
@@ -11,25 +12,6 @@
 #include <sstream>
 
 using namespace OpenASN;
-
-namespace
-{
-  // X.680 08/2015 sec 12.1.6
-  bool IsWhitespace(char c)
-  {
-    return c == 0x09 || // horizontal tab
-           c == 0x20;   // space
-  }
-
-  // X.680 08/2015 sec 12.1.6
-  bool IsNewline(char c)
-  {
-    return c == 0x0a || // line feed
-           c == 0x0b || // vertical tab
-           c == 0x0c || // form feed
-           c == 0x0d;   // carriage return
-  }
-}
 
 void
 AsnParser::
@@ -63,12 +45,12 @@ Parse(const std::string& asnFilePath)
     {
       if (asn_word.empty())
       {
-        if (IsNewline(c))
+        if (ParseHelper::IsNewline(c))
         {
           preceding_info = AsnData::PrecedingInfo::PRECEDED_BY_NEWLINE;
           continue;
         }
-        else if (IsWhitespace(c))
+        else if (ParseHelper::IsWhitespace(c))
         {
           // newline has priority until the first word is reached
           // for the current line, so if it is PRECEDED_BY_NEWLINE,
@@ -84,7 +66,7 @@ Parse(const std::string& asnFilePath)
       }
       else
       {
-        if (IsNewline(c))
+        if (ParseHelper::IsNewline(c))
         {
           parsed_asn_data.Insert(
               preceding_info,
@@ -93,7 +75,7 @@ Parse(const std::string& asnFilePath)
           asn_word.clear();
           preceding_info = AsnData::PrecedingInfo::PRECEDED_BY_NEWLINE;
         }
-        else if (IsWhitespace(c))
+        else if (ParseHelper::IsWhitespace(c))
         {
           parsed_asn_data.Insert(
               preceding_info,
@@ -102,9 +84,34 @@ Parse(const std::string& asnFilePath)
           asn_word.clear();
           preceding_info = AsnData::PrecedingInfo::PRECEDED_BY_WHITESPACE;
         }
+        else if (ParseHelper::IsLexicalItem(c))
+        {
+          parsed_asn_data.Insert(
+              preceding_info,
+              std::string(asn_word.begin(), asn_word.end()),
+              AsnData::SucceedingInfo::SUCCEEDED_BY_WHITESPACE);
+          asn_word.clear();
+          preceding_info = AsnData::PrecedingInfo::PRECEDED_BY_WHITESPACE;
+
+          asn_word.push_back(c);
+        }
         else
         {
-          asn_word.push_back(c);
+          if (ParseHelper::IsLexicalItem(asn_word.front()))
+          {
+            parsed_asn_data.Insert(
+              preceding_info,
+              std::string(1, asn_word.front()),
+              AsnData::SucceedingInfo::SUCCEEDED_BY_WHITESPACE);
+            asn_word.clear();
+            preceding_info = AsnData::PrecedingInfo::PRECEDED_BY_WHITESPACE;
+
+            asn_word.push_back(c);
+          }
+          else
+          {
+            asn_word.push_back(c);
+          }
         }
       }
     }
@@ -141,10 +148,8 @@ Parse(const std::string& asnFilePath)
 
     ModuleDefinition module_definition;
     LOG_START("ModuleDefinition", parsed_asn_data);
-    bool ret = module_definition.Parse(parsed_asn_data,
-                                       std::vector<std::string>{ "END" });
-
-    if (ret)
+    if (module_definition.Parse(parsed_asn_data,
+                                std::vector<std::string>{ "END" }))
     {
       LOG_PASS("ModuleDefinition", parsed_asn_data);
     }

@@ -11,6 +11,8 @@ bool
 NameForm::
 Parse(AsnData& asnData, const std::vector<std::string>& endStop)
 {
+  // NameForm ::= identifier
+
   LOG_START("Identifier", asnData);
   auto asn_word = asnData.PeekCurrent();
   if (asn_word)

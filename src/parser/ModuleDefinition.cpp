@@ -9,6 +9,18 @@ bool
 ModuleDefinition::
 Parse(AsnData& asnData, const std::vector<std::string>& endStop)
 {
+  // ModuleDefinition ::=
+  // ModuleIdentifier
+  // DEFINITIONS
+  // EncodingReferenceDefault
+  // TagDefault
+  // ExtensionDefault
+  // "::="
+  // BEGIN
+  // ModuleBody
+  // EncodingControlSections
+  // END
+
   std::vector<std::string> end_stop{ "DEFINITIONS" };
   end_stop.insert(std::end(end_stop), std::begin(endStop), std::end(endStop));
 
@@ -36,16 +48,42 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     return false;
   }
 
-  LOG_START("::=", asnData);
+  LOG_START(":", asnData);
   asn_word = asnData.PeekCurrent();
-  if (asn_word && std::get<1>(asn_word.value()) == "::=")
+  if (asn_word && std::get<1>(asn_word.value()) == ":")
   {
     asnData.IncrementCurrentIndex();
-    LOG_PASS("::=", asnData);
+    LOG_PASS(":", asnData);
   }
   else
   {
-    LOG_FAIL("::=", asnData);
+    LOG_FAIL(":", asnData);
+    return false;
+  }
+
+  LOG_START(":", asnData);
+  asn_word = asnData.PeekCurrent();
+  if (asn_word && std::get<1>(asn_word.value()) == ":")
+  {
+    asnData.IncrementCurrentIndex();
+    LOG_PASS(":", asnData);
+  }
+  else
+  {
+    LOG_FAIL(":", asnData);
+    return false;
+  }
+
+  LOG_START("=", asnData);
+  asn_word = asnData.PeekCurrent();
+  if (asn_word && std::get<1>(asn_word.value()) == "=")
+  {
+    asnData.IncrementCurrentIndex();
+    LOG_PASS("=", asnData);
+  }
+  else
+  {
+    LOG_FAIL("=", asnData);
     return false;
   }
 

@@ -16,6 +16,7 @@ bool
 ParseHelper::
 IsReserved(const std::string& asnWord)
 {
+  // X.680 08/2015 sec 12.38
   // TODO optimize using set
   return asnWord == "ABSENT" ||
          asnWord == "ABSTRACT-SYNTAX" ||
@@ -108,4 +109,53 @@ IsReserved(const std::string& asnWord)
          asnWord == "VideotexString" ||
          asnWord == "VisibleString" ||
          asnWord == "WITH";
+}
+
+bool
+ParseHelper::
+IsLexicalItem(char c)
+{
+  // X.680 08/2015 sec 12.37
+  return c == '{' ||
+         c == '}' ||
+         c == '<' ||
+         c == '>' ||
+         c == ',' ||
+         c == '.' ||
+         c == '/' ||
+         c == '(' ||
+         c == ')' ||
+         c == '[' ||
+         c == ']' ||
+         c == '-' ||
+         c == ':' ||
+         c == '=' ||
+         c == '"' ||
+         c == '\'' ||
+      // c == ' ' ||
+         c == ';' ||
+         c == '@' ||
+         c == '|' ||
+         c == '!' ||
+         c == '^';
+}
+
+bool
+ParseHelper::
+IsWhitespace(char c)
+{
+  // X.680 08/2015 sec 12.1.6
+  return c == 0x09 || // horizontal tab
+         c == 0x20;   // space
+}
+
+bool
+ParseHelper::
+IsNewline(char c)
+{
+  // X.680 08/2015 sec 12.1.6
+  return c == 0x0a || // line feed
+         c == 0x0b || // vertical tab
+         c == 0x0c || // form feed
+         c == 0x0d;   // carriage return
 }

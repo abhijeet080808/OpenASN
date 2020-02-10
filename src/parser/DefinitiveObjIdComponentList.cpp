@@ -9,6 +9,10 @@ bool
 DefinitiveObjIdComponentList::
 Parse(AsnData& asnData, const std::vector<std::string>& endStop)
 {
+  // DefinitiveObjIdComponentList ::=
+  //   DefinitiveObjIdComponent
+  // | DefinitiveObjIdComponent DefinitiveObjIdComponentList
+
   while (1)
   {
     LOG_START("DefinitiveObjIdComponent", asnData);
@@ -25,5 +29,5 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     }
   }
 
-  return true;
+  return !mDefinitiveObjIdComponent.empty();
 }

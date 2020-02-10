@@ -9,6 +9,11 @@ bool
 DefinitiveObjIdComponent::
 Parse(AsnData& asnData, const std::vector<std::string>& endStop)
 {
+  // DefinitiveObjIdComponent ::=
+  //   NameForm
+  // | DefinitiveNumberForm
+  // | DefinitiveNameAndNumberForm
+
   LOG_START("NameForm", asnData);
   NameForm name_form;
   if (name_form.Parse(asnData, endStop))
