@@ -1,5 +1,8 @@
 #include "DefinitiveObjIdComponent.hh"
 
+#include "CommonDefs.hh"
+#include "ProductionFactory.hh"
+
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
@@ -15,8 +18,9 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   // | DefinitiveNameAndNumberForm
 
   LOG_START("NameForm", asnData);
-  NameForm name_form;
-  if (name_form.Parse(asnData, endStop))
+  auto name_form =
+    ProductionFactory::Get(Production::NAME_FORM);
+  if (name_form->Parse(asnData, endStop))
   {
     mNameForm = name_form;
     LOG_PASS("NameForm", asnData);
@@ -27,23 +31,8 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     LOG_FAIL("NameForm", asnData);
   }
 
-  /*
-  DefinitiveNumberForm definitive_number_form;
-  if (definitive_number_form.Parse(asnData,
-                                   const std::vector<std::string>& endStop))
-  {
-    mDefinitiveNumberForm = definitive_number_form;
-    return true;
-  }
-
-  DefinitiveNameAndNumberForm definitive_name_and_number_form;
-  if (definitive_name_and_number_form.Parse(asnData,
-                                            const std::vector<std::string>& endStop))
-  {
-    mDefinitiveNameAndNumberForm = definitive_name_and_number_form;
-    return true;
-  }
-  */
+  // DefinitiveNumberForm
+  // DefinitiveNameAndNumberForm
 
   return false;
 }

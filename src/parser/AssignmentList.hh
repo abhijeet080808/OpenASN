@@ -1,18 +1,18 @@
 #pragma once
 
-#include "AsnData.hh"
+#include "IProduction.hh"
 
-#include "Assignment.hh"
+#include <memory>
 
 namespace OpenASN
 {
   // X.680 08/2015 Annex L
-  class AssignmentList
+  class AssignmentList : public IProduction
   {
     public:
       bool Parse(AsnData& asnData, const std::vector<std::string>& endStop);
 
     public:
-      std::vector<Assignment> mAssignment;
+      std::vector<std::shared_ptr<IProduction>> mAssignment;
   };
 }

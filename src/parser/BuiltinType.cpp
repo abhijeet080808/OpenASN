@@ -1,5 +1,8 @@
 #include "BuiltinType.hh"
 
+#include "CommonDefs.hh"
+#include "ProductionFactory.hh"
+
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
@@ -41,8 +44,9 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   // | TimeOfDayType
 
   LOG_START("BooleanType", asnData);
-  BooleanType boolean_type;
-  if (boolean_type.Parse(asnData, endStop))
+  auto boolean_type =
+    ProductionFactory::Get(Production::BOOLEAN_TYPE);
+  if (boolean_type->Parse(asnData, endStop))
   {
     mBooleanType = boolean_type;
     LOG_PASS("BooleanType", asnData);
@@ -53,9 +57,24 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     LOG_FAIL("BooleanType", asnData);
   }
 
+  LOG_START("IntegerType", asnData);
+  auto integer_type =
+    ProductionFactory::Get(Production::INTEGER_TYPE);
+  if (integer_type->Parse(asnData, endStop))
+  {
+    mIntegerType = integer_type;
+    LOG_PASS("IntegerType", asnData);
+    return true;
+  }
+  else
+  {
+    LOG_FAIL("IntegerType", asnData);
+  }
+
   LOG_START("SequenceType", asnData);
-  SequenceType sequence_type;
-  if (sequence_type.Parse(asnData, endStop))
+  auto sequence_type =
+    ProductionFactory::Get(Production::SEQUENCE_TYPE);
+  if (sequence_type->Parse(asnData, endStop))
   {
     mSequenceType = sequence_type;
     LOG_PASS("SequenceType", asnData);

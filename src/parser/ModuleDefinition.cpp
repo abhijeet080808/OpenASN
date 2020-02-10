@@ -1,5 +1,8 @@
 #include "ModuleDefinition.hh"
 
+#include "CommonDefs.hh"
+#include "ProductionFactory.hh"
+
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
@@ -25,8 +28,11 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   end_stop.insert(std::end(end_stop), std::begin(endStop), std::end(endStop));
 
   LOG_START("ModuleIdentifier", asnData);
-  if (mModuleIdentifier.Parse(asnData, end_stop))
+  auto module_identifier =
+    ProductionFactory::Get(Production::MODULE_IDENTIFIER);
+  if (module_identifier->Parse(asnData, end_stop))
   {
+    mModuleIdentifier = module_identifier;
     LOG_PASS("ModuleIdentifier", asnData);
   }
   else
@@ -101,13 +107,29 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   }
 
   LOG_START("ModuleBody", asnData);
-  if (mModuleBody.Parse(asnData, end_stop))
+  auto module_body =
+    ProductionFactory::Get(Production::MODULE_BODY);
+  if (module_body->Parse(asnData, end_stop))
   {
+    mModuleBody = module_body;
     LOG_PASS("ModuleBody", asnData);
   }
   else
   {
     LOG_FAIL("ModuleBody", asnData);
+    return false;
+  }
+
+  LOG_START("END", asnData);
+  asn_word = asnData.PeekCurrent();
+  if (asn_word && std::get<1>(asn_word.value()) == "END")
+  {
+    asnData.IncrementCurrentIndex();
+    LOG_PASS("END", asnData);
+  }
+  else
+  {
+    LOG_FAIL("END", asnData);
     return false;
   }
 

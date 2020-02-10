@@ -1,9 +1,10 @@
 #include "ModuleIdentifier.hh"
 
+#include "CommonDefs.hh"
+#include "ProductionFactory.hh"
+
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
-
-#include "ParseHelper.hh"
 
 using namespace OpenASN;
 
@@ -16,25 +17,12 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   // DefinitiveIdentification
 
   LOG_START("ModuleReference", asnData);
-  auto asn_word = asnData.PeekCurrent();
-  if (asn_word)
+  auto module_reference =
+    ProductionFactory::Get(Production::MODULE_REFERENCE);
+  if (module_reference->Parse(asnData, endStop))
   {
-    if (ParseHelper::HitEndStop(std::get<1>(asn_word.value()), endStop))
-    {
-      LOG_FAIL("ModuleReference", asnData);
-      return false;
-    }
-
-    if (mModuleReference.Parse(std::get<1>(asn_word.value())))
-    {
-      asnData.IncrementCurrentIndex();
-      LOG_PASS("ModuleReference", asnData);
-    }
-    else
-    {
-      LOG_FAIL("ModuleReference", asnData);
-      return false;
-    }
+    mModuleReference = module_reference;
+    LOG_PASS("ModuleReference", asnData);
   }
   else
   {
@@ -43,8 +31,11 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   }
 
   LOG_START("DefinitiveIdentification", asnData);
-	if (mDefinitiveIdentification.Parse(asnData, endStop))
+  auto definitive_identification =
+    ProductionFactory::Get(Production::DEFINITIVE_IDENTIFICATION);
+	if (definitive_identification->Parse(asnData, endStop))
 	{
+    mDefinitiveIdentification = definitive_identification;
     LOG_PASS("DefinitiveIdentification", asnData);
   }
   else

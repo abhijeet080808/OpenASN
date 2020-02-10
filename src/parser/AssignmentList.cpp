@@ -1,5 +1,8 @@
 #include "AssignmentList.hh"
 
+#include "CommonDefs.hh"
+#include "ProductionFactory.hh"
+
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
@@ -18,8 +21,9 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   while (1)
   {
     LOG_START("Assignment", asnData);
-    Assignment assignment;
-    if (assignment.Parse(asnData, endStop))
+    auto assignment =
+      ProductionFactory::Get(Production::TYPE_ASSIGNMENT);
+    if (assignment->Parse(asnData, endStop))
     {
       mAssignment.push_back(assignment);
       LOG_PASS("Assignment", asnData);

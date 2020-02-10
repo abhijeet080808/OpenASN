@@ -6,18 +6,23 @@ set(SOURCES AsnData.cpp
             AssignmentList.cpp
             BooleanType.cpp
             BuiltinType.cpp
+            ComponentType.cpp
+            ComponentTypeList.cpp
             ComponentTypeLists.cpp
             DefinitiveIdentification.cpp
             DefinitiveObjIdComponent.cpp
             DefinitiveObjIdComponentList.cpp
             DefinitiveOID.cpp
             Identifier.cpp
+            IntegerType.cpp
             ModuleBody.cpp
             ModuleDefinition.cpp
             ModuleIdentifier.cpp
             NamedType.cpp
             NameForm.cpp
             ParseHelper.cpp
+            ProductionFactory.cpp
+            RootComponentTypeList.cpp
             SequenceType.cpp
             TypeAssignment.cpp
             Type.cpp

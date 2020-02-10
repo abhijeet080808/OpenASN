@@ -1,20 +1,19 @@
 #pragma once
 
-#include "AsnData.hh"
+#include "IProduction.hh"
 
-#include "TypeReference.hh"
-#include "DefinitiveIdentification.hh"
+#include <memory>
 
 namespace OpenASN
 {
   // X.680 08/2015 Annex L
-  class ModuleIdentifier
+  class ModuleIdentifier : public IProduction
   {
     public:
       bool Parse(AsnData& asnData, const std::vector<std::string>& endStop);
 
     public:
-      ModuleReference mModuleReference;
-      DefinitiveIdentification mDefinitiveIdentification;
+      std::shared_ptr<IProduction> mModuleReference;
+      std::shared_ptr<IProduction> mDefinitiveIdentification;
   };
 }

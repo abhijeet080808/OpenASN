@@ -1,9 +1,10 @@
 #include "TypeAssignment.hh"
 
+#include "CommonDefs.hh"
+#include "ProductionFactory.hh"
+
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
-
-#include "ParseHelper.hh"
 
 using namespace OpenASN;
 
@@ -17,25 +18,12 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   // Type
 
   LOG_START("TypeReference", asnData);
-  auto asn_word = asnData.PeekCurrent();
-  if (asn_word)
+  auto type_reference =
+    ProductionFactory::Get(Production::TYPE_REFERENCE);
+  if (type_reference->Parse(asnData, endStop))
   {
-    if (ParseHelper::HitEndStop(std::get<1>(asn_word.value()), endStop))
-    {
-      LOG_FAIL("TypeReference", asnData);
-      return false;
-    }
-
-    if (mTypeReference.Parse(std::get<1>(asn_word.value())))
-    {
-      asnData.IncrementCurrentIndex();
-      LOG_PASS("TypeReference", asnData);
-    }
-    else
-    {
-      LOG_FAIL("TypeReference", asnData);
-      return false;
-    }
+    mTypeReference = type_reference;
+    LOG_PASS("TypeReference", asnData);
   }
   else
   {
@@ -44,7 +32,7 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   }
 
   LOG_START(":", asnData);
-  asn_word = asnData.PeekCurrent();
+  auto asn_word = asnData.PeekCurrent();
   if (asn_word && std::get<1>(asn_word.value()) == ":")
   {
     asnData.IncrementCurrentIndex();
@@ -83,8 +71,11 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   }
 
   LOG_START("Type", asnData);
-  if (mType.Parse(asnData, endStop))
+  auto type =
+    ProductionFactory::Get(Production::TYPE);
+  if (type->Parse(asnData, endStop))
   {
+    mType = type;
     LOG_PASS("Type", asnData);
   }
   else

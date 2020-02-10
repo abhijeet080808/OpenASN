@@ -1,5 +1,8 @@
 #include "Assignment.hh"
 
+#include "CommonDefs.hh"
+#include "ProductionFactory.hh"
+
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
@@ -22,8 +25,9 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   // | ParameterizedAssignment
 
   LOG_START("TypeAssignment", asnData);
-  TypeAssignment type_assignment;
-  if (type_assignment.Parse(asnData, endStop))
+  auto type_assignment =
+    ProductionFactory::Get(Production::TYPE_ASSIGNMENT);
+  if (type_assignment->Parse(asnData, endStop))
   {
     mTypeAssignment = type_assignment;
     LOG_PASS("TypeAssignment", asnData);

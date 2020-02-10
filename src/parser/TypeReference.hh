@@ -1,14 +1,14 @@
 #pragma once
 
-#include <string>
+#include "IProduction.hh"
 
 namespace OpenASN
 {
   // X.680 08/2015 Annex L
-  class TypeReference
+  class TypeReference : public IProduction
   {
     public:
-      bool Parse(const std::string& asnWord);
+      bool Parse(AsnData& asnData, const std::vector<std::string>& endStop);
 
     public:
       std::string mValue;

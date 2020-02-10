@@ -1,9 +1,10 @@
 #include "ModuleBody.hh"
 
+#include "CommonDefs.hh"
+#include "ProductionFactory.hh"
+
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
-
-#include "ParseHelper.hh"
 
 using namespace OpenASN;
 
@@ -20,8 +21,9 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   // Imports
 
   LOG_START("AssignmentList", asnData);
-  AssignmentList assignment_list;
-	if (assignment_list.Parse(asnData, endStop))
+  auto assignment_list =
+    ProductionFactory::Get(Production::ASSIGNMENT_LIST);
+	if (assignment_list->Parse(asnData, endStop))
 	{
     mAssignmentList = assignment_list;
     LOG_PASS("AssignmentList", asnData);

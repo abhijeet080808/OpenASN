@@ -1,5 +1,8 @@
 #include "DefinitiveIdentification.hh"
 
+#include "CommonDefs.hh"
+#include "ProductionFactory.hh"
+
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
@@ -15,8 +18,9 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   // | empty
 
   LOG_START("DefinitiveOID", asnData);
-  DefinitiveOID definitive_oid;
-  if (definitive_oid.Parse(asnData, endStop))
+  auto definitive_oid =
+    ProductionFactory::Get(Production::DEFINITIVE_OID);
+  if (definitive_oid->Parse(asnData, endStop))
   {
     mDefinitiveOID = definitive_oid;
     LOG_PASS("DefinitiveOID", asnData);
@@ -27,13 +31,7 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     LOG_FAIL("DefinitiveOID", asnData);
   }
 
-  /*
-  DefinitiveOIDandIRI definitive_oid_and_iri;
-  if (definitive_oid_and_iri.Parse(asnData, endStop))
-  {
-    nDefinitiveOIDandIRI = definitive_oid_and_iri;
-  }
-  */
+  // DefinitiveOIDandIRI
 
   return true;
 }

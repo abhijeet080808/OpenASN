@@ -1,19 +1,19 @@
 #pragma once
 
-#include "AsnData.hh"
+#include "IProduction.hh"
 
-#include "BuiltinType.hh"
+#include <memory>
 
 namespace OpenASN
 {
   // X.680 08/2015 Annex L
-  class Type
+  class Type : public IProduction
   {
     public:
       bool Parse(AsnData& asnData, const std::vector<std::string>& endStop);
 
     public:
-      std::optional<BuiltinType> mBuiltinType;
+      std::shared_ptr<IProduction> mBuiltinType;
       // ReferencedType
       // ConstrainedType
   };

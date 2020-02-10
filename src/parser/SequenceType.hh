@@ -1,18 +1,18 @@
 #pragma once
 
-#include "AsnData.hh"
+#include "IProduction.hh"
 
-#include "ComponentTypeLists.hh"
+#include <memory>
 
 namespace OpenASN
 {
   // X.680 08/2015 Annex L
-  class SequenceType
+  class SequenceType : public IProduction
   {
     public:
       bool Parse(AsnData& asnData, const std::vector<std::string>& endStop);
 
     public:
-      std::optional<ComponentTypeLists> mComponentTypeLists;
+      std::shared_ptr<IProduction> mComponentTypeLists;
   };
 }

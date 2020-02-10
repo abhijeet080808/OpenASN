@@ -1,8 +1,10 @@
 #include "AsnParser.hh"
 
 #include "AsnData.hh"
+#include "CommonDefs.hh"
 #include "ModuleDefinition.hh"
 #include "ParseHelper.hh"
+#include "ProductionFactory.hh"
 
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
@@ -146,9 +148,10 @@ Parse(const std::string& asnFilePath)
 
     parsed_asn_data.ResetCurrentIndex();
 
-    ModuleDefinition module_definition;
     LOG_START("ModuleDefinition", parsed_asn_data);
-    if (module_definition.Parse(parsed_asn_data,
+    auto module_definition =
+      ProductionFactory::Get(Production::MODULE_DEFINITION);
+    if (module_definition->Parse(parsed_asn_data,
                                 std::vector<std::string>{ "END" }))
     {
       LOG_PASS("ModuleDefinition", parsed_asn_data);

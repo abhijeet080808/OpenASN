@@ -1,20 +1,19 @@
 #pragma once
 
-#include "AsnData.hh"
+#include "IProduction.hh"
 
-#include "TypeReference.hh"
-#include "Type.hh"
+#include <memory>
 
 namespace OpenASN
 {
   // X.680 08/2015 Annex L
-  class TypeAssignment
+  class TypeAssignment : public IProduction
   {
     public:
       bool Parse(AsnData& asnData, const std::vector<std::string>& endStop);
 
     public:
-      TypeReference mTypeReference;
-      Type mType;
+      std::shared_ptr<IProduction> mTypeReference;
+      std::shared_ptr<IProduction> mType;
   };
 }

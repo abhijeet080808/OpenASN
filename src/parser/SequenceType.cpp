@@ -1,5 +1,8 @@
 #include "SequenceType.hh"
 
+#include "CommonDefs.hh"
+#include "ProductionFactory.hh"
+
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
@@ -59,8 +62,9 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   end_stop.insert(std::end(end_stop), std::begin(endStop), std::end(endStop));
 
   LOG_START("ComponentTypeLists", asnData);
-  ComponentTypeLists component_type_lists;
-  if (component_type_lists.Parse(asnData, end_stop))
+  auto component_type_lists =
+    ProductionFactory::Get(Production::COMPONENT_TYPE_LISTS);
+  if (component_type_lists->Parse(asnData, end_stop))
   {
     mComponentTypeLists = component_type_lists;
     LOG_PASS("ComponentTypeLists", asnData);

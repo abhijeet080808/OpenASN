@@ -1,19 +1,19 @@
 #pragma once
 
-#include "AsnData.hh"
+#include "IProduction.hh"
 
-#include "DefinitiveOID.hh"
+#include <memory>
 
 namespace OpenASN
 {
   // X.680 08/2015 Annex L
-  class DefinitiveIdentification
+  class DefinitiveIdentification : public IProduction
   {
     public:
       bool Parse(AsnData& asnData, const std::vector<std::string>& endStop);
 
     public:
-			std::optional<DefinitiveOID> mDefinitiveOID;
-			//std::optional<DefinitiveOIDandIRI> mDefinitiveOIDandIRI;
+			std::shared_ptr<IProduction> mDefinitiveOID;
+			// DefinitiveOIDandIRI
   };
 }

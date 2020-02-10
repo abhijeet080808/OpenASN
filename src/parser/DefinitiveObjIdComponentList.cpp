@@ -1,5 +1,8 @@
 #include "DefinitiveObjIdComponentList.hh"
 
+#include "CommonDefs.hh"
+#include "ProductionFactory.hh"
+
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
@@ -16,8 +19,9 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   while (1)
   {
     LOG_START("DefinitiveObjIdComponent", asnData);
-    DefinitiveObjIdComponent definitive_obj_id_component;
-    if (definitive_obj_id_component.Parse(asnData, endStop))
+    auto definitive_obj_id_component =
+      ProductionFactory::Get(Production::DEFINITIVE_OBJ_ID_COMPONENT);
+    if (definitive_obj_id_component->Parse(asnData, endStop))
     {
       mDefinitiveObjIdComponent.push_back(definitive_obj_id_component);
       LOG_PASS("DefinitiveObjIdComponent", asnData);
