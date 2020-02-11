@@ -1,4 +1,5 @@
 #include "parser/AsnParser.hh"
+#include "generator/AsnGenerator.hh"
 
 #include "cxxopts.hpp"
 #include "version_config.hh"
@@ -85,9 +86,11 @@ int main(int argc, char* argv[])
   SPDLOG_INFO(PROJECT_HOMEPAGE_URL);
 
   AsnParser p;
+  AsnGenerator g;
 
   for (const auto& f : asn_files)
   {
-    p.Parse(f);
+    auto module_definition = p.Parse(f);
+    g.Generate(module_definition);
   }
 }

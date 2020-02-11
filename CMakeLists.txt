@@ -60,3 +60,4 @@ include_directories(${CMAKE_BINARY_DIR}/gen)
 
 add_subdirectory(src/app)
 add_subdirectory(src/parser)
+add_subdirectory(src/generator)

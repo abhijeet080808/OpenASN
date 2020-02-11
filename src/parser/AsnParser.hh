@@ -1,12 +1,14 @@
 #pragma once
 
-#include <string>
+#include "IProduction.hh"
+
+#include <memory>
 
 namespace OpenASN
 {
   class AsnParser
   {
     public:
-      void Parse(const std::string& asnFilePath);
+      std::shared_ptr<IProduction> Parse(const std::string& asnFilePath);
   };
 }

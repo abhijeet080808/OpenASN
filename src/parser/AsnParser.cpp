@@ -15,7 +15,7 @@
 
 using namespace OpenASN;
 
-void
+std::shared_ptr<IProduction>
 AsnParser::
 Parse(const std::string& asnFilePath)
 {
@@ -35,6 +35,7 @@ Parse(const std::string& asnFilePath)
   {
     SPDLOG_ERROR("Parsing of empty file {} failed",
                  asnFilePath);
+    return nullptr;
   }
   else
   {
@@ -160,5 +161,7 @@ Parse(const std::string& asnFilePath)
     {
       LOG_FAIL("ModuleDefinition", parsed_asn_data);
     }
+
+    return module_definition;
   }
 }
