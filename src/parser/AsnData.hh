@@ -34,9 +34,7 @@ namespace OpenASN
 
       size_t GetSize();
 
-      std::optional<Word> PeekPrev();
-      std::optional<Word> PeekCurrent();
-      std::optional<Word> PeekNext();
+      std::optional<Word> Peek(int indexOffset = 0);
 
       void IncrementCurrentIndex();
       void ResetCurrentIndex();

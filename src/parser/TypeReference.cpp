@@ -10,7 +10,7 @@ bool
 TypeReference::
 Parse(AsnData& asnData, const std::vector<std::string>& endStop)
 {
-  auto asn_word = asnData.PeekCurrent();
+  auto asn_word = asnData.Peek();
 
   if (asn_word)
   {

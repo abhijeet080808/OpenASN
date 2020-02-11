@@ -111,5 +111,6 @@ Get(Production production)
 
     default:
       assert(false);
+      return nullptr;
   }
 }

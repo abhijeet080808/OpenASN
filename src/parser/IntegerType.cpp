@@ -12,7 +12,7 @@ Parse(AsnData& asnData, const std::vector<std::string>&)
   // IntegerType ::= INTEGER
 
   LOG_START("INTEGER", asnData);
-  auto asn_word = asnData.PeekCurrent();
+  auto asn_word = asnData.Peek();
   if (asn_word && std::get<1>(asn_word.value()) == "INTEGER")
   {
     asnData.IncrementCurrentIndex();

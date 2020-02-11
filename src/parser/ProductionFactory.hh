@@ -3,6 +3,8 @@
 #include "CommonDefs.hh"
 #include "IProduction.hh"
 
+#include <memory>
+
 namespace OpenASN
 {
   class ProductionFactory

@@ -33,7 +33,7 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     }
 
     LOG_START(",", asnData);
-    auto asn_word = asnData.PeekCurrent();
+    auto asn_word = asnData.Peek();
     if (asn_word && std::get<1>(asn_word.value()) == ",")
     {
       asnData.IncrementCurrentIndex();

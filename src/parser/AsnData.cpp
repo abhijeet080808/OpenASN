@@ -27,35 +27,13 @@ GetSize()
 
 std::optional<AsnData::Word>
 AsnData::
-PeekPrev()
+Peek(int indexOffset)
 {
-  if (mAsnWords.size() > mCurrentAsnWordIndex - 1)
+  int index = mCurrentAsnWordIndex + indexOffset;
+
+  if (index >= 0 && mAsnWords.size() > (size_t)index)
   {
-    return mAsnWords.at(mCurrentAsnWordIndex - 1);
-  }
-
-  return std::nullopt;
-}
-
-std::optional<AsnData::Word>
-AsnData::
-PeekCurrent()
-{
-  if (mAsnWords.size() > mCurrentAsnWordIndex)
-  {
-    return mAsnWords.at(mCurrentAsnWordIndex);
-  }
-
-  return std::nullopt;
-}
-
-std::optional<AsnData::Word>
-AsnData::
-PeekNext()
-{
-  if (mAsnWords.size() > mCurrentAsnWordIndex + 1)
-  {
-    return mAsnWords.at(mCurrentAsnWordIndex + 1);
+    return mAsnWords.at(index);
   }
 
   return std::nullopt;

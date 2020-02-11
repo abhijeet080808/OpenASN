@@ -130,7 +130,7 @@ Parse(const std::string& asnFilePath)
     SPDLOG_INFO("Parsed file split into {} asn words",
                 parsed_asn_data.GetSize());
 
-    auto parsed_asn_word = parsed_asn_data.PeekCurrent();
+    auto parsed_asn_word = parsed_asn_data.Peek();
     while (parsed_asn_word.has_value())
     {
       SPDLOG_DEBUG("{}{}{}",
@@ -143,7 +143,7 @@ Parse(const std::string& asnFilePath)
               "<SPC>" : "<CR/LF>");
 
       parsed_asn_data.IncrementCurrentIndex();
-      parsed_asn_word = parsed_asn_data.PeekCurrent();
+      parsed_asn_word = parsed_asn_data.Peek();
     }
 
     parsed_asn_data.ResetCurrentIndex();
