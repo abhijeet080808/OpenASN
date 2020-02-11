@@ -91,6 +91,6 @@ int main(int argc, char* argv[])
   for (const auto& f : asn_files)
   {
     auto module_definition = p.Parse(f);
-    g.Generate(module_definition);
+    g.Generate(dynamic_cast<ModuleDefinition*>(module_definition.get()));
   }
 }

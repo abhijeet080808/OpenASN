@@ -153,7 +153,7 @@ Parse(const std::string& asnFilePath)
     auto module_definition =
       ProductionFactory::Get(Production::MODULE_DEFINITION);
     if (module_definition->Parse(parsed_asn_data,
-                                std::vector<std::string>{ "END" }))
+                                 std::vector<std::string>{ "END" }))
     {
       LOG_PASS("ModuleDefinition", parsed_asn_data);
     }

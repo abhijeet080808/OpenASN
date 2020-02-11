@@ -1,6 +1,7 @@
 #pragma once
 
-#include "parser/IProduction.hh"
+#include "parser/Assignment.hh"
+#include "parser/ModuleDefinition.hh"
 
 #include <memory>
 
@@ -9,6 +10,9 @@ namespace OpenASN
   class AsnGenerator
   {
     public:
-      bool Generate(const std::shared_ptr<IProduction> production);
+      bool Generate(const ModuleDefinition* pModuleDefinition);
+
+    private:
+      bool generateClass(const Assignment* pAssignment);
   };
 }

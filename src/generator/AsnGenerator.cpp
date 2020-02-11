@@ -1,6 +1,5 @@
 #include "AsnGenerator.hh"
 
-#include "parser/ModuleDefinition.hh"
 #include "parser/ModuleIdentifier.hh"
 #include "parser/TypeReference.hh"
 #include "parser/ModuleBody.hh"
@@ -12,26 +11,35 @@ using namespace OpenASN;
 
 bool
 AsnGenerator::
-Generate(const std::shared_ptr<IProduction> production)
+Generate(const ModuleDefinition* pModuleDefinition)
 {
-  auto p_module_definition = dynamic_cast<ModuleDefinition*>(
-      production.get());
-
   auto p_module_identifier = dynamic_cast<ModuleIdentifier*>(
-      p_module_definition->mModuleIdentifier.get());
+      pModuleDefinition->mModuleIdentifier.get());
   auto p_module_reference = dynamic_cast<ModuleReference*>(
       p_module_identifier->mModuleReference.get());
 
   auto p_module_body = dynamic_cast<ModuleBody*>(
-      p_module_definition->mModuleBody.get());
-  auto assignment_list = dynamic_cast<AssignmentList*>(
+      pModuleDefinition->mModuleBody.get());
+  auto p_assignment_list = dynamic_cast<AssignmentList*>(
       p_module_body->mAssignmentList.get());
 
+  SPDLOG_INFO("Module: {}", p_module_reference->mValue);
+  SPDLOG_INFO("Assignments: {}", p_assignment_list->mAssignment.size());
 
-  auto module_name = p_module_reference->mValue;
+  for (const auto& assignment : p_assignment_list->mAssignment)
+  {
+    auto p_assignment = dynamic_cast<Assignment*>(
+        assignment.get());
 
-  SPDLOG_INFO("Module: {}", module_name);
-  SPDLOG_INFO("Assignments: {}", assignment_list->mAssignment.size());
-  return production.get() != nullptr;
+    generateClass(p_assignment);
+  }
+
+  return true;
 }
 
+bool
+AsnGenerator::
+generateClass(const Assignment* )//assignment)
+{
+  return true;
+}
