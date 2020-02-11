@@ -13,6 +13,9 @@ namespace OpenASN
       bool Generate(const ModuleDefinition* pModuleDefinition);
 
     private:
-      bool generateClass(const Assignment* pAssignment);
+      bool generateClass(const std::string& moduleReference,
+                         const Assignment* pAssignment);
+      bool generateBooleanTypeClass(const std::string& moduleReference,
+                                    const std::string& typeReference);
   };
 }

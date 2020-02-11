@@ -22,7 +22,7 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   {
     LOG_START("Assignment", asnData);
     auto assignment =
-      ProductionFactory::Get(Production::TYPE_ASSIGNMENT);
+      ProductionFactory::Get(Production::ASSIGNMENT);
     if (assignment->Parse(asnData, endStop))
     {
       mAssignment.push_back(assignment);
