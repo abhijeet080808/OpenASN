@@ -3,7 +3,7 @@ language: cpp
 os: linux
 dist: bionic
 
-compiler: 
+compiler:
   - gcc
   - clang
 
@@ -20,3 +20,4 @@ script:
   - cd build
   - cmake ..
   - make
+  - ctest
