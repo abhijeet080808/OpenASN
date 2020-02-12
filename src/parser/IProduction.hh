@@ -1,6 +1,7 @@
 #pragma once
 
 #include "AsnData.hh"
+#include "CommonDefs.hh"
 
 namespace OpenASN
 {
@@ -9,6 +10,8 @@ namespace OpenASN
   {
     public:
       virtual ~IProduction() = default;
+
+      virtual Production GetType() const = 0;
 
       virtual bool Parse(AsnData& asnData,
                          const std::vector<std::string>& endStop) = 0;

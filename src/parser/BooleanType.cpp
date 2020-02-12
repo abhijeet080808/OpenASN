@@ -5,6 +5,13 @@
 
 using namespace OpenASN;
 
+Production
+BooleanType::
+GetType() const
+{
+  return Production::BOOLEAN_TYPE;
+}
+
 bool
 BooleanType::
 Parse(AsnData& asnData, const std::vector<std::string>&)

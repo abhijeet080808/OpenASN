@@ -1,12 +1,18 @@
 #include "ComponentTypeLists.hh"
 
-#include "CommonDefs.hh"
 #include "ProductionFactory.hh"
 
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
+
+Production
+ComponentTypeLists::
+GetType() const
+{
+  return Production::COMPONENT_TYPE_LISTS;
+}
 
 bool
 ComponentTypeLists::

@@ -1,6 +1,5 @@
 #include "BuiltinType.hh"
 
-#include "CommonDefs.hh"
 #include "ProductionFactory.hh"
 
 #include "LoggingMacros.hh"
@@ -9,6 +8,13 @@
 #include "ParseHelper.hh"
 
 using namespace OpenASN;
+
+Production
+BuiltinType::
+GetType() const
+{
+  return Production::BUILTIN_TYPE;
+}
 
 bool
 BuiltinType::

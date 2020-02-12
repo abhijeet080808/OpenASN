@@ -1,12 +1,18 @@
 #include "DefinitiveObjIdComponent.hh"
 
-#include "CommonDefs.hh"
 #include "ProductionFactory.hh"
 
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
+
+Production
+DefinitiveObjIdComponent::
+GetType() const
+{
+  return Production::DEFINITIVE_OBJ_ID_COMPONENT;
+}
 
 bool
 DefinitiveObjIdComponent::

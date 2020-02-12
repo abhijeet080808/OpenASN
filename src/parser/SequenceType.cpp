@@ -1,6 +1,5 @@
 #include "SequenceType.hh"
 
-#include "CommonDefs.hh"
 #include "ProductionFactory.hh"
 
 #include "LoggingMacros.hh"
@@ -9,6 +8,13 @@
 #include "ParseHelper.hh"
 
 using namespace OpenASN;
+
+Production
+SequenceType::
+GetType() const
+{
+  return Production::SEQUENCE_TYPE;
+}
 
 bool
 SequenceType::

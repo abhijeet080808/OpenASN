@@ -1,12 +1,18 @@
 #include "NamedType.hh"
 
-#include "CommonDefs.hh"
 #include "ProductionFactory.hh"
 
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
+
+Production
+NamedType::
+GetType() const
+{
+  return Production::NAMED_TYPE;
+}
 
 bool
 NamedType::

@@ -1,6 +1,5 @@
 #include "AssignmentList.hh"
 
-#include "CommonDefs.hh"
 #include "ProductionFactory.hh"
 
 #include "LoggingMacros.hh"
@@ -9,6 +8,13 @@
 #include "ParseHelper.hh"
 
 using namespace OpenASN;
+
+Production
+AssignmentList::
+GetType() const
+{
+  return Production::ASSIGNMENT_LIST;
+}
 
 bool
 AssignmentList::

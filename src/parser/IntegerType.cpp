@@ -5,6 +5,13 @@
 
 using namespace OpenASN;
 
+Production
+IntegerType::
+GetType() const
+{
+  return Production::INTEGER_TYPE;
+}
+
 bool
 IntegerType::
 Parse(AsnData& asnData, const std::vector<std::string>&)

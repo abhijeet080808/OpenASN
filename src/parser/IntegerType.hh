@@ -8,6 +8,9 @@ namespace OpenASN
   class IntegerType : public IProduction
   {
     public:
-      bool Parse(AsnData& asnData, const std::vector<std::string>& endStop);
+      Production GetType() const override;
+
+      bool Parse(AsnData& asnData,
+                 const std::vector<std::string>& endStop) override;
   };
 }

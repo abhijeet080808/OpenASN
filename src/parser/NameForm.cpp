@@ -1,12 +1,18 @@
 #include "NameForm.hh"
 
-#include "CommonDefs.hh"
 #include "ProductionFactory.hh"
 
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
+
+Production
+NameForm::
+GetType() const
+{
+  return Production::NAME_FORM;
+}
 
 bool
 NameForm::

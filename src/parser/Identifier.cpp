@@ -6,6 +6,13 @@
 
 using namespace OpenASN;
 
+Production
+Identifier::
+GetType() const
+{
+  return Production::IDENTIFIER;
+}
+
 bool
 Identifier::
 Parse(AsnData& asnData, const std::vector<std::string>& endStop)

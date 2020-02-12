@@ -6,6 +6,13 @@
 
 using namespace OpenASN;
 
+Production
+TypeReference::
+GetType() const
+{
+  return Production::TYPE_REFERENCE;
+}
+
 bool
 TypeReference::
 Parse(AsnData& asnData, const std::vector<std::string>& endStop)

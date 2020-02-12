@@ -1,12 +1,18 @@
 #include "ModuleIdentifier.hh"
 
-#include "CommonDefs.hh"
 #include "ProductionFactory.hh"
 
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
+
+Production
+ModuleIdentifier::
+GetType() const
+{
+  return Production::MODULE_IDENTIFIER;
+}
 
 bool
 ModuleIdentifier::

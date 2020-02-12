@@ -1,12 +1,18 @@
 #include "TypeAssignment.hh"
 
-#include "CommonDefs.hh"
 #include "ProductionFactory.hh"
 
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
+
+Production
+TypeAssignment::
+GetType() const
+{
+  return Production::TYPE_ASSIGNMENT;
+}
 
 bool
 TypeAssignment::

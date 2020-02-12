@@ -1,12 +1,18 @@
 #include "ModuleBody.hh"
 
-#include "CommonDefs.hh"
 #include "ProductionFactory.hh"
 
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
+
+Production
+ModuleBody::
+GetType() const
+{
+  return Production::MODULE_BODY;
+}
 
 bool
 ModuleBody::

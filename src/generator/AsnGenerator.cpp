@@ -49,30 +49,35 @@ bool
 AsnGenerator::
 generateClass(const std::string& moduleReference, const Assignment* pAssignment)
 {
-  auto p_type_assignment = dynamic_cast<TypeAssignment*>(
+  if (pAssignment->mTypeAssignment.get())
+  {
+    auto p_type_assignment = dynamic_cast<TypeAssignment*>(
       pAssignment->mTypeAssignment.get());
 
-  if (p_type_assignment)
-  {
     auto p_type_reference = dynamic_cast<TypeReference*>(
       p_type_assignment->mTypeReference.get());
 
     auto p_type = dynamic_cast<Type*>(
       p_type_assignment->mType.get());
 
-    auto p_builtin_type = dynamic_cast<BuiltinType*>(
-      p_type->mBuiltinType.get());
-
-    if (p_builtin_type)
+    if (p_type->mBuiltinType.get())
     {
-      auto p_boolean_type = dynamic_cast<BooleanType*>(
-          p_builtin_type->mBooleanType.get());
+      auto p_builtin_type = dynamic_cast<BuiltinType*>(
+          p_type->mBuiltinType.get());
 
-      if (p_boolean_type)
+      if (p_builtin_type->mBooleanType.get())
       {
         generateBooleanTypeClass(moduleReference, p_type_reference->mValue);
       }
     }
+    else
+    {
+      assert(false);
+    }
+  }
+  else
+  {
+    assert(false);
   }
 
   return true;
