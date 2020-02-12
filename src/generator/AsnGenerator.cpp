@@ -92,6 +92,7 @@ generateBooleanTypeClass(const std::string& moduleReference,
 
   ss_hdr << "#pragma once\n"
          << "\n"
+         << "#include <cstdint>\n"
          << "#include <vector>\n"
          << "\n"
          << "namespace " << moduleReference << "\n"
