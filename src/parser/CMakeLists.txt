@@ -35,5 +35,7 @@ add_library(${LIB_NAME} ${SOURCES})
 
 #target_include_directories
 
-target_link_libraries(${LIB_NAME} spdlog
+target_link_libraries(${LIB_NAME}
+  PRIVATE
+    spdlog
 )

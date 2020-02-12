@@ -11,8 +11,10 @@ target_include_directories(${EXE_NAME}
     ${PROJECT_SOURCE_DIR}/src
 )
 
-target_link_libraries(${EXE_NAME} cxxopts
-                                  spdlog
-                                  parser
-                                  generator
+target_link_libraries(${EXE_NAME}
+  PRIVATE
+    cxxopts
+    spdlog
+    parser
+    generator
 )

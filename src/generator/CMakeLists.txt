@@ -12,6 +12,8 @@ target_include_directories(${LIB_NAME}
     ${PROJECT_SOURCE_DIR}/src
 )
 
-target_link_libraries(${LIB_NAME} spdlog
-                                  parser
+target_link_libraries(${LIB_NAME}
+  PRIVATE
+    spdlog
+    parser
 )

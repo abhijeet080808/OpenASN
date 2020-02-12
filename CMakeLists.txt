@@ -37,6 +37,19 @@ if(NOT spdlog_POPULATED)
   message(STATUS "GIT library spdlog downloaded to: ${spdlog_SOURCE_DIR}")
 endif()
 
+FetchContent_Declare(
+  catch2
+  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+  GIT_TAG        v2.11.1
+)
+
+FetchContent_GetProperties(catch2)
+if(NOT catch2_POPULATED)
+  FetchContent_Populate(catch2)
+  add_subdirectory(${catch2_SOURCE_DIR} ${catch2_BINARY_DIR})
+  message(STATUS "GIT library catch2 downloaded to: ${catch2_SOURCE_DIR}")
+endif()
+
 # SPDLOG_* macros on this log level or higher will be processed during
 # compile time
 #
@@ -61,3 +74,6 @@ include_directories(${CMAKE_BINARY_DIR}/gen)
 add_subdirectory(src/app)
 add_subdirectory(src/parser)
 add_subdirectory(src/generator)
+
+enable_testing()
+add_subdirectory(tests)
