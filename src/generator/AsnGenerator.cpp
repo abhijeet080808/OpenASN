@@ -3,8 +3,13 @@
 #include "parser/AssignmentList.hh"
 #include "parser/BooleanType.hh"
 #include "parser/BuiltinType.hh"
+#include "parser/ComponentTypeList.hh"
+#include "parser/ComponentTypeLists.hh"
+#include "parser/Identifier.hh"
 #include "parser/ModuleBody.hh"
 #include "parser/ModuleIdentifier.hh"
+#include "parser/NamedType.hh"
+#include "parser/RootComponentTypeList.hh"
 #include "parser/Type.hh"
 #include "parser/TypeAssignment.hh"
 #include "parser/TypeReference.hh"
@@ -68,6 +73,17 @@ generateClass(const std::string& moduleReference, const Assignment* pAssignment)
       if (p_builtin_type->mBooleanType.get())
       {
         generateBooleanTypeClass(moduleReference, p_type_reference->mValue);
+      }
+      else if (p_builtin_type->mSequenceType.get())
+      {
+        generateSequenceTypeClass(
+            moduleReference,
+            p_type_reference->mValue,
+            dynamic_cast<SequenceType*>(p_builtin_type->mSequenceType.get()));
+      }
+      else
+      {
+        assert(false);
       }
     }
     else
@@ -195,12 +211,230 @@ generateBooleanTypeClass(const std::string& moduleReference,
   std::ofstream hh_file(typeReference + ".hh");
   hh_file << ss_hdr.rdbuf();
   hh_file.close();
-  SPDLOG_INFO("Wrote {}.hh", typeReference);
+  SPDLOG_INFO("Generated {}.hh", typeReference);
 
   std::ofstream cc_file(typeReference + ".cpp");
   cc_file << ss_cpp.rdbuf();
   cc_file.close();
-  SPDLOG_INFO("Wrote {}.cpp", typeReference);
+  SPDLOG_INFO("Generated {}.cpp", typeReference);
 
+  return true;
+}
+
+bool
+AsnGenerator::
+generateComponentHeaderFunction(const ComponentType* pComponentType,
+                                std::stringstream& ss)
+{
+  auto p_named_type = dynamic_cast<NamedType*>(
+      pComponentType->mNamedType.get());
+  auto p_type = dynamic_cast<Type*>(
+      p_named_type->mType.get());
+
+  if (p_type->mBuiltinType.get())
+  {
+    auto p_builtin_type = dynamic_cast<BuiltinType*>(
+        p_type->mBuiltinType.get());
+
+    if (p_builtin_type->mBooleanType.get())
+    {
+      ss << "      void SetValue(bool value);\n"
+         << "      bool GetValue() const;\n";
+    }
+    else if (p_builtin_type->mIntegerType.get())
+    {
+      ss << "      void SetValue(int value);\n"
+         << "      int GetValue() const;\n";
+    }
+    else
+    {
+      assert(false);
+    }
+  }
+  else
+  {
+    assert(false);
+  }
+
+  return true;
+}
+
+bool
+AsnGenerator::
+generateComponentHeaderVariable(const ComponentType* pComponentType,
+                                std::stringstream& ss)
+{
+  auto p_named_type = dynamic_cast<NamedType*>(
+      pComponentType->mNamedType.get());
+  auto p_identifier = dynamic_cast<Identifier*>(
+      p_named_type->mIdentifier.get());
+  auto p_type = dynamic_cast<Type*>(
+      p_named_type->mType.get());
+
+  if (p_type->mBuiltinType.get())
+  {
+    auto p_builtin_type = dynamic_cast<BuiltinType*>(
+        p_type->mBuiltinType.get());
+
+    if (p_builtin_type->mBooleanType.get())
+    {
+      ss << "      bool m" << p_identifier->mValue << ";\n";
+    }
+    else if (p_builtin_type->mIntegerType.get())
+    {
+      ss << "      int m" << p_identifier->mValue << ";\n";
+    }
+    else
+    {
+      assert(false);
+    }
+  }
+  else
+  {
+    assert(false);
+  }
+
+  return true;
+}
+
+bool
+AsnGenerator::
+generateSequenceTypeClass(const std::string& moduleReference,
+                          const std::string& typeReference,
+                          const SequenceType* pSequenceType)
+{
+  std::stringstream ss_hdr;
+
+  ss_hdr << "#pragma once\n"
+         << "\n"
+         << "#include <cstdint>\n"
+         << "#include <vector>\n"
+         << "\n"
+         << "namespace " << moduleReference << "\n"
+         << "{\n"
+         << "  class " << typeReference << "\n"
+         << "  {\n"
+         << "    public:\n"
+         << "      " << typeReference << "();\n"
+         << "\n";
+
+  auto p_component_type_lists = dynamic_cast<ComponentTypeLists*>(
+      pSequenceType->mComponentTypeLists.get());
+  auto p_root_component_type_list = dynamic_cast<RootComponentTypeList*>(
+      p_component_type_lists->mRootComponentTypeList.get());
+  auto p_component_type_list = dynamic_cast<ComponentTypeList*>(
+      p_root_component_type_list->mComponentTypeList.get());
+  for (const auto& component : p_component_type_list->mComponentType)
+  {
+    generateComponentHeaderFunction(
+        dynamic_cast<ComponentType*>(component.get()), ss_hdr);
+  }
+
+  ss_hdr << "\n"
+         << "      // Encodes and enqueues bytes to vector\n"
+         << "      bool EncodeBER(std::vector<uint8_t>& buffer);\n"
+         << "      // Dequeues and decodes bytes from vector\n"
+         << "      bool DecodeBER(std::vector<uint8_t>& buffer);\n"
+         << "\n"
+         << "    private:\n";
+
+  for (const auto& component : p_component_type_list->mComponentType)
+  {
+    generateComponentHeaderVariable(
+        dynamic_cast<ComponentType*>(component.get()), ss_hdr);
+  }
+
+  ss_hdr << "      bool mValue;\n"
+         << "  };\n"
+         << "}";
+
+  SPDLOG_DEBUG("{}", ss_hdr.str());
+
+#if 0
+  std::stringstream ss_cpp;
+
+  ss_cpp << "#include \"" << typeReference << ".hh\"\n"
+         << "\n"
+         << "using namespace " << moduleReference << ";\n"
+         << "\n"
+         << typeReference << "::\n"
+         << typeReference << "()\n"
+         << "  : mValue(false)\n"
+         << "{\n"
+         << "}\n"
+         << "\n"
+         << "void\n"
+         << typeReference << "::\n"
+         << "SetValue(bool value)\n"
+         << "{\n"
+         << "  mValue = value;\n"
+         << "}\n"
+         << "\n"
+         << "bool\n"
+         << typeReference << "::\n"
+         << "GetValue() const\n"
+         << "{\n"
+         << "  return mValue;\n"
+         << "}\n"
+         << "\n"
+         << "bool\n"
+         << typeReference << "::\n"
+         << "EncodeBER(std::vector<uint8_t>& buffer)\n"
+         << "{\n"
+         << "  // Tag for BOOLEAN is 1\n"
+         << "  buffer.push_back(0x01);\n"
+         << "\n"
+         << "  // Length is 1\n"
+         << "  buffer.push_back(0x01);\n"
+         << "\n"
+         << "  // Write value\n"
+         << "  buffer.push_back(mValue ? 0xFF : 0x00);\n"
+         << "\n"
+         << "  return true;\n"
+         << "}\n"
+         << "\n"
+         << "bool\n"
+         << typeReference << "::\n"
+         << "DecodeBER(std::vector<uint8_t>& buffer)\n"
+         << "{\n"
+         << "  if (buffer.size() < 3)\n"
+         << "  {\n"
+         << "    return false;\n"
+         << "  }\n"
+         << "\n"
+         << "  // Tag for BOOLEAN is 1\n"
+         << "  if (buffer.at(0) != 0x01)\n"
+         << "  {\n"
+         << "    return false;\n"
+         << "  }\n"
+         << "\n"
+         << "  // Length is 1\n"
+         << "  if (buffer.at(1) != 0x01)\n"
+         << "  {\n"
+         << "    return false;\n"
+         << "  }\n"
+         << "\n"
+         << "  // Read value\n"
+         << "  mValue = (buffer.at(2) == 0x00 ? false : true);\n"
+         << "\n"
+         << "  buffer.erase(buffer.begin());\n"
+         << "  buffer.erase(buffer.begin());\n"
+         << "  buffer.erase(buffer.begin());\n"
+         << "\n"
+         << "  return true;\n"
+         << "}\n";
+
+  SPDLOG_DEBUG("{}", ss_cpp.str());
+
+  std::ofstream hh_file(typeReference + ".hh");
+  hh_file << ss_hdr.rdbuf();
+  hh_file.close();
+  SPDLOG_INFO("Generated {}.hh", typeReference);
+
+  std::ofstream cc_file(typeReference + ".cpp");
+  cc_file << ss_cpp.rdbuf();
+  cc_file.close();
+  SPDLOG_INFO("Generated {}.cpp", typeReference);
+#endif
   return true;
 }
