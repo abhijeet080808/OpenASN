@@ -3,9 +3,11 @@
 
 #include "Colored.hh"
 
+using namespace OpenASN;
+
 TEST_CASE("SimpleTypeTest")
 {
-  SimpleTypeTest::Colored dut;
+  Colored dut;
 
   SECTION("Checking getters/setters")
   {
@@ -40,5 +42,6 @@ TEST_CASE("SimpleTypeTest")
     buf = std::vector<uint8_t>{0x01, 0x01, 0xFF};
     CHECK(dut.DecodeBER(buf) == true);
     CHECK(dut.GetValue() == true);
+    CHECK(buf.empty());
   }
 }

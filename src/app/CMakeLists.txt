@@ -15,6 +15,7 @@ target_link_libraries(${EXE_NAME}
   PRIVATE
     cxxopts
     spdlog
-    parser
+    common
     generator
+    parser
 )

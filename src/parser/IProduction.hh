@@ -1,7 +1,8 @@
 #pragma once
 
 #include "AsnData.hh"
-#include "CommonDefs.hh"
+
+#include "common/CommonDefs.hh"
 
 namespace OpenASN
 {

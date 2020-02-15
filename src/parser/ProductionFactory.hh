@@ -1,7 +1,8 @@
 #pragma once
 
-#include "CommonDefs.hh"
 #include "IProduction.hh"
+
+#include "common/CommonDefs.hh"
 
 #include <memory>
 

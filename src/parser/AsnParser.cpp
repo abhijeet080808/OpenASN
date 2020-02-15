@@ -1,10 +1,11 @@
 #include "AsnParser.hh"
 
 #include "AsnData.hh"
-#include "CommonDefs.hh"
 #include "ModuleDefinition.hh"
 #include "ParseHelper.hh"
 #include "ProductionFactory.hh"
+
+#include "common/CommonDefs.hh"
 
 #include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"

@@ -7,6 +7,7 @@
 #  Both test_name does and generated_test_file_* shall not specify the file
 #  extension
 set(TEST_CASES SimpleTypeTest_Colored
+  #SequenceTypeTest_Rectangle
 )
 
 foreach(TEST_CASE ${TEST_CASES})

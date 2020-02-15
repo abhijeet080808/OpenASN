@@ -72,8 +72,9 @@ configure_file(version_config.hh.in ${CMAKE_BINARY_DIR}/gen/version_config.hh )
 include_directories(${CMAKE_BINARY_DIR}/gen)
 
 add_subdirectory(src/app)
-add_subdirectory(src/parser)
+add_subdirectory(src/common)
 add_subdirectory(src/generator)
+add_subdirectory(src/parser)
 
 enable_testing()
 add_subdirectory(tests)
