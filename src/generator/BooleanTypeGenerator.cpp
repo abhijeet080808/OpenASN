@@ -120,7 +120,7 @@ Generate()
          << "    buffer.erase(buffer.begin());\n"
          << "  }\n"
          << "\n"
-         << "  return true;"
+         << "  return true;\n"
          << "}\n";
 
   SPDLOG_DEBUG("{}", ss_hdr.str());
