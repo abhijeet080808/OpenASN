@@ -38,6 +38,7 @@ foreach(TEST_CASE ${TEST_CASES})
   target_link_libraries(${TEST_NAME}
     PRIVATE
       Catch2::Catch2
+      gtest
   )
 
   add_test(${TEST_NAME} ${TEST_NAME})

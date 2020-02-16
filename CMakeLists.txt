@@ -50,6 +50,19 @@ if(NOT catch2_POPULATED)
   message(STATUS "GIT library catch2 downloaded to: ${catch2_SOURCE_DIR}")
 endif()
 
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG        release-1.10.0
+)
+
+FetchContent_GetProperties(googletest)
+if(NOT googletest_POPULATED)
+  FetchContent_Populate(googletest)
+  add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
+  message(STATUS "GIT library googletest downloaded to: ${googletest_SOURCE_DIR}")
+endif()
+
 # SPDLOG_* macros on this log level or higher will be processed during
 # compile time
 #
