@@ -9,6 +9,17 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  message(STATUS "Build type is Debug (default)")
+  set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "" FORCE)
+else()
+  message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
+endif()
+
+add_compile_options(-Wall -Wextra -pedantic -Werror)
+
+message(STATUS "Building OpenASN version: ${CMAKE_PROJECT_VERSION}")
+
 include(FetchContent)
 
 FetchContent_Declare(
@@ -76,10 +87,6 @@ endif()
 # define SPDLOG_LEVEL_CRITICAL 5
 # define SPDLOG_LEVEL_OFF 6
 add_compile_definitions(SPDLOG_ACTIVE_LEVEL=1)
-
-add_compile_options(-Wall -Wextra -pedantic -Werror)
-
-message(STATUS "Building OpenASN version: ${CMAKE_PROJECT_VERSION}")
 
 configure_file(version_config.hh.in ${CMAKE_BINARY_DIR}/gen/version_config.hh )
 include_directories(${CMAKE_BINARY_DIR}/gen)

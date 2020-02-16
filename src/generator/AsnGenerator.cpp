@@ -88,7 +88,7 @@ generateClass(const Assignment* pAssignment)
         std::shared_ptr<IGenerator> generator =
           std::make_shared<SequenceTypeGenerator>(
               p_type_reference->mValue,
-              false,
+              true,
               dynamic_cast<SequenceType*>(
                 p_builtin_type->mSequenceType.get()));
 

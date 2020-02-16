@@ -61,7 +61,7 @@ SequenceTypeGenerator(const std::string& identifier,
         std::shared_ptr<IGenerator> generator =
           std::make_shared<BooleanTypeGenerator>(
               p_identifier->mValue,
-              true);
+              false);
 
         generator->Generate();
         mSubTypeGeneratorList.push_back(generator);
@@ -71,7 +71,7 @@ SequenceTypeGenerator(const std::string& identifier,
         std::shared_ptr<IGenerator> generator =
           std::make_shared<IntegerTypeGenerator>(
               p_identifier->mValue,
-              true);
+              false);
 
         generator->Generate();
         mSubTypeGeneratorList.push_back(generator);
@@ -274,7 +274,7 @@ Generate() const
          << "\n"
          << "  // Length\n"
          << "  buffer.push_back(0);\n"
-         << "  size_t length_index = sizeof(buffer) - 1;\n"
+         << "  size_t length_index = buffer.size() - 1;\n"
          << "\n"
          << "  // Value\n";
 
@@ -288,7 +288,7 @@ Generate() const
   }
 
   ss_src << "\n"
-         << "  buffer.at(length_index) = buffer.size() - length_index;\n"
+         << "  buffer.at(length_index) = buffer.size() - length_index - 1;\n"
          << "\n"
          << "  return true;\n"
          << "}\n"
@@ -298,7 +298,8 @@ Generate() const
          << "DecodeBER(std::vector<uint8_t>& buffer)\n"
          << "{\n"
          << "  // Tag\n"
-         << "  if (buffer.size() < 1 || buffer.at(0) != " << ((mIsConstructed << 5) | 16) << ")\n"
+         << "  if (buffer.size() < 1 || buffer.at(0) != "
+         << ((mIsConstructed << 5) | 16) << ")\n"
          << "  {\n"
          << "    return false;\n"
          << "  }\n"

@@ -39,6 +39,7 @@ foreach(TEST_CASE ${TEST_CASES})
     PRIVATE
       Catch2::Catch2
       gtest
+      gmock
   )
 
   add_test(${TEST_NAME} ${TEST_NAME})

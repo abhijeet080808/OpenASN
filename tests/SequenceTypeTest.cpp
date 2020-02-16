@@ -1,3 +1,4 @@
+#include "gmock/gmock.h"
 #include "gtest/gtest.h"
 
 #include "Rectangle.hh"
@@ -29,8 +30,18 @@ TEST(SequenceTypeTest, CheckEncode)
   Rectangle dut;
 
   std::vector<uint8_t> buf;
-  bool res = dut.EncodeBER(buf);
-  EXPECT_EQ(res, true);
+  EXPECT_EQ(dut.EncodeBER(buf), true);
+  EXPECT_THAT(buf, ElementsAre(0x30,    // Tag    - SEQUENCE
+                               0x09,    // Length - SEQUENCE
+                               0x02,    // Tag    - INTEGER
+                               0x01,    // Length - INTEGER
+                               0x00,    // Value  - INTEGER
+                               0x02,    // Tag    - INTEGER
+                               0x01,    // Length - INTEGER
+                               0x00,    // Value  - INTEGER
+                               0x01,    // Tag    - BOOLEAN
+                               0x01,    // Length - BOOLEAN
+                               0x00));  // Value  - BOOLEAN
 }
 
 #if 0
