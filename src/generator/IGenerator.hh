@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace OpenASN
 {
   class IGenerator
@@ -8,6 +10,8 @@ namespace OpenASN
       virtual ~IGenerator() = default;
 
     public:
-      virtual void Generate() = 0;
+      virtual std::string GetIdentifier() const = 0;
+
+      virtual void Generate() const = 0;
   };
 }

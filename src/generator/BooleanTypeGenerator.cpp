@@ -17,9 +17,16 @@ BooleanTypeGenerator(const std::string& identifier,
   StringManip::Capitalize(mIdentifier);
 }
 
+std::string
+BooleanTypeGenerator::
+GetIdentifier() const
+{
+  return mIdentifier;
+}
+
 void
 BooleanTypeGenerator::
-Generate()
+Generate() const
 {
   std::stringstream ss_hdr;
 
@@ -34,6 +41,7 @@ Generate()
          << "  {\n"
          << "    public:\n"
          << "      " << mIdentifier << "();\n"
+         << "      " << mIdentifier << "(bool value);\n"
          << "\n"
          << "      void SetValue(bool value);\n"
          << "      bool GetValue() const;\n"
@@ -57,6 +65,12 @@ Generate()
          << mIdentifier << "::\n"
          << mIdentifier << "()\n"
          << "  : mValue(false)\n"
+         << "{\n"
+         << "}\n"
+         << "\n"
+         << mIdentifier << "::\n"
+         << mIdentifier << "(bool value)\n"
+         << "  : mValue(value)\n"
          << "{\n"
          << "}\n"
          << "\n"

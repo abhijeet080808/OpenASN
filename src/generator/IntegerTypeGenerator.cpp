@@ -17,9 +17,16 @@ IntegerTypeGenerator(const std::string& identifier,
   StringManip::Capitalize(mIdentifier);
 }
 
+std::string
+IntegerTypeGenerator::
+GetIdentifier() const
+{
+  return mIdentifier;
+}
+
 void
 IntegerTypeGenerator::
-Generate()
+Generate() const
 {
   std::stringstream ss_hdr;
 
@@ -34,6 +41,7 @@ Generate()
          << "  {\n"
          << "    public:\n"
          << "      " << mIdentifier << "();\n"
+         << "      " << mIdentifier << "(int64_t value);\n"
          << "\n"
          << "      void SetValue(int64_t value);\n"
          << "      int64_t GetValue() const;\n"
@@ -60,6 +68,12 @@ Generate()
          << "{\n"
          << "}\n"
          << "\n"
+         << mIdentifier << "::\n"
+         << mIdentifier << "(int64_t value)\n"
+         << "  : mValue(value)\n"
+         << "{\n"
+         << "}\n"
+         << "\n"
          << "void\n"
          << mIdentifier << "::\n"
          << "SetValue(int64_t value)\n"
@@ -67,7 +81,7 @@ Generate()
          << "  mValue = value;\n"
          << "}\n"
          << "\n"
-         << "bool\n"
+         << "int64_t\n"
          << mIdentifier << "::\n"
          << "GetValue() const\n"
          << "{\n"

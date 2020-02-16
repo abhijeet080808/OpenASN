@@ -3,6 +3,7 @@ set(LIB_NAME generator)
 set(SOURCES AsnGenerator.cpp
             BooleanTypeGenerator.cpp
             IntegerTypeGenerator.cpp
+            SequenceTypeGenerator.cpp
 )
 
 add_library(${LIB_NAME} ${SOURCES})

@@ -2,6 +2,7 @@
 
 #include "BooleanTypeGenerator.hh"
 #include "IntegerTypeGenerator.hh"
+#include "SequenceTypeGenerator.hh"
 
 #include "parser/AssignmentList.hh"
 #include "parser/BuiltinType.hh"
@@ -10,7 +11,6 @@
 #include "parser/Type.hh"
 #include "parser/TypeAssignment.hh"
 #include "parser/TypeReference.hh"
-
 #include "spdlog/spdlog.h"
 
 #include <cassert>
@@ -71,6 +71,7 @@ generateClass(const Assignment* pAssignment)
           std::make_shared<BooleanTypeGenerator>(
               p_type_reference->mValue,
               false);
+
         generator->Generate();
       }
       else if (p_builtin_type->mIntegerType.get())
@@ -79,10 +80,19 @@ generateClass(const Assignment* pAssignment)
           std::make_shared<IntegerTypeGenerator>(
               p_type_reference->mValue,
               false);
+
         generator->Generate();
       }
       else if (p_builtin_type->mSequenceType.get())
       {
+        std::shared_ptr<IGenerator> generator =
+          std::make_shared<SequenceTypeGenerator>(
+              p_type_reference->mValue,
+              false,
+              dynamic_cast<SequenceType*>(
+                p_builtin_type->mSequenceType.get()));
+
+        generator->Generate();
       }
       else
       {

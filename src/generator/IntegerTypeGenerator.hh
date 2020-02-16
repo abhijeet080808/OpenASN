@@ -2,8 +2,6 @@
 
 #include "IGenerator.hh"
 
-#include <string>
-
 namespace OpenASN
 {
   class IntegerTypeGenerator : public IGenerator
@@ -13,7 +11,9 @@ namespace OpenASN
                            bool isConstructed);
 
     public:
-      void Generate() override;
+      std::string GetIdentifier() const override;
+
+      void Generate() const override;
 
     private:
       std::string mIdentifier;
