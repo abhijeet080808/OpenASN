@@ -20,59 +20,69 @@ add_compile_options(-Wall -Wextra -pedantic -Werror)
 
 message(STATUS "Building OpenASN version: ${CMAKE_PROJECT_VERSION}")
 
-include(FetchContent)
+find_package(Threads REQUIRED)
+include(ExternalProject)
 
-FetchContent_Declare(
-  cxxopts
-  GIT_REPOSITORY https://github.com/jarro2783/cxxopts.git
-  GIT_TAG        v2.2.0
+## --------------------------------------------------------------------------- #
+## CXXOPTS ------------------------------------------------------------------- #
+## --------------------------------------------------------------------------- #
+
+ExternalProject_Add(
+  project_cxxopts
+  GIT_REPOSITORY    https://github.com/jarro2783/cxxopts.git
+  GIT_TAG           v2.2.0
+  PREFIX            ${CMAKE_BINARY_DIR}/external
+  CMAKE_ARGS        -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/external/
 )
 
-FetchContent_GetProperties(cxxopts)
-if(NOT cxxopts_POPULATED)
-  FetchContent_Populate(cxxopts)
-  add_subdirectory(${cxxopts_SOURCE_DIR} ${cxxopts_BINARY_DIR})
-  message(STATUS "GIT library cxxopts downloaded to: ${cxxopts_SOURCE_DIR}")
-endif()
+## --------------------------------------------------------------------------- #
+## SPDLog -------------------------------------------------------------------- #
+## --------------------------------------------------------------------------- #
 
-FetchContent_Declare(
-  spdlog
-  GIT_REPOSITORY https://github.com/gabime/spdlog.git
-  GIT_TAG        v1.5.0
+ExternalProject_Add(
+  project_spdlog
+  GIT_REPOSITORY    https://github.com/gabime/spdlog.git
+  GIT_TAG           v1.5.0
+  PREFIX            ${CMAKE_BINARY_DIR}/external
+  CMAKE_ARGS        -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/external/
 )
 
-FetchContent_GetProperties(spdlog)
-if(NOT spdlog_POPULATED)
-  FetchContent_Populate(spdlog)
-  add_subdirectory(${spdlog_SOURCE_DIR} ${spdlog_BINARY_DIR})
-  message(STATUS "GIT library spdlog downloaded to: ${spdlog_SOURCE_DIR}")
-endif()
-
-FetchContent_Declare(
-  catch2
-  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-  GIT_TAG        v2.11.1
+add_library(spdlog STATIC IMPORTED)
+add_dependencies(spdlog project_spdlog)
+set_target_properties(spdlog
+  PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_BINARY_DIR}/external/lib/libspdlog.a
 )
 
-FetchContent_GetProperties(catch2)
-if(NOT catch2_POPULATED)
-  FetchContent_Populate(catch2)
-  add_subdirectory(${catch2_SOURCE_DIR} ${catch2_BINARY_DIR})
-  message(STATUS "GIT library catch2 downloaded to: ${catch2_SOURCE_DIR}")
-endif()
+## --------------------------------------------------------------------------- #
+## Google Test --------------------------------------------------------------- #
+## --------------------------------------------------------------------------- #
 
-FetchContent_Declare(
-  googletest
-  GIT_REPOSITORY https://github.com/google/googletest.git
-  GIT_TAG        release-1.10.0
+ExternalProject_Add(
+  project_googletest
+  GIT_REPOSITORY    https://github.com/google/googletest.git
+  GIT_TAG           release-1.10.0
+  PREFIX            ${CMAKE_BINARY_DIR}/external
+  CMAKE_ARGS        -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/external/
 )
 
-FetchContent_GetProperties(googletest)
-if(NOT googletest_POPULATED)
-  FetchContent_Populate(googletest)
-  add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR})
-  message(STATUS "GIT library googletest downloaded to: ${googletest_SOURCE_DIR}")
-endif()
+add_library(gtest STATIC IMPORTED)
+add_dependencies(gtest project_googletest)
+set_target_properties(gtest
+  PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_BINARY_DIR}/external/lib/libgtest.a
+  INTERFACE_LINK_LIBRARIES Threads::Threads
+)
+
+add_library(gmock STATIC IMPORTED)
+add_dependencies(gmock project_googletest)
+set_target_properties(gmock
+  PROPERTIES
+  IMPORTED_LOCATION ${CMAKE_BINARY_DIR}/external/lib/libgmock.a
+  INTERFACE_LINK_LIBRARIES Threads::Threads
+)
+
+## --------------------------------------------------------------------------- #
 
 # SPDLOG_* macros on this log level or higher will be processed during
 # compile time
@@ -89,7 +99,9 @@ endif()
 add_compile_definitions(SPDLOG_ACTIVE_LEVEL=1)
 
 configure_file(version_config.hh.in ${CMAKE_BINARY_DIR}/gen/version_config.hh )
+
 include_directories(${CMAKE_BINARY_DIR}/gen)
+include_directories(${CMAKE_BINARY_DIR}/external/include)
 
 add_subdirectory(src/app)
 add_subdirectory(src/common)
