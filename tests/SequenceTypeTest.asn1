@@ -1,10 +1,10 @@
 SequenceTypeTest DEFINITIONS ::=
 BEGIN
 
-Rectangle ::= SEQUENCE {
-    height    INTEGER,
-    width     INTEGER,
-    bordered  BOOLEAN
+SequenceTypeTestSeq ::= SEQUENCE {
+  sequenceTypeTestInt1  INTEGER,
+  sequenceTypeTestInt2  INTEGER,
+  sequenceTypeTestBool1 BOOLEAN
 }
 
 END

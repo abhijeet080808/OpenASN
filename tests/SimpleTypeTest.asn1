@@ -1,7 +1,8 @@
 SimpleTypeTest DEFINITIONS ::=
 BEGIN
 
-Colored ::= BOOLEAN
+SimpleTypeTestBool ::= BOOLEAN
+SimpleTypeTestInt ::= INTEGER
 
 END
 

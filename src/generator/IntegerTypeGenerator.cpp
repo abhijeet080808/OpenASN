@@ -159,7 +159,7 @@ Generate() const
          << "  // Value\n"
          << "  for (size_t i = 0; i < len; i++)\n"
          << "  {\n"
-         << "    mValue |= (buffer.at(i + 2) >> (i * 8));"
+         << "    mValue |= (buffer.at(i + 2) << ((len - i - 1) * 8));\n"
          << "  }\n"
          << "\n"
          << "  for (size_t i = 0; i < 2 + len; i++)\n"
