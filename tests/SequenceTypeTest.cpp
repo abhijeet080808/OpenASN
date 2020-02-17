@@ -6,7 +6,7 @@
 using namespace OpenASN;
 using namespace testing;
 
-TEST(SequenceTypeTest, CheckGetSet)
+TEST(SequenceTypeTestSeq, CheckGetSet)
 {
   SequenceTypeTestSeq dut;
 
@@ -24,7 +24,7 @@ TEST(SequenceTypeTest, CheckGetSet)
   EXPECT_EQ(dut.GetSequenceTypeTestBool1().GetValue(), true);
 }
 
-TEST(SequenceTypeTest, CheckEncode)
+TEST(SequenceTypeTestSeq, CheckEncode)
 {
   SequenceTypeTestSeq dut;
 
@@ -43,7 +43,6 @@ TEST(SequenceTypeTest, CheckEncode)
                                0x00));  // Value  - BOOLEAN
 
   buf.clear();
-
   dut.SetSequenceTypeTestInt1(127);
   dut.SetSequenceTypeTestInt2(128);
   dut.SetSequenceTypeTestBool1(true);
@@ -62,7 +61,7 @@ TEST(SequenceTypeTest, CheckEncode)
                                0xff));  // Value  - BOOLEAN
 }
 
-TEST(SequenceTypeTest, CheckDecode)
+TEST(SequenceTypeTestSeq, CheckDecode)
 {
   SequenceTypeTestSeq dut;
 
