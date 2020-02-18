@@ -4,11 +4,13 @@ BEGIN
 A ::= INTEGER
 B ::= BOOLEAN
 C ::= BIT STRING { a(0), b(1) }
+D ::= BIT STRING
 
 SEQ ::= SEQUENCE {
   seqa  INTEGER,
   seqb  BOOLEAN,
-  seqc  BIT STRING { a(0), b(1) }
+  seqc  BIT STRING { a(0), b(1) },
+  seqd  BIT STRING
 }
 
 END
