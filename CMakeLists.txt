@@ -24,7 +24,7 @@ find_package(Threads REQUIRED)
 include(ExternalProject)
 
 ## --------------------------------------------------------------------------- #
-## CXXOPTS ------------------------------------------------------------------- #
+## cxxopts ------------------------------------------------------------------- #
 ## --------------------------------------------------------------------------- #
 
 ExternalProject_Add(
@@ -33,10 +33,11 @@ ExternalProject_Add(
   GIT_TAG           v2.2.0
   PREFIX            ${CMAKE_BINARY_DIR}/external
   CMAKE_ARGS        -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/external/
+                    -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
 )
 
 ## --------------------------------------------------------------------------- #
-## SPDLog -------------------------------------------------------------------- #
+## spdlog -------------------------------------------------------------------- #
 ## --------------------------------------------------------------------------- #
 
 ExternalProject_Add(
@@ -45,6 +46,7 @@ ExternalProject_Add(
   GIT_TAG           v1.5.0
   PREFIX            ${CMAKE_BINARY_DIR}/external
   CMAKE_ARGS        -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/external/
+                    -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
 )
 
 add_library(spdlog STATIC IMPORTED)
@@ -52,10 +54,11 @@ add_dependencies(spdlog project_spdlog)
 set_target_properties(spdlog
   PROPERTIES
   IMPORTED_LOCATION ${CMAKE_BINARY_DIR}/external/lib/libspdlog.a
+  INTERFACE_LINK_LIBRARIES Threads::Threads
 )
 
 ## --------------------------------------------------------------------------- #
-## Google Test --------------------------------------------------------------- #
+## googletest ---------------------------------------------------------------- #
 ## --------------------------------------------------------------------------- #
 
 ExternalProject_Add(
@@ -64,6 +67,7 @@ ExternalProject_Add(
   GIT_TAG           release-1.10.0
   PREFIX            ${CMAKE_BINARY_DIR}/external
   CMAKE_ARGS        -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_BINARY_DIR}/external/
+                    -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
 )
 
 add_library(gtest STATIC IMPORTED)
