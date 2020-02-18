@@ -15,9 +15,12 @@ addons:
       - g++
       - gcc
       - clang
+      - cppcheck
 
 script:
   - cd build
   - cmake ..
   - make
   - ctest -V
+  - cppcheck --error-exitcode=1 src/
+  - cppcheck --error-exitcode=1 build/tests/
