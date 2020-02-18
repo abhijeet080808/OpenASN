@@ -20,7 +20,8 @@ addons:
 script:
   - cd build
   - cmake ..
-  - make
+  - make -j4
   - ctest -V
+  - cd ..
   - cppcheck --error-exitcode=1 src/
   - cppcheck --error-exitcode=1 build/tests/
