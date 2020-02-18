@@ -49,6 +49,20 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   // | TimeType
   // | TimeOfDayType
 
+  LOG_START("BitStringType", asnData);
+  auto bit_string_type =
+    ProductionFactory::Get(Production::BIT_STRING_TYPE);
+  if (bit_string_type->Parse(asnData, endStop))
+  {
+    mBitStringType = bit_string_type;
+    LOG_PASS("BitStringType", asnData);
+    return true;
+  }
+  else
+  {
+    LOG_FAIL("BitStringType", asnData);
+  }
+
   LOG_START("BooleanType", asnData);
   auto boolean_type =
     ProductionFactory::Get(Production::BOOLEAN_TYPE);

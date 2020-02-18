@@ -157,12 +157,12 @@ Parse(const std::string& asnFilePath)
                                  std::vector<std::string>{ "END" }))
     {
       LOG_PASS("ModuleDefinition", parsed_asn_data);
+      return module_definition;
     }
     else
     {
       LOG_FAIL("ModuleDefinition", parsed_asn_data);
+      return nullptr;
     }
-
-    return module_definition;
   }
 }

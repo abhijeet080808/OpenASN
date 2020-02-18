@@ -7,7 +7,7 @@
 namespace OpenASN
 {
   // X.680 08/2015 Annex L
-  class BuiltinType : public IProduction
+  class BitStringType : public IProduction
   {
     public:
       Production GetType() const override;
@@ -15,10 +15,7 @@ namespace OpenASN
       bool Parse(AsnData& asnData,
                  const std::vector<std::string>& endStop) override;
 
-    public:
-      std::shared_ptr<IProduction> mBitStringType;
-      std::shared_ptr<IProduction> mBooleanType;
-      std::shared_ptr<IProduction> mIntegerType;
-      std::shared_ptr<IProduction> mSequenceType;
+    private:
+      std::shared_ptr<IProduction> mNamedBitList;
   };
 }

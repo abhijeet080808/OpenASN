@@ -4,6 +4,7 @@ set(SOURCES AsnData.cpp
             AsnParser.cpp
             Assignment.cpp
             AssignmentList.cpp
+            BitStringType.cpp
             BooleanType.cpp
             BuiltinType.cpp
             ComponentType.cpp
@@ -18,8 +19,11 @@ set(SOURCES AsnData.cpp
             ModuleBody.cpp
             ModuleDefinition.cpp
             ModuleIdentifier.cpp
+            NamedBit.cpp
+            NamedBitList.cpp
             NamedType.cpp
             NameForm.cpp
+            Number.cpp
             ParseHelper.cpp
             ProductionFactory.cpp
             RootComponentTypeList.cpp

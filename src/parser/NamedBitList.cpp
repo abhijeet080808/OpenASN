@@ -1,4 +1,4 @@
-#include "ComponentTypeList.hh"
+#include "NamedBitList.hh"
 
 #include "ProductionFactory.hh"
 
@@ -8,33 +8,33 @@
 using namespace OpenASN;
 
 Production
-ComponentTypeList::
+NamedBitList::
 GetType() const
 {
-  return Production::COMPONENT_TYPE_LIST;
+  return Production::NAMED_BIT_LIST;
 }
 
 bool
-ComponentTypeList::
+NamedBitList::
 Parse(AsnData& asnData, const std::vector<std::string>& endStop)
 {
-  // ComponentTypeList ::=
-  //   ComponentType
-  // | ComponentTypeList "," ComponentType
+  // NamedBitList ::=
+  //   NamedBit
+  // | NamedBitList "," NamedBit
 
   while (1)
   {
-    LOG_START("ComponentType", asnData);
-    auto component_type =
-      ProductionFactory::Get(Production::COMPONENT_TYPE);
-    if (component_type->Parse(asnData, endStop))
+    LOG_START("NamedBit", asnData);
+    auto named_bit =
+      ProductionFactory::Get(Production::NAMED_BIT);
+    if (named_bit->Parse(asnData, endStop))
     {
-      mComponentType.push_back(component_type);
-      LOG_PASS("ComponentType", asnData);
+      mNamedBit.push_back(named_bit);
+      LOG_PASS("NamedBit", asnData);
     }
     else
     {
-      LOG_FAIL("ComponentType", asnData);
+      LOG_FAIL("NamedBit", asnData);
       return false;
     }
 
@@ -52,5 +52,5 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     }
   }
 
-  return !mComponentType.empty();
+  return !mNamedBit.empty();
 }

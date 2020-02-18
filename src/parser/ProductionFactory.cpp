@@ -2,6 +2,7 @@
 
 #include "Assignment.hh"
 #include "AssignmentList.hh"
+#include "BitStringType.hh"
 #include "BooleanType.hh"
 #include "BuiltinType.hh"
 #include "ComponentType.hh"
@@ -17,7 +18,10 @@
 #include "ModuleDefinition.hh"
 #include "ModuleIdentifier.hh"
 #include "NameForm.hh"
+#include "NamedBit.hh"
+#include "NamedBitList.hh"
 #include "NamedType.hh"
+#include "Number.hh"
 #include "RootComponentTypeList.hh"
 #include "SequenceType.hh"
 #include "Type.hh"
@@ -39,6 +43,9 @@ Get(Production production)
 
     case Production::ASSIGNMENT_LIST:
       return std::make_shared<AssignmentList>();
+
+    case Production::BIT_STRING_TYPE:
+      return std::make_shared<BitStringType>();
 
     case Production::BOOLEAN_TYPE:
       return std::make_shared<BooleanType>();
@@ -88,8 +95,17 @@ Get(Production production)
     case Production::NAME_FORM:
       return std::make_shared<NameForm>();
 
+    case Production::NAMED_BIT:
+      return std::make_shared<NamedBit>();
+
+    case Production::NAMED_BIT_LIST:
+      return std::make_shared<NamedBitList>();
+
     case Production::NAMED_TYPE:
       return std::make_shared<NamedType>();
+
+    case Production::NUMBER:
+      return std::make_shared<Number>();
 
     case Production::ROOT_COMPONENT_TYPE_LIST:
       return std::make_shared<RootComponentTypeList>();
