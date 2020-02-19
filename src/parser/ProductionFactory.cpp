@@ -3,8 +3,10 @@
 #include "Assignment.hh"
 #include "AssignmentList.hh"
 #include "BitStringType.hh"
+#include "BMPString.hh"
 #include "BooleanType.hh"
 #include "BuiltinType.hh"
+#include "CharacterStringType.hh"
 #include "ComponentType.hh"
 #include "ComponentTypeList.hh"
 #include "ComponentTypeLists.hh"
@@ -12,8 +14,12 @@
 #include "DefinitiveOID.hh"
 #include "DefinitiveObjIdComponent.hh"
 #include "DefinitiveObjIdComponentList.hh"
+#include "GeneralString.hh"
+#include "GraphicString.hh"
+#include "IA5String.hh"
 #include "Identifier.hh"
 #include "IntegerType.hh"
+#include "ISO646String.hh"
 #include "ModuleBody.hh"
 #include "ModuleDefinition.hh"
 #include "ModuleIdentifier.hh"
@@ -22,11 +28,21 @@
 #include "NamedBitList.hh"
 #include "NamedType.hh"
 #include "Number.hh"
+#include "NumericString.hh"
+#include "PrintableString.hh"
+#include "RestrictedCharacterStringType.hh"
 #include "RootComponentTypeList.hh"
 #include "SequenceType.hh"
+#include "T61String.hh"
+#include "TeletexString.hh"
 #include "Type.hh"
 #include "TypeAssignment.hh"
 #include "TypeReference.hh"
+#include "UniversalString.hh"
+#include "UnrestrictedCharacterStringType.hh"
+#include "UTF8String.hh"
+#include "VideotexString.hh"
+#include "VisibleString.hh"
 
 #include <cassert>
 
@@ -47,11 +63,17 @@ Get(Production production)
     case Production::BIT_STRING_TYPE:
       return std::make_shared<BitStringType>();
 
+    case Production::BMP_STRING:
+      return std::make_shared<BMPString>();
+
     case Production::BOOLEAN_TYPE:
       return std::make_shared<BooleanType>();
 
     case Production::BUILTIN_TYPE:
       return std::make_shared<BuiltinType>();
+
+    case Production::CHARACTER_STRING_TYPE:
+      return std::make_shared<CharacterStringType>();
 
     case Production::COMPONENT_TYPE:
       return std::make_shared<ComponentType>();
@@ -74,11 +96,23 @@ Get(Production production)
     case Production::DEFINITIVE_OBJ_ID_COMPONENT_LIST:
       return std::make_shared<DefinitiveObjIdComponentList>();
 
+    case Production::GENERAL_STRING:
+      return std::make_shared<GeneralString>();
+
+    case Production::GRAPHIC_STRING:
+      return std::make_shared<GraphicString>();
+
+    case Production::IA5_STRING:
+      return std::make_shared<IA5String>();
+
     case Production::IDENTIFIER:
       return std::make_shared<Identifier>();
 
     case Production::INTEGER_TYPE:
       return std::make_shared<IntegerType>();
+
+    case Production::ISO646_STRING:
+      return std::make_shared<ISO646String>();
 
     case Production::MODULE_BODY:
       return std::make_shared<ModuleBody>();
@@ -107,11 +141,26 @@ Get(Production production)
     case Production::NUMBER:
       return std::make_shared<Number>();
 
+    case Production::NUMERIC_STRING:
+      return std::make_shared<NumericString>();
+
+    case Production::PRINTABLE_STRING:
+      return std::make_shared<PrintableString>();
+
     case Production::ROOT_COMPONENT_TYPE_LIST:
       return std::make_shared<RootComponentTypeList>();
 
+    case Production::RESTRICTED_CHARACTER_STRING_TYPE:
+      return std::make_shared<RestrictedCharacterStringType>();
+
     case Production::SEQUENCE_TYPE:
       return std::make_shared<SequenceType>();
+
+    case Production::T61_STRING:
+      return std::make_shared<T61String>();
+
+    case Production::TELETEX_STRING:
+      return std::make_shared<TeletexString>();
 
     case Production::TYPE:
       return std::make_shared<Type>();
@@ -122,8 +171,23 @@ Get(Production production)
     case Production::TYPE_REFERENCE:
       return std::make_shared<TypeReference>();
 
+    case Production::UNIVERSAL_STRING:
+      return std::make_shared<UniversalString>();
+
+    case Production::UNRESTRICTED_CHARACTER_STRING_TYPE:
+      return std::make_shared<UnrestrictedCharacterStringType>();
+
+    case Production::UTF8_STRING:
+      return std::make_shared<UTF8String>();
+
     case Production::VALUE_REFERENCE:
       return std::make_shared<ValueReference>();
+
+    case Production::VIDEOTEX_STRING:
+      return std::make_shared<VideotexString>();
+
+    case Production::VISIBLE_STRING:
+      return std::make_shared<VisibleString>();
 
     default:
       assert(false);
