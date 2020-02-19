@@ -77,6 +77,20 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     LOG_FAIL("BooleanType", asnData);
   }
 
+  LOG_START("CharacterStringType", asnData);
+  auto character_string_type =
+    ProductionFactory::Get(Production::CHARACTER_STRING_TYPE);
+  if (character_string_type->Parse(asnData, endStop))
+  {
+    mBooleanType = boolean_type;
+    LOG_PASS("CharacterStringType", asnData);
+    return true;
+  }
+  else
+  {
+    LOG_FAIL("CharacterStringType", asnData);
+  }
+
   LOG_START("IntegerType", asnData);
   auto integer_type =
     ProductionFactory::Get(Production::INTEGER_TYPE);

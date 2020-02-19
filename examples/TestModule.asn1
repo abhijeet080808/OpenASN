@@ -1,0 +1,44 @@
+TestModule DEFINITIONS ::=
+BEGIN
+
+Int               ::= INTEGER
+Bool              ::= BOOLEAN
+BitStr1           ::= BIT STRING { a(0), b(1), c(100) }
+BitStr2           ::= BIT STRING
+CharStr1          ::= BMPString
+CharStr2          ::= GeneralString
+CharStr3          ::= GraphicString
+CharStr4          ::= IA5String
+CharStr5          ::= ISO646String
+CharStr6          ::= NumericString
+CharStr7          ::= PrintableString
+CharStr8          ::= TeletexString
+CharStr9          ::= T61String
+CharStr10         ::= UniversalString
+CharStr11         ::= UTF8String
+CharStr12         ::= VideotexString
+CharStr13         ::= VisibleString
+CharStr14         ::= CHARACTER STRING
+
+SEQ ::= SEQUENCE {
+  seqInt               INTEGER,
+  seqBool              BOOLEAN,
+  seqBitStr1           BIT STRING { a(0), b(1), c(100) },
+  seqBitStr2           BIT STRING,
+  seqCharStr1          BMPString,
+  seqCharStr2          GeneralString,
+  seqCharStr3          GraphicString,
+  seqCharStr4          IA5String,
+  seqCharStr5          ISO646String,
+  seqCharStr6          NumericString,
+  seqCharStr7          PrintableString,
+  seqCharStr8          TeletexString,
+  seqCharStr9          T61String,
+  seqCharStr10         UniversalString,
+  seqCharStr11         UTF8String,
+  seqCharStr12         VideotexString,
+  seqCharStr13         VisibleString,
+  seqCharStr14         CHARACTER STRING
+}
+
+END
