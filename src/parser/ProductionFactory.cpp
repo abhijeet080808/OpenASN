@@ -1,5 +1,7 @@
 #include "ProductionFactory.hh"
 
+#include "AlternativeTypeList.hh"
+#include "AlternativeTypeLists.hh"
 #include "Assignment.hh"
 #include "AssignmentList.hh"
 #include "BitStringType.hh"
@@ -7,6 +9,7 @@
 #include "BooleanType.hh"
 #include "BuiltinType.hh"
 #include "CharacterStringType.hh"
+#include "ChoiceType.hh"
 #include "ComponentType.hh"
 #include "ComponentTypeList.hh"
 #include "ComponentTypeLists.hh"
@@ -31,6 +34,7 @@
 #include "NumericString.hh"
 #include "PrintableString.hh"
 #include "RestrictedCharacterStringType.hh"
+#include "RootAlternativeTypeList.hh"
 #include "RootComponentTypeList.hh"
 #include "SequenceType.hh"
 #include "T61String.hh"
@@ -54,6 +58,12 @@ Get(Production production)
 {
   switch (production)
   {
+    case Production::ALTERNATIVE_TYPE_LIST:
+      return std::make_shared<AlternativeTypeList>();
+
+    case Production::ALTERNATIVE_TYPE_LISTS:
+      return std::make_shared<AlternativeTypeLists>();
+
     case Production::ASSIGNMENT:
       return std::make_shared<Assignment>();
 
@@ -74,6 +84,9 @@ Get(Production production)
 
     case Production::CHARACTER_STRING_TYPE:
       return std::make_shared<CharacterStringType>();
+
+    case Production::CHOICE_TYPE:
+      return std::make_shared<ChoiceType>();
 
     case Production::COMPONENT_TYPE:
       return std::make_shared<ComponentType>();
@@ -146,6 +159,9 @@ Get(Production production)
 
     case Production::PRINTABLE_STRING:
       return std::make_shared<PrintableString>();
+
+    case Production::ROOT_ALTERNATIVE_TYPE_LIST:
+      return std::make_shared<RootAlternativeTypeList>();
 
     case Production::ROOT_COMPONENT_TYPE_LIST:
       return std::make_shared<RootComponentTypeList>();

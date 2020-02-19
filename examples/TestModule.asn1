@@ -20,6 +20,11 @@ CharStr12         ::= VideotexString
 CharStr13         ::= VisibleString
 CharStr14         ::= CHARACTER STRING
 
+CH ::= CHOICE {
+  chInt                 INTEGER,
+  chBool                BOOLEAN
+}
+
 SEQ ::= SEQUENCE {
   seqInt               INTEGER,
   seqBool              BOOLEAN,
@@ -38,7 +43,11 @@ SEQ ::= SEQUENCE {
   seqCharStr11         UTF8String,
   seqCharStr12         VideotexString,
   seqCharStr13         VisibleString,
-  seqCharStr14         CHARACTER STRING
+  seqCharStr14         CHARACTER STRING,
+  seqCh CHOICE {
+    i INTEGER,
+    b BOOLEAN
+  }
 }
 
 END

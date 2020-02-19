@@ -37,7 +37,6 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   else
   {
     LOG_FAIL("RootComponentTypeList", asnData);
+    return false;
   }
-
-  return false;
 }

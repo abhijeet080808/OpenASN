@@ -20,13 +20,15 @@ int main(int argc, char* argv[])
                            std::string(PROJECT_DESCRIPTION));
 
   std::vector<std::string> asn_files;
+  bool parse_only_mode = false;
 
   options.add_options()
     ("h,help", "Print help")
     ("a,asn", "Specify one or more ASN.1 files, separating multiple files "
      "with a comma",
      cxxopts::value<std::vector<std::string>>(),
-     "FILE1[,FILE2,...]");
+     "FILE1[,FILE2,...]")
+    ("p,parse", "Parse ASN.1 files but skip generating CPP files");
 
   try
   {
@@ -48,6 +50,11 @@ int main(int argc, char* argv[])
                 << std::endl << std::endl
                 << options.help() << std::endl;
       exit(1);
+    }
+
+    if (result.count("parse"))
+    {
+      parse_only_mode = true;
     }
 
     if (argc > 1)
@@ -91,7 +98,7 @@ int main(int argc, char* argv[])
   for (const auto& f : asn_files)
   {
     auto module_definition = p.Parse(f);
-    if (module_definition)
+    if (module_definition && !parse_only_mode)
     {
       g.Generate(dynamic_cast<ModuleDefinition*>(module_definition.get()));
     }

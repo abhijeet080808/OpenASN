@@ -91,6 +91,20 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     LOG_FAIL("CharacterStringType", asnData);
   }
 
+  LOG_START("ChoiceType", asnData);
+  auto choice_type =
+    ProductionFactory::Get(Production::CHOICE_TYPE);
+  if (choice_type->Parse(asnData, endStop))
+  {
+    mChoiceType = choice_type;
+    LOG_PASS("ChoiceType", asnData);
+    return true;
+  }
+  else
+  {
+    LOG_FAIL("ChoiceType", asnData);
+  }
+
   LOG_START("IntegerType", asnData);
   auto integer_type =
     ProductionFactory::Get(Production::INTEGER_TYPE);

@@ -23,6 +23,8 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   // | DefinitiveNumberForm
   // | DefinitiveNameAndNumberForm
 
+  // TODO Look at ITU X.680 08/2015 sec 32 to identify valid values
+  // Also see ITU X.660 07/2011 annex A onwards
   LOG_START("NameForm", asnData);
   auto name_form =
     ProductionFactory::Get(Production::NAME_FORM);

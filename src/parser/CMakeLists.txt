@@ -1,6 +1,8 @@
 set(LIB_NAME parser)
 
-set(SOURCES AsnData.cpp
+set(SOURCES AlternativeTypeList.cpp
+            AlternativeTypeLists.cpp
+            AsnData.cpp
             AsnParser.cpp
             Assignment.cpp
             AssignmentList.cpp
@@ -9,6 +11,7 @@ set(SOURCES AsnData.cpp
             BooleanType.cpp
             BuiltinType.cpp
             CharacterStringType.cpp
+            ChoiceType.cpp
             ComponentType.cpp
             ComponentTypeList.cpp
             ComponentTypeLists.cpp
@@ -34,6 +37,7 @@ set(SOURCES AsnData.cpp
             ParseHelper.cpp
             PrintableString.cpp
             ProductionFactory.cpp
+            RootAlternativeTypeList.cpp
             RootComponentTypeList.cpp
             RestrictedCharacterStringType.cpp
             SequenceType.cpp
