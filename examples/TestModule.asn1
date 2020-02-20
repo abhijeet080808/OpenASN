@@ -20,12 +20,16 @@ CharStr12         ::= VideotexString
 CharStr13         ::= VisibleString
 CharStr14         ::= CHARACTER STRING
 
-CH ::= CHOICE {
+Ch ::= CHOICE {
   chInt                 INTEGER,
   chBool                BOOLEAN
 }
 
-SEQ ::= SEQUENCE {
+Date              ::= DATE
+DateTime          ::= DATE-TIME
+Duration          ::= DURATION
+
+Seq ::= SEQUENCE {
   seqInt               INTEGER,
   seqBool              BOOLEAN,
   seqBitStr1           BIT STRING { a(0), b(1), c(100) },
@@ -47,7 +51,10 @@ SEQ ::= SEQUENCE {
   seqCh CHOICE {
     i INTEGER,
     b BOOLEAN
-  }
+  },
+  seqDate              DATE,
+  seqDateTime          DATE-TIME,
+  seqDuration          DURATION
 }
 
 END

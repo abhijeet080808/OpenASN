@@ -105,6 +105,48 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     LOG_FAIL("ChoiceType", asnData);
   }
 
+  LOG_START("DateType", asnData);
+  auto date_type =
+    ProductionFactory::Get(Production::DATE_TYPE);
+  if (date_type->Parse(asnData, endStop))
+  {
+    mDateType = date_type;
+    LOG_PASS("DateType", asnData);
+    return true;
+  }
+  else
+  {
+    LOG_FAIL("DateType", asnData);
+  }
+
+  LOG_START("DateTimeType", asnData);
+  auto date_time_type =
+    ProductionFactory::Get(Production::DATE_TIME_TYPE);
+  if (date_time_type->Parse(asnData, endStop))
+  {
+    mDateTimeType = date_time_type;
+    LOG_PASS("DateTimeType", asnData);
+    return true;
+  }
+  else
+  {
+    LOG_FAIL("DateTimeType", asnData);
+  }
+
+  LOG_START("DurationType", asnData);
+  auto duration_type =
+    ProductionFactory::Get(Production::DURATION_TYPE);
+  if (duration_type->Parse(asnData, endStop))
+  {
+    mDurationType = duration_type;
+    LOG_PASS("DurationType", asnData);
+    return true;
+  }
+  else
+  {
+    LOG_FAIL("DurationType", asnData);
+  }
+
   LOG_START("IntegerType", asnData);
   auto integer_type =
     ProductionFactory::Get(Production::INTEGER_TYPE);

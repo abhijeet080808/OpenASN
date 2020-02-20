@@ -13,10 +13,13 @@
 #include "ComponentType.hh"
 #include "ComponentTypeList.hh"
 #include "ComponentTypeLists.hh"
+#include "DateType.hh"
+#include "DateTimeType.hh"
 #include "DefinitiveIdentification.hh"
 #include "DefinitiveOID.hh"
 #include "DefinitiveObjIdComponent.hh"
 #include "DefinitiveObjIdComponentList.hh"
+#include "DurationType.hh"
 #include "GeneralString.hh"
 #include "GraphicString.hh"
 #include "IA5String.hh"
@@ -97,6 +100,12 @@ Get(Production production)
     case Production::COMPONENT_TYPE_LISTS:
       return std::make_shared<ComponentTypeLists>();
 
+    case Production::DATE_TYPE:
+      return std::make_shared<DateType>();
+
+    case Production::DATE_TIME_TYPE:
+      return std::make_shared<DateTimeType>();
+
     case Production::DEFINITIVE_IDENTIFICATION:
       return std::make_shared<DefinitiveIdentification>();
 
@@ -108,6 +117,9 @@ Get(Production production)
 
     case Production::DEFINITIVE_OBJ_ID_COMPONENT_LIST:
       return std::make_shared<DefinitiveObjIdComponentList>();
+
+    case Production::DURATION_TYPE:
+      return std::make_shared<DurationType>();
 
     case Production::GENERAL_STRING:
       return std::make_shared<GeneralString>();

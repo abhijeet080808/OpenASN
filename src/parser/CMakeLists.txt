@@ -15,10 +15,13 @@ set(SOURCES AlternativeTypeList.cpp
             ComponentType.cpp
             ComponentTypeList.cpp
             ComponentTypeLists.cpp
+            DateType.cpp
+            DateTimeType.cpp
             DefinitiveIdentification.cpp
             DefinitiveObjIdComponent.cpp
             DefinitiveObjIdComponentList.cpp
             DefinitiveOID.cpp
+            DurationType.cpp
             GeneralString.cpp
             GraphicString.cpp
             IA5String.cpp

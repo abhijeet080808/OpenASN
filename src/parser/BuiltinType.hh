@@ -19,6 +19,9 @@ namespace OpenASN
       std::shared_ptr<IProduction> mBitStringType;
       std::shared_ptr<IProduction> mBooleanType;
       std::shared_ptr<IProduction> mChoiceType;
+      std::shared_ptr<IProduction> mDateType;
+      std::shared_ptr<IProduction> mDateTimeType;
+      std::shared_ptr<IProduction> mDurationType;
       std::shared_ptr<IProduction> mIntegerType;
       std::shared_ptr<IProduction> mSequenceType;
   };
