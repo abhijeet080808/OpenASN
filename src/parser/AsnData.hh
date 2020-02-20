@@ -37,6 +37,8 @@ namespace OpenASN
       std::optional<Word> Peek(int indexOffset = 0);
 
       void IncrementCurrentIndex();
+      void DecrementCurrentIndex();
+
       void ResetCurrentIndex();
 
     private:

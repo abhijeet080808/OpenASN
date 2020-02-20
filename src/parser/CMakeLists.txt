@@ -23,6 +23,10 @@ set(SOURCES AlternativeTypeList.cpp
             DefinitiveOID.cpp
             DurationType.cpp
             EmbeddedPDVType.cpp
+            EnumeratedType.cpp
+            Enumeration.cpp
+            EnumerationItem.cpp
+            Enumerations.cpp
             GeneralString.cpp
             GraphicString.cpp
             IA5String.cpp
@@ -34,8 +38,10 @@ set(SOURCES AlternativeTypeList.cpp
             ModuleIdentifier.cpp
             NamedBit.cpp
             NamedBitList.cpp
+            NamedNumber.cpp
             NamedType.cpp
             NameForm.cpp
+            NegativeNumber.cpp
             Number.cpp
             NumericString.cpp
             ParseHelper.cpp
@@ -43,8 +49,10 @@ set(SOURCES AlternativeTypeList.cpp
             ProductionFactory.cpp
             RootAlternativeTypeList.cpp
             RootComponentTypeList.cpp
+            RootEnumeration.cpp
             RestrictedCharacterStringType.cpp
             SequenceType.cpp
+            SignedNumber.cpp
             T61String.cpp
             TeletexString.cpp
             TypeAssignment.cpp

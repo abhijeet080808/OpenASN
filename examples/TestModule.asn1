@@ -29,6 +29,8 @@ Date              ::= DATE
 DateTime          ::= DATE-TIME
 Duration          ::= DURATION
 EmbeddedPDV       ::= EMBEDDED PDV
+Enumerated1        ::= ENUMERATED { a, b, c, d }
+Enumerated2        ::= ENUMERATED { w(-1), x(0), y(1), z(2) }
 
 Seq ::= SEQUENCE {
   seqInt               INTEGER,
@@ -56,7 +58,10 @@ Seq ::= SEQUENCE {
   seqDate              DATE,
   seqDateTime          DATE-TIME,
   seqDuration          DURATION,
-  seqEmbeddedPDV       EMBEDDED PDV
+  seqEmbeddedPDV       EMBEDDED PDV,
+  seqEnumerated1 ENUMERATED { a, b, c, d },
+  seqEnumerated2 ENUMERATED { w(-1), x(0), y(1), z(2) }
+
 }
 
 END

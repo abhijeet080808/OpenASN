@@ -161,6 +161,20 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     LOG_FAIL("EmbeddedPDVType", asnData);
   }
 
+  LOG_START("EnumeratedType", asnData);
+  auto enumerated_type =
+    ProductionFactory::Get(Production::ENUMERATED_TYPE);
+  if (enumerated_type->Parse(asnData, endStop))
+  {
+    mEnumeratedType = enumerated_type;
+    LOG_PASS("EnumeratedType", asnData);
+    return true;
+  }
+  else
+  {
+    LOG_FAIL("EnumeratedType", asnData);
+  }
+
   LOG_START("IntegerType", asnData);
   auto integer_type =
     ProductionFactory::Get(Production::INTEGER_TYPE);

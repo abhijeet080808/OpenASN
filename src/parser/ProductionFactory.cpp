@@ -21,6 +21,10 @@
 #include "DefinitiveObjIdComponentList.hh"
 #include "DurationType.hh"
 #include "EmbeddedPDVType.hh"
+#include "EnumeratedType.hh"
+#include "Enumeration.hh"
+#include "EnumerationItem.hh"
+#include "Enumerations.hh"
 #include "GeneralString.hh"
 #include "GraphicString.hh"
 #include "IA5String.hh"
@@ -33,14 +37,18 @@
 #include "NameForm.hh"
 #include "NamedBit.hh"
 #include "NamedBitList.hh"
+#include "NamedNumber.hh"
 #include "NamedType.hh"
+#include "NegativeNumber.hh"
 #include "Number.hh"
 #include "NumericString.hh"
 #include "PrintableString.hh"
 #include "RestrictedCharacterStringType.hh"
 #include "RootAlternativeTypeList.hh"
 #include "RootComponentTypeList.hh"
+#include "RootEnumeration.hh"
 #include "SequenceType.hh"
+#include "SignedNumber.hh"
 #include "T61String.hh"
 #include "TeletexString.hh"
 #include "Type.hh"
@@ -125,6 +133,18 @@ Get(Production production)
     case Production::EMBEDDED_PDV_TYPE:
       return std::make_shared<EmbeddedPDVType>();
 
+    case Production::ENUMERATED_TYPE:
+      return std::make_shared<EnumeratedType>();
+
+    case Production::ENUMERATION:
+      return std::make_shared<Enumeration>();
+
+    case Production::ENUMERATION_ITEM:
+      return std::make_shared<EnumerationItem>();
+
+    case Production::ENUMERATIONS:
+      return std::make_shared<Enumerations>();
+
     case Production::GENERAL_STRING:
       return std::make_shared<GeneralString>();
 
@@ -164,8 +184,14 @@ Get(Production production)
     case Production::NAMED_BIT_LIST:
       return std::make_shared<NamedBitList>();
 
+    case Production::NAMED_NUMBER:
+      return std::make_shared<NamedNumber>();
+
     case Production::NAMED_TYPE:
       return std::make_shared<NamedType>();
+
+    case Production::NEGATIVE_NUMBER:
+      return std::make_shared<NegativeNumber>();
 
     case Production::NUMBER:
       return std::make_shared<Number>();
@@ -182,11 +208,17 @@ Get(Production production)
     case Production::ROOT_COMPONENT_TYPE_LIST:
       return std::make_shared<RootComponentTypeList>();
 
+    case Production::ROOT_ENUMERATION:
+      return std::make_shared<RootEnumeration>();
+
     case Production::RESTRICTED_CHARACTER_STRING_TYPE:
       return std::make_shared<RestrictedCharacterStringType>();
 
     case Production::SEQUENCE_TYPE:
       return std::make_shared<SequenceType>();
+
+    case Production::SIGNED_NUMBER:
+      return std::make_shared<SignedNumber>();
 
     case Production::T61_STRING:
       return std::make_shared<T61String>();

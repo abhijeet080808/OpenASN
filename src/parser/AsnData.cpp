@@ -48,6 +48,13 @@ IncrementCurrentIndex()
 
 void
 AsnData::
+DecrementCurrentIndex()
+{
+  --mCurrentAsnWordIndex;
+}
+
+void
+AsnData::
 ResetCurrentIndex()
 {
   mCurrentAsnWordIndex = 0;

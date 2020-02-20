@@ -37,7 +37,7 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
 
     // Leading zero not allowed
     if (std::get<1>(asn_word.value()).size() > 1 &&
-        *(std::get<1>(asn_word.value())).begin() == '0')
+        *((std::get<1>(asn_word.value())).begin()) == '0')
     {
       return false;
     }
