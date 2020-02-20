@@ -20,7 +20,7 @@ std::shared_ptr<IProduction>
 AsnParser::
 Parse(const std::string& asnFilePath)
 {
-  SPDLOG_INFO("Parsing {}",
+  SPDLOG_INFO("Parsing \"{}\"",
               asnFilePath);
 
   std::vector<char> asn_file_data;
@@ -34,7 +34,7 @@ Parse(const std::string& asnFilePath)
 
   if (asn_file_data.empty())
   {
-    SPDLOG_ERROR("Parsing of empty file {} failed",
+    SPDLOG_ERROR("Parsing of empty file \"{}\" failed",
                  asnFilePath);
     return nullptr;
   }

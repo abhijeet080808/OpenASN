@@ -98,9 +98,30 @@ int main(int argc, char* argv[])
   for (const auto& f : asn_files)
   {
     auto module_definition = p.Parse(f);
-    if (module_definition && !parse_only_mode)
+    if (parse_only_mode)
     {
-      g.Generate(dynamic_cast<ModuleDefinition*>(module_definition.get()));
+      if (module_definition)
+      {
+        SPDLOG_INFO("Parse \"{}\" completed", f);
+      }
+      else
+      {
+        SPDLOG_INFO("Parse \"{}\" failed", f);
+        exit(1);
+      }
+    }
+    else
+    {
+      if (module_definition)
+      {
+        SPDLOG_INFO("Parse \"{}\" completed", f);
+        g.Generate(dynamic_cast<ModuleDefinition*>(module_definition.get()));
+      }
+      else
+      {
+        SPDLOG_INFO("Parse \"{}\" failed", f);
+        exit(1);
+      }
     }
   }
 }
