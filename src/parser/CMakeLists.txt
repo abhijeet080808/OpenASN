@@ -22,6 +22,7 @@ set(SOURCES AlternativeTypeList.cpp
             DefinitiveObjIdComponentList.cpp
             DefinitiveOID.cpp
             DurationType.cpp
+            EmbeddedPDVType.cpp
             GeneralString.cpp
             GraphicString.cpp
             IA5String.cpp

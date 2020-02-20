@@ -20,6 +20,7 @@
 #include "DefinitiveObjIdComponent.hh"
 #include "DefinitiveObjIdComponentList.hh"
 #include "DurationType.hh"
+#include "EmbeddedPDVType.hh"
 #include "GeneralString.hh"
 #include "GraphicString.hh"
 #include "IA5String.hh"
@@ -120,6 +121,9 @@ Get(Production production)
 
     case Production::DURATION_TYPE:
       return std::make_shared<DurationType>();
+
+    case Production::EMBEDDED_PDV_TYPE:
+      return std::make_shared<EmbeddedPDVType>();
 
     case Production::GENERAL_STRING:
       return std::make_shared<GeneralString>();

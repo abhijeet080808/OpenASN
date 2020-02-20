@@ -147,6 +147,20 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     LOG_FAIL("DurationType", asnData);
   }
 
+  LOG_START("EmbeddedPDVType", asnData);
+  auto embedded_pdv_type =
+    ProductionFactory::Get(Production::EMBEDDED_PDV_TYPE);
+  if (embedded_pdv_type->Parse(asnData, endStop))
+  {
+    mEmbeddedPDVType = embedded_pdv_type;
+    LOG_PASS("EmbeddedPDVType", asnData);
+    return true;
+  }
+  else
+  {
+    LOG_FAIL("EmbeddedPDVType", asnData);
+  }
+
   LOG_START("IntegerType", asnData);
   auto integer_type =
     ProductionFactory::Get(Production::INTEGER_TYPE);
