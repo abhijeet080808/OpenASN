@@ -287,6 +287,20 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     LOG_FAIL("RelativeIRIType", asnData);
   }
 
+  LOG_START("RelativeOIDType", asnData);
+  auto relative_oid_type =
+    ProductionFactory::Get(Production::RELATIVE_OID_TYPE);
+  if (relative_oid_type->Parse(asnData, endStop))
+  {
+    mRelativeOIDType = relative_oid_type;
+    LOG_PASS("RelativeOIDType", asnData);
+    return true;
+  }
+  else
+  {
+    LOG_FAIL("RelativeOIDType", asnData);
+  }
+
   LOG_START("SequenceType", asnData);
   auto sequence_type =
     ProductionFactory::Get(Production::SEQUENCE_TYPE);

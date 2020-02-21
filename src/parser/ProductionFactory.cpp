@@ -51,6 +51,7 @@
 #include "PrintableString.hh"
 #include "RealType.hh"
 #include "RelativeIRIType.hh"
+#include "RelativeOIDType.hh"
 #include "RestrictedCharacterStringType.hh"
 #include "RootAlternativeTypeList.hh"
 #include "RootComponentTypeList.hh"
@@ -233,6 +234,9 @@ Get(Production production)
 
     case Production::RELATIVE_IRI_TYPE:
       return std::make_shared<RelativeIRIType>();
+
+    case Production::RELATIVE_OID_TYPE:
+      return std::make_shared<RelativeOIDType>();
 
     case Production::ROOT_ALTERNATIVE_TYPE_LIST:
       return std::make_shared<RootAlternativeTypeList>();

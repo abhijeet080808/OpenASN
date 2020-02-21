@@ -39,6 +39,7 @@ ObjId             ::= OBJECT IDENTIFIER
 OctetStr          ::= OCTET STRING
 Real              ::= REAL
 RelativeIri       ::= RELATIVE-OID-IRI
+RelativeOid       ::= RELATIVE-OID
 
 Seq ::= SEQUENCE {
   seqBool              BOOLEAN,
@@ -75,7 +76,8 @@ Seq ::= SEQUENCE {
   seqObjId             OBJECT IDENTIFIER,
   seqOctetStr          OCTET STRING,
   seqReal              REAL,
-  seqRelativeIri       RELATIVE-OID-IRI
+  seqRelativeIri       RELATIVE-OID-IRI,
+  seqRelativeOid       RELATIVE-OID
 }
 
 END
