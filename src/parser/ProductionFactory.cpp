@@ -47,6 +47,7 @@
 #include "Number.hh"
 #include "NumericString.hh"
 #include "ObjectIdentifierType.hh"
+#include "OctetStringType.hh"
 #include "PrintableString.hh"
 #include "RestrictedCharacterStringType.hh"
 #include "RootAlternativeTypeList.hh"
@@ -218,6 +219,9 @@ Get(Production production)
 
     case Production::OBJECT_IDENTIFIER_TYPE:
       return std::make_shared<ObjectIdentifierType>();
+
+    case Production::OCTET_STRING_TYPE:
+      return std::make_shared<OctetStringType>();
 
     case Production::PRINTABLE_STRING:
       return std::make_shared<PrintableString>();

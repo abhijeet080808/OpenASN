@@ -36,6 +36,7 @@ Int2              ::= INTEGER { w(-1), x(0), y(1), z(2) }
 Iri               ::= OID-IRI
 Null              ::= NULL
 ObjId             ::= OBJECT IDENTIFIER
+OctetStr          ::= OCTET STRING
 
 Seq ::= SEQUENCE {
   seqBool              BOOLEAN,
@@ -69,7 +70,8 @@ Seq ::= SEQUENCE {
   seqInt2              INTEGER { w(-1), x(0), y(1), z(2) },
   seqIri               OID-IRI,
   seqNull              NULL,
-  seqObjId             OBJECT IDENTIFIER
+  seqObjId             OBJECT IDENTIFIER,
+  seqOctetStr          OCTET STRING
 }
 
 END

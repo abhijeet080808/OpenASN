@@ -245,6 +245,20 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     LOG_FAIL("ObjectIdentifierType", asnData);
   }
 
+  LOG_START("OctetStringType", asnData);
+  auto octet_string_type =
+    ProductionFactory::Get(Production::OCTET_STRING_TYPE);
+  if (octet_string_type->Parse(asnData, endStop))
+  {
+    mOctetStringType = octet_string_type;
+    LOG_PASS("OctetStringType", asnData);
+    return true;
+  }
+  else
+  {
+    LOG_FAIL("OctetStringType", asnData);
+  }
+
   LOG_START("SequenceType", asnData);
   auto sequence_type =
     ProductionFactory::Get(Production::SEQUENCE_TYPE);
