@@ -26,6 +26,7 @@ namespace OpenASN
       std::shared_ptr<IProduction> mEnumeratedType;
       std::shared_ptr<IProduction> mExternalType;
       std::shared_ptr<IProduction> mIntegerType;
+      std::shared_ptr<IProduction> mIRIType;
       std::shared_ptr<IProduction> mSequenceType;
   };
 }

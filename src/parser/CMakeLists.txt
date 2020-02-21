@@ -33,6 +33,7 @@ set(SOURCES AlternativeTypeList.cpp
             IA5String.cpp
             Identifier.cpp
             IntegerType.cpp
+            IRIType.cpp
             ISO646String.cpp
             ModuleBody.cpp
             ModuleDefinition.cpp

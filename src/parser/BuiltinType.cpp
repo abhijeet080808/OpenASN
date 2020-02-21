@@ -203,6 +203,20 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     LOG_FAIL("IntegerType", asnData);
   }
 
+  LOG_START("IRIType", asnData);
+  auto iri_type =
+    ProductionFactory::Get(Production::IRI_TYPE);
+  if (iri_type->Parse(asnData, endStop))
+  {
+    mIRIType = iri_type;
+    LOG_PASS("IRIType", asnData);
+    return true;
+  }
+  else
+  {
+    LOG_FAIL("IRIType", asnData);
+  }
+
   LOG_START("SequenceType", asnData);
   auto sequence_type =
     ProductionFactory::Get(Production::SEQUENCE_TYPE);

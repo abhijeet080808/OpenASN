@@ -33,6 +33,7 @@ Enumerated2       ::= ENUMERATED { w(-1), x(0), y(1), z(2) }
 External          ::= EXTERNAL
 Int1              ::= INTEGER
 Int2              ::= INTEGER { w(-1), x(0), y(1), z(2) }
+Iri               ::= OID-IRI
 
 Seq ::= SEQUENCE {
   seqBool              BOOLEAN,
@@ -63,7 +64,8 @@ Seq ::= SEQUENCE {
   seqEnumerated1 ENUMERATED { a, b, c, d },
   seqEnumerated2 ENUMERATED { w(-1), x(0), y(1), z(2) },
   seqInt1              INTEGER,
-  seqInt2              INTEGER { w(-1), x(0), y(1), z(2) }
+  seqInt2              INTEGER { w(-1), x(0), y(1), z(2) },
+  seqIri               OID-IRI
 
 }
 

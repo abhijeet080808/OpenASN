@@ -31,6 +31,7 @@
 #include "IA5String.hh"
 #include "Identifier.hh"
 #include "IntegerType.hh"
+#include "IRIType.hh"
 #include "ISO646String.hh"
 #include "ModuleBody.hh"
 #include "ModuleDefinition.hh"
@@ -164,6 +165,9 @@ Get(Production production)
 
     case Production::INTEGER_TYPE:
       return std::make_shared<IntegerType>();
+
+    case Production::IRI_TYPE:
+      return std::make_shared<IRIType>();
 
     case Production::ISO646_STRING:
       return std::make_shared<ISO646String>();
