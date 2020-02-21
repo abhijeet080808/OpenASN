@@ -259,6 +259,20 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     LOG_FAIL("OctetStringType", asnData);
   }
 
+  LOG_START("RealType", asnData);
+  auto real_type =
+    ProductionFactory::Get(Production::REAL_TYPE);
+  if (real_type->Parse(asnData, endStop))
+  {
+    mRealType = real_type;
+    LOG_PASS("RealType", asnData);
+    return true;
+  }
+  else
+  {
+    LOG_FAIL("RealType", asnData);
+  }
+
   LOG_START("SequenceType", asnData);
   auto sequence_type =
     ProductionFactory::Get(Production::SEQUENCE_TYPE);

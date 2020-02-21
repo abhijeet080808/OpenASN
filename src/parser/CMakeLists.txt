@@ -53,6 +53,7 @@ set(SOURCES AlternativeTypeList.cpp
             ParseHelper.cpp
             PrintableString.cpp
             ProductionFactory.cpp
+            RealType.cpp
             RootAlternativeTypeList.cpp
             RootComponentTypeList.cpp
             RootEnumeration.cpp
