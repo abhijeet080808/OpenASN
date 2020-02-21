@@ -35,6 +35,7 @@ Int1              ::= INTEGER
 Int2              ::= INTEGER { w(-1), x(0), y(1), z(2) }
 Iri               ::= OID-IRI
 Null              ::= NULL
+ObjId             ::= OBJECT IDENTIFIER
 
 Seq ::= SEQUENCE {
   seqBool              BOOLEAN,
@@ -67,8 +68,8 @@ Seq ::= SEQUENCE {
   seqInt1              INTEGER,
   seqInt2              INTEGER { w(-1), x(0), y(1), z(2) },
   seqIri               OID-IRI,
-  seqNull              NULL
-
+  seqNull              NULL,
+  seqObjId             OBJECT IDENTIFIER
 }
 
 END

@@ -48,6 +48,7 @@ set(SOURCES AlternativeTypeList.cpp
             NullType.cpp
             Number.cpp
             NumericString.cpp
+            ObjectIdentifierType.cpp
             ParseHelper.cpp
             PrintableString.cpp
             ProductionFactory.cpp

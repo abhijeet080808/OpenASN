@@ -231,6 +231,20 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     LOG_FAIL("NullType", asnData);
   }
 
+  LOG_START("ObjectIdentifierType", asnData);
+  auto object_identifier_type =
+    ProductionFactory::Get(Production::OBJECT_IDENTIFIER_TYPE);
+  if (object_identifier_type->Parse(asnData, endStop))
+  {
+    mObjectIdentifierType = object_identifier_type;
+    LOG_PASS("ObjectIdentifierType", asnData);
+    return true;
+  }
+  else
+  {
+    LOG_FAIL("ObjectIdentifierType", asnData);
+  }
+
   LOG_START("SequenceType", asnData);
   auto sequence_type =
     ProductionFactory::Get(Production::SEQUENCE_TYPE);

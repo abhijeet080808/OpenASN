@@ -46,6 +46,7 @@
 #include "NullType.hh"
 #include "Number.hh"
 #include "NumericString.hh"
+#include "ObjectIdentifierType.hh"
 #include "PrintableString.hh"
 #include "RestrictedCharacterStringType.hh"
 #include "RootAlternativeTypeList.hh"
@@ -214,6 +215,9 @@ Get(Production production)
 
     case Production::NUMERIC_STRING:
       return std::make_shared<NumericString>();
+
+    case Production::OBJECT_IDENTIFIER_TYPE:
+      return std::make_shared<ObjectIdentifierType>();
 
     case Production::PRINTABLE_STRING:
       return std::make_shared<PrintableString>();
