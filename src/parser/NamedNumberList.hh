@@ -7,7 +7,7 @@
 namespace OpenASN
 {
   // X.680 08/2015 Annex L
-  class IntegerType : public IProduction
+  class NamedNumberList : public IProduction
   {
     public:
       Production GetType() const override;
@@ -15,7 +15,7 @@ namespace OpenASN
       bool Parse(AsnData& asnData,
                  const std::vector<std::string>& endStop) override;
 
-    private:
-      std::shared_ptr<IProduction> mNamedNumberList;
+    public:
+      std::vector<std::shared_ptr<IProduction>> mNamedNumber;
   };
 }

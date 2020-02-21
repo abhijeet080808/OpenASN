@@ -25,6 +25,7 @@
 #include "Enumeration.hh"
 #include "EnumerationItem.hh"
 #include "Enumerations.hh"
+#include "ExternalType.hh"
 #include "GeneralString.hh"
 #include "GraphicString.hh"
 #include "IA5String.hh"
@@ -38,6 +39,7 @@
 #include "NamedBit.hh"
 #include "NamedBitList.hh"
 #include "NamedNumber.hh"
+#include "NamedNumberList.hh"
 #include "NamedType.hh"
 #include "NegativeNumber.hh"
 #include "Number.hh"
@@ -145,6 +147,9 @@ Get(Production production)
     case Production::ENUMERATIONS:
       return std::make_shared<Enumerations>();
 
+    case Production::EXTERNAL_TYPE:
+      return std::make_shared<ExternalType>();
+
     case Production::GENERAL_STRING:
       return std::make_shared<GeneralString>();
 
@@ -186,6 +191,9 @@ Get(Production production)
 
     case Production::NAMED_NUMBER:
       return std::make_shared<NamedNumber>();
+
+    case Production::NAMED_NUMBER_LIST:
+      return std::make_shared<NamedNumberList>();
 
     case Production::NAMED_TYPE:
       return std::make_shared<NamedType>();

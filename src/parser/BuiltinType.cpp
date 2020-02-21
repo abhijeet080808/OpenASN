@@ -175,6 +175,20 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     LOG_FAIL("EnumeratedType", asnData);
   }
 
+  LOG_START("ExternalType", asnData);
+  auto external_type =
+    ProductionFactory::Get(Production::EXTERNAL_TYPE);
+  if (external_type->Parse(asnData, endStop))
+  {
+    mExternalType = external_type;
+    LOG_PASS("ExternalType", asnData);
+    return true;
+  }
+  else
+  {
+    LOG_FAIL("ExternalType", asnData);
+  }
+
   LOG_START("IntegerType", asnData);
   auto integer_type =
     ProductionFactory::Get(Production::INTEGER_TYPE);

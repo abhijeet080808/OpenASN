@@ -27,6 +27,7 @@ set(SOURCES AlternativeTypeList.cpp
             Enumeration.cpp
             EnumerationItem.cpp
             Enumerations.cpp
+            ExternalType.cpp
             GeneralString.cpp
             GraphicString.cpp
             IA5String.cpp
@@ -39,6 +40,7 @@ set(SOURCES AlternativeTypeList.cpp
             NamedBit.cpp
             NamedBitList.cpp
             NamedNumber.cpp
+            NamedNumberList.cpp
             NamedType.cpp
             NameForm.cpp
             NegativeNumber.cpp

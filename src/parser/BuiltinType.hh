@@ -24,6 +24,7 @@ namespace OpenASN
       std::shared_ptr<IProduction> mDurationType;
       std::shared_ptr<IProduction> mEmbeddedPDVType;
       std::shared_ptr<IProduction> mEnumeratedType;
+      std::shared_ptr<IProduction> mExternalType;
       std::shared_ptr<IProduction> mIntegerType;
       std::shared_ptr<IProduction> mSequenceType;
   };
