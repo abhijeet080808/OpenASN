@@ -273,6 +273,20 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     LOG_FAIL("RealType", asnData);
   }
 
+  LOG_START("RelativeIRIType", asnData);
+  auto relative_iri_type =
+    ProductionFactory::Get(Production::RELATIVE_IRI_TYPE);
+  if (relative_iri_type->Parse(asnData, endStop))
+  {
+    mRelativeIRIType = relative_iri_type;
+    LOG_PASS("RelativeIRIType", asnData);
+    return true;
+  }
+  else
+  {
+    LOG_FAIL("RelativeIRIType", asnData);
+  }
+
   LOG_START("SequenceType", asnData);
   auto sequence_type =
     ProductionFactory::Get(Production::SEQUENCE_TYPE);

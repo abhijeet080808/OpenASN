@@ -54,6 +54,7 @@ set(SOURCES AlternativeTypeList.cpp
             PrintableString.cpp
             ProductionFactory.cpp
             RealType.cpp
+            RelativeIRIType.cpp
             RootAlternativeTypeList.cpp
             RootComponentTypeList.cpp
             RootEnumeration.cpp
