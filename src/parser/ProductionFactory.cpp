@@ -43,6 +43,7 @@
 #include "NamedNumberList.hh"
 #include "NamedType.hh"
 #include "NegativeNumber.hh"
+#include "NullType.hh"
 #include "Number.hh"
 #include "NumericString.hh"
 #include "PrintableString.hh"
@@ -204,6 +205,9 @@ Get(Production production)
 
     case Production::NEGATIVE_NUMBER:
       return std::make_shared<NegativeNumber>();
+
+    case Production::NULL_TYPE:
+      return std::make_shared<NullType>();
 
     case Production::NUMBER:
       return std::make_shared<Number>();

@@ -217,6 +217,20 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     LOG_FAIL("IRIType", asnData);
   }
 
+  LOG_START("NullType", asnData);
+  auto null_type =
+    ProductionFactory::Get(Production::NULL_TYPE);
+  if (null_type->Parse(asnData, endStop))
+  {
+    mNullType = null_type;
+    LOG_PASS("NullType", asnData);
+    return true;
+  }
+  else
+  {
+    LOG_FAIL("NullType", asnData);
+  }
+
   LOG_START("SequenceType", asnData);
   auto sequence_type =
     ProductionFactory::Get(Production::SEQUENCE_TYPE);

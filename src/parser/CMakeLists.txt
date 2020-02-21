@@ -45,6 +45,7 @@ set(SOURCES AlternativeTypeList.cpp
             NamedType.cpp
             NameForm.cpp
             NegativeNumber.cpp
+            NullType.cpp
             Number.cpp
             NumericString.cpp
             ParseHelper.cpp
