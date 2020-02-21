@@ -80,4 +80,6 @@ Seq ::= SEQUENCE {
   seqRelativeOid       RELATIVE-OID
 }
 
+SeqOf ::= SEQUENCE OF INTEGER
+
 END

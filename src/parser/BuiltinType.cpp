@@ -315,5 +315,19 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
     LOG_FAIL("SequenceType", asnData);
   }
 
+  LOG_START("SequenceOfType", asnData);
+  auto sequence_of_type =
+    ProductionFactory::Get(Production::SEQUENCE_OF_TYPE);
+  if (sequence_of_type->Parse(asnData, endStop))
+  {
+    mSequenceOfType = sequence_of_type;
+    LOG_PASS("SequenceOfType", asnData);
+    return true;
+  }
+  else
+  {
+    LOG_FAIL("SequenceOfType", asnData);
+  }
+
   return false;
 }

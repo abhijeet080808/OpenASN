@@ -34,5 +34,6 @@ namespace OpenASN
       std::shared_ptr<IProduction> mRelativeIRIType;
       std::shared_ptr<IProduction> mRelativeOIDType;
       std::shared_ptr<IProduction> mSequenceType;
+      std::shared_ptr<IProduction> mSequenceOfType;
   };
 }

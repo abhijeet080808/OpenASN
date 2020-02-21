@@ -57,6 +57,7 @@
 #include "RootComponentTypeList.hh"
 #include "RootEnumeration.hh"
 #include "SequenceType.hh"
+#include "SequenceOfType.hh"
 #include "SignedNumber.hh"
 #include "T61String.hh"
 #include "TeletexString.hh"
@@ -252,6 +253,9 @@ Get(Production production)
 
     case Production::SEQUENCE_TYPE:
       return std::make_shared<SequenceType>();
+
+    case Production::SEQUENCE_OF_TYPE:
+      return std::make_shared<SequenceOfType>();
 
     case Production::SIGNED_NUMBER:
       return std::make_shared<SignedNumber>();
