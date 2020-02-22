@@ -89,4 +89,8 @@ Set               ::= SET {
   setBitStr1        BIT STRING { a(0), b(1), c(100) }
 }
 
+SetOf1            ::= SET OF INTEGER
+SetOf2            ::= SET OF INTEGER { w(-1), x(0), y(1), z(2) }
+SetOf3            ::= SET OF setOf3Int INTEGER { w(-1), x(0), y(1), z(2) }
+
 END

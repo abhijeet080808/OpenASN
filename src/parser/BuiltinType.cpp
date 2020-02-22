@@ -352,13 +352,28 @@ Parse(const std::vector<Word>& asnData,
     LOG_FAIL();
   }
 
-  obj = "SetOfType";
+  obj = "SetType";
   LOG_START();
   auto set_type =
     ProductionFactory::Get(Production::SET_TYPE);
   if (set_type->Parse(asnData, asnDataIndex, endStop))
   {
     mSetType = set_type;
+    LOG_PASS();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
+
+  obj = "SetOfType";
+  LOG_START();
+  auto set_of_type =
+    ProductionFactory::Get(Production::SET_OF_TYPE);
+  if (set_of_type->Parse(asnData, asnDataIndex, endStop))
+  {
+    mSetOfType = set_of_type;
     LOG_PASS();
     return true;
   }

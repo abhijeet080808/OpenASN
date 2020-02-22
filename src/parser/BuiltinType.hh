@@ -37,5 +37,6 @@ namespace OpenASN
       std::shared_ptr<IProduction> mSequenceType;
       std::shared_ptr<IProduction> mSequenceOfType;
       std::shared_ptr<IProduction> mSetType;
+      std::shared_ptr<IProduction> mSetOfType;
   };
 }

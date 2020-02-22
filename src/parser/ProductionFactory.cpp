@@ -59,6 +59,7 @@
 #include "SequenceType.hh"
 #include "SequenceOfType.hh"
 #include "SetType.hh"
+#include "SetOfType.hh"
 #include "SignedNumber.hh"
 #include "T61String.hh"
 #include "TeletexString.hh"
@@ -260,6 +261,9 @@ Get(Production production)
 
     case Production::SET_TYPE:
       return std::make_shared<SetType>();
+
+    case Production::SET_OF_TYPE:
+      return std::make_shared<SetOfType>();
 
     case Production::SIGNED_NUMBER:
       return std::make_shared<SignedNumber>();

@@ -62,6 +62,7 @@ set(SOURCES AlternativeTypeList.cpp
             SequenceType.cpp
             SequenceOfType.cpp
             SetType.cpp
+            SetOfType.cpp
             SignedNumber.cpp
             T61String.cpp
             TeletexString.cpp
