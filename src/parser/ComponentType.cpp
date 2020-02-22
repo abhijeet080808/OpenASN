@@ -1,8 +1,9 @@
 #include "ComponentType.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -16,7 +17,9 @@ GetType() const
 
 bool
 ComponentType::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // ComponentType ::=
   //   NamedType
@@ -24,19 +27,22 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   // | NamedType DEFAULT Value
   // | COMPONENTS OF Type
 
-  LOG_START("NamedType", asnData);
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "NamedType";
+  LOG_START();
   auto named_type =
     ProductionFactory::Get(Production::NAMED_TYPE);
-  if (named_type->Parse(asnData, endStop))
+  if (named_type->Parse(asnData, asnDataIndex, endStop))
   {
     mNamedType = named_type;
-    LOG_PASS("NamedType", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("NamedType", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
+    return false;
   }
-
-  return false;
 }

@@ -1,9 +1,10 @@
 #include "EnumeratedType.hh"
 
 #include "LoggingMacros.hh"
-#include "spdlog/spdlog.h"
-
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
+
+#include "spdlog/spdlog.h"
 
 using namespace OpenASN;
 
@@ -16,66 +17,75 @@ GetType() const
 
 bool
 EnumeratedType::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // EnumeratedType ::=
   // ENUMERATED "{" Enumerations "}"
 
-  LOG_START("ENUMERATED", asnData);
-  auto asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "ENUMERATED")
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "ENUMERATED";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("ENUMERATED", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
   }
   else
   {
-    LOG_FAIL("ENUMERATED", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("{", asnData);
-  asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "{")
+  obj = "{";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("{", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
   }
   else
   {
-    LOG_FAIL("{", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  std::vector<std::string> end_stop{ "}" };
-  end_stop.insert(std::end(end_stop), std::begin(endStop), std::end(endStop));
+  endStop.push_back("}");
 
-  LOG_START("Enumerations", asnData);
+  obj = "Enumerations";
+  LOG_START();
   auto enumerations =
     ProductionFactory::Get(Production::ENUMERATIONS);
-  if (enumerations->Parse(asnData, end_stop))
+  if (enumerations->Parse(asnData, asnDataIndex, endStop))
   {
     mEnumerations = enumerations;
-    LOG_PASS("Enumerations", asnData);
+    LOG_PASS();
+    endStop.pop_back();
   }
   else
   {
-    LOG_FAIL("Enumerations", asnData);
+    LOG_FAIL();
+    endStop.pop_back();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("}", asnData);
-  asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "}")
+  obj = "}";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("}", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
+    return true;
   }
   else
   {
-    LOG_FAIL("}", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
-
-  return true;
 }

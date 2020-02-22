@@ -1,11 +1,10 @@
 #include "AssignmentList.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
-
-#include "ParseHelper.hh"
 
 using namespace OpenASN;
 
@@ -18,28 +17,41 @@ GetType() const
 
 bool
 AssignmentList::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // AssignmentList ::=
   //   Assignment
   // | AssignmentList Assignment
 
+  size_t starting_index = asnDataIndex;
+
   while (1)
   {
-    LOG_START("Assignment", asnData);
+    auto obj = "Assignment";
+    LOG_START();
     auto assignment =
       ProductionFactory::Get(Production::ASSIGNMENT);
-    if (assignment->Parse(asnData, endStop))
+    if (assignment->Parse(asnData, asnDataIndex, endStop))
     {
       mAssignment.push_back(assignment);
-      LOG_PASS("Assignment", asnData);
+      LOG_PASS();
     }
     else
     {
-      LOG_FAIL("Assignment", asnData);
+      LOG_FAIL();
       break;
     }
   }
 
-  return !mAssignment.empty();
+  if (mAssignment.empty())
+  {
+    asnDataIndex = starting_index;
+    return false;
+  }
+  else
+  {
+    return true;
+  }
 }

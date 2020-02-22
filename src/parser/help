@@ -17,68 +17,92 @@ std::vector<std::shared_ptr<IProduction>> mNamedBit;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-  LOG_START("TypeAssignment", asnData);
+  endStop.push_back("}");
+
+  auto obj = "TypeAssignment";
+  LOG_START();
   auto type_assignment =
     ProductionFactory::Get(Production::TYPE_ASSIGNMENT);
-  if (type_assignment->Parse(asnData, endStop))
+  if (type_assignment->Parse(asnData, asnDataIndex, endStop))
   {
     mTypeAssignment = type_assignment;
-    LOG_PASS("TypeAssignment", asnData);
+    LOG_PASS();
+    endStop.pop_back();
     return true;
   }
   else
   {
-    LOG_FAIL("AssignmentList", asnData);
+    LOG_FAIL();
+    endStop.pop_back();
+    asnDataIndex = starting_index;
+    return false;
   }
 
-///////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+#include "ParseHelper.hh"
+
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "T61String";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
+  {
+    LOG_PASS();
+    ++asnDataIndex;
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+    asnDataIndex = starting_index;
+    return false;
+  }
+
+//////////////////////////////////////////////////////////////////////////////
+
+  size_t starting_index = asnDataIndex;
 
   while (1)
   {
-    LOG_START("Assignment", asnData);
-    auto assignment =
-      ProductionFactory::Get(Production::ASSIGNMENT);
-    if (assignment->Parse(asnData, endStop))
+    auto obj = "NamedNumber";
+    LOG_START();
+    auto named_number =
+      ProductionFactory::Get(Production::NAMED_NUMBER);
+    if (named_number->Parse(asnData, asnDataIndex, endStop))
     {
-      mAssignment.push_back(assignment);
-      LOG_PASS("Assignment", asnData);
+      mNamedNumber.push_back(named_number);
+      LOG_PASS();
     }
     else
     {
-      LOG_FAIL("Assignment", asnData);
+      LOG_FAIL();
+      asnDataIndex = starting_index;
       return false;
     }
 
-    LOG_START(",", asnData);
-    auto asn_word = asnData.Peek();
-    if (asn_word && std::get<1>(asn_word.value()) == ",")
+    obj = ",";
+    LOG_START();
+    if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
     {
-      asnData.IncrementCurrentIndex();
-      LOG_PASS(",", asnData);
+      LOG_PASS();
+      ++asnDataIndex;
     }
     else
     {
-      LOG_FAIL(",", asnData);
+      LOG_FAIL();
       break;
     }
   }
 
-  return !mComponentType.empty();
-
-///////////////////////////////////////////////////////////////////////////////
-
-  LOG_START("BOOLEAN", asnData);
-  auto asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "BOOLEAN")
+  if (mNamedNumber.empty())
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("BOOLEAN", asnData);
-    return true;
+    asnDataIndex = starting_index;
+    return false;
   }
   else
   {
-    LOG_FAIL("BOOLEAN", asnData);
-    return false;
+    return true;
   }
 
 ///////////////////////////////////////////////////////////////////////////////

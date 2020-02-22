@@ -1,11 +1,10 @@
 #include "SequenceOfType.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
-
-#include "ParseHelper.hh"
 
 using namespace OpenASN;
 
@@ -18,61 +17,71 @@ GetType() const
 
 bool
 SequenceOfType::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // SequenceOfType ::= SEQUENCE OF Type | SEQUENCE OF NamedType
 
-  LOG_START("SEQUENCE", asnData);
-  auto asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "SEQUENCE")
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "SEQUENCE";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("SEQUENCE", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
   }
   else
   {
-    LOG_FAIL("SEQUENCE", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("OF", asnData);
-  asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "OF")
+  obj = "OF";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("OF", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
   }
   else
   {
-    LOG_FAIL("OF", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("Type", asnData);
+  obj = "Type";
+  LOG_START();
   auto type =
     ProductionFactory::Get(Production::TYPE);
-  if (type->Parse(asnData, endStop))
+  if (type->Parse(asnData, asnDataIndex, endStop))
   {
     mType = type;
-    LOG_PASS("Type", asnData);
+    LOG_PASS();
+    return true;
   }
   else
   {
-    LOG_FAIL("Type", asnData);
-    LOG_START("NamedType", asnData);
-    auto named_type =
-      ProductionFactory::Get(Production::NAMED_TYPE);
-    if (named_type->Parse(asnData, endStop))
-    {
-      mNamedType = named_type;
-      LOG_PASS("NamedType", asnData);
-    }
-    else
-    {
-      LOG_FAIL("NamedType", asnData);
-      return false;
-    }
+    LOG_FAIL();
   }
 
-  return true;
+  obj = "NamedType";
+  LOG_START();
+  auto named_type =
+    ProductionFactory::Get(Production::NAMED_TYPE);
+  if (named_type->Parse(asnData, asnDataIndex, endStop))
+  {
+    mNamedType = named_type;
+    LOG_PASS();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+    asnDataIndex = starting_index;
+    return false;
+  }
 }

@@ -12,8 +12,9 @@ namespace OpenASN
     public:
       Production GetType() const override;
 
-      bool Parse(AsnData& asnData,
-                 const std::vector<std::string>& endStop) override;
+      bool Parse(const std::vector<Word>& asnData,
+                 size_t& asnDataIndex,
+                 std::vector<std::string>& endStop) override;
 
     public:
       std::shared_ptr<IProduction> mTypeReference;

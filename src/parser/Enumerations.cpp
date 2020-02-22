@@ -16,25 +16,31 @@ GetType() const
 
 bool
 Enumerations::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // Enumerations ::=
   //   RootEnumeration
   // | RootEnumeration "," " ... " ExceptionSpec
   // | RootEnumeration "," " ... " ExceptionSpec "," AdditionalEnumeration
 
-  LOG_START("RootEnumeration", asnData);
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "RootEnumeration";
+  LOG_START();
   auto root_enumeration =
     ProductionFactory::Get(Production::ROOT_ENUMERATION);
-  if (root_enumeration->Parse(asnData, endStop))
+  if (root_enumeration->Parse(asnData, asnDataIndex, endStop))
   {
     mRootEnumeration = root_enumeration;
-    LOG_PASS("RootEnumeration", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("RootEnumeration", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 }

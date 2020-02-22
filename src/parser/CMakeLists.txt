@@ -2,7 +2,6 @@ set(LIB_NAME parser)
 
 set(SOURCES AlternativeTypeList.cpp
             AlternativeTypeLists.cpp
-            AsnData.cpp
             AsnParser.cpp
             Assignment.cpp
             AssignmentList.cpp

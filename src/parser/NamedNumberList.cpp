@@ -1,8 +1,9 @@
 #include "NamedNumberList.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -16,41 +17,55 @@ GetType() const
 
 bool
 NamedNumberList::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // NamedNumberList ::=
   //   NamedNumber
   // | NamedNumberList "," NamedNumber
 
+  size_t starting_index = asnDataIndex;
+
   while (1)
   {
-    LOG_START("NamedNumber", asnData);
+    auto obj = "NamedNumber";
+    LOG_START();
     auto named_number =
       ProductionFactory::Get(Production::NAMED_NUMBER);
-    if (named_number->Parse(asnData, endStop))
+    if (named_number->Parse(asnData, asnDataIndex, endStop))
     {
       mNamedNumber.push_back(named_number);
-      LOG_PASS("NamedNumber", asnData);
+      LOG_PASS();
     }
     else
     {
-      LOG_FAIL("NamedNumber", asnData);
+      LOG_FAIL();
+      asnDataIndex = starting_index;
       return false;
     }
 
-    LOG_START(",", asnData);
-    auto asn_word = asnData.Peek();
-    if (asn_word && std::get<1>(asn_word.value()) == ",")
+    obj = ",";
+    LOG_START();
+    if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
     {
-      asnData.IncrementCurrentIndex();
-      LOG_PASS(",", asnData);
+      LOG_PASS();
+      ++asnDataIndex;
     }
     else
     {
-      LOG_FAIL(",", asnData);
+      LOG_FAIL();
       break;
     }
   }
 
-  return !mNamedNumber.empty();
+  if (mNamedNumber.empty())
+  {
+    asnDataIndex = starting_index;
+    return false;
+  }
+  else
+  {
+    return true;
+  }
 }

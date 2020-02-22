@@ -1,8 +1,9 @@
 #include "NamedNumber.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -16,80 +17,80 @@ GetType() const
 
 bool
 NamedNumber::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // NamedNumber ::=
   //   identifier "(" SignedNumber ")"
   // | identifier "(" DefinedValue ")"
 
-  LOG_START("Identifier", asnData);
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "Identifier";
+  LOG_START();
   auto identifier =
     ProductionFactory::Get(Production::IDENTIFIER);
-  if (identifier->Parse(asnData, endStop))
+  if (identifier->Parse(asnData, asnDataIndex, endStop))
   {
     mIdentifier = identifier;
-    LOG_PASS("Identifier", asnData);
+    LOG_PASS();
   }
   else
   {
-    LOG_FAIL("Identifier", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("(", asnData);
-  auto asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "(")
+  obj = "(";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("(", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
   }
   else
   {
-    LOG_FAIL("(", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("SignedNumber", asnData);
+  endStop.push_back(")");
+
+  obj = "SignedNumber";
+  LOG_START();
   auto signed_number =
     ProductionFactory::Get(Production::SIGNED_NUMBER);
-  if (signed_number->Parse(asnData, endStop))
+  if (signed_number->Parse(asnData, asnDataIndex, endStop))
   {
     mSignedNumber = signed_number;
-    LOG_PASS("SignedNumber", asnData);
+    LOG_PASS();
+    endStop.pop_back();
   }
   else
   {
-    LOG_FAIL("SignedNumber", asnData);
+    LOG_FAIL();
+    endStop.pop_back();
+    asnDataIndex = starting_index;
     return false;
-#if 0
-    LOG_START("DefinedValue", asnData);
-    auto defined_value =
-      ProductionFactory::Get(Production::DEFINED_VALUE);
-    if (defined_value->Parse(asnData, endStop))
-    {
-      mDefinedValue = defined_value;
-      LOG_PASS("DefinedValue", asnData);
-    }
-    else
-    {
-      LOG_FAIL("DefinedValue", asnData);
-      return false;
-    }
-#endif
   }
 
-  LOG_START(")", asnData);
-  asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == ")")
+  // DefinedValue
+
+  obj = ")";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS(")", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
+    return true;
   }
   else
   {
-    LOG_FAIL(")", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
-
-  return true;
 }

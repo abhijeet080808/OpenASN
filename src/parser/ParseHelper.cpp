@@ -6,6 +6,16 @@ using namespace OpenASN;
 
 bool
 ParseHelper::
+IsObjectPresent(const std::string& object,
+                const std::vector<Word>& asnData,
+                size_t& asnDataIndex)
+{
+  return (asnData.size() > asnDataIndex &&
+          std::get<1>(asnData.at(asnDataIndex)) == object);
+}
+
+bool
+ParseHelper::
 HitEndStop(const std::string& asnWord,
            const std::vector<std::string>& endStop)
 {

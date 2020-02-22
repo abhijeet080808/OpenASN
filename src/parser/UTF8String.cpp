@@ -1,6 +1,8 @@
 #include "UTF8String.hh"
 
 #include "LoggingMacros.hh"
+#include "ParseHelper.hh"
+
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -14,21 +16,26 @@ GetType() const
 
 bool
 UTF8String::
-Parse(AsnData& asnData, const std::vector<std::string>&)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>&)
 {
   // UTF8String
 
-  LOG_START("UTF8String", asnData);
-  auto asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "UTF8String")
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "UTF8String";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("UTF8String", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
     return true;
   }
   else
   {
-    LOG_FAIL("UTF8String", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 }

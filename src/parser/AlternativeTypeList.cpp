@@ -1,8 +1,9 @@
 #include "AlternativeTypeList.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -16,41 +17,55 @@ GetType() const
 
 bool
 AlternativeTypeList::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // AlternativeTypeList ::=
   //   NamedType
   // | AlternativeTypeList "," NamedType
 
+  size_t starting_index = asnDataIndex;
+
   while (1)
   {
-    LOG_START("NamedType", asnData);
+    auto obj = "NamedType";
+    LOG_START();
     auto named_type =
       ProductionFactory::Get(Production::NAMED_TYPE);
-    if (named_type->Parse(asnData, endStop))
+    if (named_type->Parse(asnData, asnDataIndex, endStop))
     {
       mNamedType.push_back(named_type);
-      LOG_PASS("NamedType", asnData);
+      LOG_PASS();
     }
     else
     {
-      LOG_FAIL("NamedType", asnData);
+      LOG_FAIL();
+      asnDataIndex = starting_index;
       return false;
     }
 
-    LOG_START(",", asnData);
-    auto asn_word = asnData.Peek();
-    if (asn_word && std::get<1>(asn_word.value()) == ",")
+    obj = ",";
+    LOG_START();
+    if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
     {
-      asnData.IncrementCurrentIndex();
-      LOG_PASS(",", asnData);
+      LOG_PASS();
+      ++asnDataIndex;
     }
     else
     {
-      LOG_FAIL(",", asnData);
+      LOG_FAIL();
       break;
     }
   }
 
-  return !mNamedType.empty();
+  if (mNamedType.empty())
+  {
+    asnDataIndex = starting_index;
+    return false;
+  }
+  else
+  {
+    return true;
+  }
 }

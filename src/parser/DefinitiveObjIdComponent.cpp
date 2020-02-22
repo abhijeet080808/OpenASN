@@ -1,8 +1,9 @@
 #include "DefinitiveObjIdComponent.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -16,7 +17,9 @@ GetType() const
 
 bool
 DefinitiveObjIdComponent::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // DefinitiveObjIdComponent ::=
   //   NameForm
@@ -25,22 +28,27 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
 
   // TODO Look at ITU X.680 08/2015 sec 32 to identify valid values
   // Also see ITU X.660 07/2011 annex A onwards
-  LOG_START("NameForm", asnData);
+
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "NameForm";
+  LOG_START();
   auto name_form =
     ProductionFactory::Get(Production::NAME_FORM);
-  if (name_form->Parse(asnData, endStop))
+  if (name_form->Parse(asnData, asnDataIndex, endStop))
   {
     mNameForm = name_form;
-    LOG_PASS("NameForm", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("NameForm", asnData);
+    LOG_FAIL();
   }
 
   // DefinitiveNumberForm
   // DefinitiveNameAndNumberForm
 
+  asnDataIndex = starting_index;
   return false;
 }

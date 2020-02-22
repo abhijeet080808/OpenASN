@@ -1,8 +1,9 @@
 #include "RootComponentTypeList.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -16,22 +17,28 @@ GetType() const
 
 bool
 RootComponentTypeList::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // RootComponentTypeList ::= ComponentTypeList
 
-  LOG_START("ComponentTypeList", asnData);
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "ComponentTypeList";
+  LOG_START();
   auto component_type_list =
     ProductionFactory::Get(Production::COMPONENT_TYPE_LIST);
-  if (component_type_list->Parse(asnData, endStop))
+  if (component_type_list->Parse(asnData, asnDataIndex, endStop))
   {
     mComponentTypeList = component_type_list;
-    LOG_PASS("ComponentTypeList", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("ComponentTypeList", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 }

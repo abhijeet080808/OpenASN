@@ -1,8 +1,9 @@
 #include "ModuleBody.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -16,7 +17,9 @@ GetType() const
 
 bool
 ModuleBody::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // ModuleBody ::=
   //   Exports Imports AssignmentList
@@ -26,20 +29,24 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
 
   // Imports
 
-  LOG_START("AssignmentList", asnData);
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "AssignmentList";
+  LOG_START();
   auto assignment_list =
     ProductionFactory::Get(Production::ASSIGNMENT_LIST);
-	if (assignment_list->Parse(asnData, endStop))
+	if (assignment_list->Parse(asnData, asnDataIndex, endStop))
 	{
     mAssignmentList = assignment_list;
-    LOG_PASS("AssignmentList", asnData);
+    LOG_PASS();
+    return true;
   }
   else
   {
-    LOG_FAIL("AssignmentList", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
+    return false;
 	}
 
   // Exports Imports AssignmentList all 3 has to be present or none
-
-  return true;
 }

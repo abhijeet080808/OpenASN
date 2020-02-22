@@ -1,8 +1,10 @@
 #pragma once
 
-#include "AsnData.hh"
-
+#include "ParseDefs.hh"
 #include "common/CommonDefs.hh"
+
+#include <cstdint>
+#include <vector>
 
 namespace OpenASN
 {
@@ -14,7 +16,8 @@ namespace OpenASN
 
       virtual Production GetType() const = 0;
 
-      virtual bool Parse(AsnData& asnData,
-                         const std::vector<std::string>& endStop) = 0;
+      virtual bool Parse(const std::vector<Word>& asnData,
+                         size_t& asnDataIndex,
+                         std::vector<std::string>& endStop) = 0;
   };
 }

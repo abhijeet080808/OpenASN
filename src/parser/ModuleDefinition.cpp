@@ -1,8 +1,9 @@
 #include "ModuleDefinition.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -16,7 +17,9 @@ GetType() const
 
 bool
 ModuleDefinition::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // ModuleDefinition ::=
   // ModuleIdentifier
@@ -30,115 +33,131 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   // EncodingControlSections
   // END
 
-  std::vector<std::string> end_stop{ "DEFINITIONS" };
-  end_stop.insert(std::end(end_stop), std::begin(endStop), std::end(endStop));
+  size_t starting_index = asnDataIndex;
 
-  LOG_START("ModuleIdentifier", asnData);
+  endStop.push_back("DEFINITIONS");
+
+  auto obj = "ModuleIdentifier";
+  LOG_START();
   auto module_identifier =
     ProductionFactory::Get(Production::MODULE_IDENTIFIER);
-  if (module_identifier->Parse(asnData, end_stop))
+  if (module_identifier->Parse(asnData, asnDataIndex, endStop))
   {
     mModuleIdentifier = module_identifier;
-    LOG_PASS("ModuleIdentifier", asnData);
+    LOG_PASS();
+    endStop.pop_back();
   }
   else
   {
-    LOG_FAIL("ModuleIdentifier", asnData);
+    LOG_FAIL();
+    endStop.pop_back();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("DEFINITIONS", asnData);
-  auto asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "DEFINITIONS")
+  obj = "DEFINITIONS";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("DEFINITIONS", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
   }
   else
   {
-    LOG_FAIL("DEFINITIONS", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START(":", asnData);
-  asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == ":")
+  obj = ":";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS(":", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
   }
   else
   {
-    LOG_FAIL(":", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START(":", asnData);
-  asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == ":")
+  obj = ":";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS(":", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
   }
   else
   {
-    LOG_FAIL(":", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("=", asnData);
-  asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "=")
+  obj = "=";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("=", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
   }
   else
   {
-    LOG_FAIL("=", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("BEGIN", asnData);
-  asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "BEGIN")
+  obj = "BEGIN";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("BEGIN", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
   }
   else
   {
-    LOG_FAIL("BEGIN", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("ModuleBody", asnData);
+  endStop.push_back("END");
+
+  obj = "ModuleBody";
+  LOG_START();
   auto module_body =
     ProductionFactory::Get(Production::MODULE_BODY);
-  if (module_body->Parse(asnData, end_stop))
+  if (module_body->Parse(asnData, asnDataIndex, endStop))
   {
     mModuleBody = module_body;
-    LOG_PASS("ModuleBody", asnData);
+    LOG_PASS();
+    endStop.pop_back();
   }
   else
   {
-    LOG_FAIL("ModuleBody", asnData);
+    LOG_FAIL();
+    endStop.pop_back();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("END", asnData);
-  asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "END")
+  obj = "END";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("END", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
+    return true;
   }
   else
   {
-    LOG_FAIL("END", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
-
-  return true;
 }
 

@@ -1,8 +1,9 @@
 #include "DefinitiveIdentification.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -16,25 +17,28 @@ GetType() const
 
 bool
 DefinitiveIdentification::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // DefinitiveIdentification ::=
   //   DefinitiveOID
   // | DefinitiveOIDandIRI
   // | empty
 
-  LOG_START("DefinitiveOID", asnData);
+  auto obj = "DefinitiveOID";
+  LOG_START();
   auto definitive_oid =
     ProductionFactory::Get(Production::DEFINITIVE_OID);
-  if (definitive_oid->Parse(asnData, endStop))
+  if (definitive_oid->Parse(asnData, asnDataIndex, endStop))
   {
     mDefinitiveOID = definitive_oid;
-    LOG_PASS("DefinitiveOID", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("DefinitiveOID", asnData);
+    LOG_FAIL();
   }
 
   // DefinitiveOIDandIRI

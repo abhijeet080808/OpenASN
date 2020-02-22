@@ -1,6 +1,9 @@
 #include "EmbeddedPDVType.hh"
 
 #include "LoggingMacros.hh"
+#include "ParseHelper.hh"
+#include "ProductionFactory.hh"
+
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -14,35 +17,40 @@ GetType() const
 
 bool
 EmbeddedPDVType::
-Parse(AsnData& asnData, const std::vector<std::string>&)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>&)
 {
   // EmbeddedPDVType ::= EMBEDDED PDV
 
-  LOG_START("EMBEDDED", asnData);
-  auto asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "EMBEDDED")
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "EMBEDDED";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("EMBEDDED", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
   }
   else
   {
-    LOG_FAIL("EMBEDDED", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("PDV", asnData);
-  asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "PDV")
+  obj = "PDV";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("PDV", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
+    return true;
   }
   else
   {
-    LOG_FAIL("PDV", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
-
-  return true;
 }

@@ -1,8 +1,9 @@
 #include "DefinitiveOID.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -16,53 +17,61 @@ GetType() const
 
 bool
 DefinitiveOID::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // DefinitiveOID ::=
   // "{" DefinitiveObjIdComponentList "}"
 
-  LOG_START("{", asnData);
-  auto asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "{")
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "{";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("{", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
   }
   else
   {
-    LOG_FAIL("{", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  std::vector<std::string> end_stop{ "}" };
-  end_stop.insert(std::end(end_stop), std::begin(endStop), std::end(endStop));
+  endStop.push_back("}");
 
-  LOG_START("DefinitiveObjIdComponentList", asnData);
+  obj = "DefinitiveObjIdComponentList";
+  LOG_START();
   auto definitive_obj_id_component_list =
     ProductionFactory::Get(Production::DEFINITIVE_OBJ_ID_COMPONENT_LIST);
-  if (definitive_obj_id_component_list->Parse(asnData, end_stop))
+  if (definitive_obj_id_component_list->Parse(asnData, asnDataIndex, endStop))
   {
     mDefinitiveObjIdComponentList = definitive_obj_id_component_list;
-    LOG_PASS("DefinitiveObjIdComponentList", asnData);
+    LOG_PASS();
+    endStop.pop_back();
   }
   else
   {
-    LOG_FAIL("DefinitiveObjIdComponentList", asnData);
+    LOG_FAIL();
+    endStop.pop_back();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("}", asnData);
-  asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "}")
+  obj = "}";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("}", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
+    return true;
   }
   else
   {
-    LOG_FAIL("}", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
-
-  return true;
 }

@@ -1,8 +1,9 @@
 #include "TypeAssignment.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -16,79 +17,89 @@ GetType() const
 
 bool
 TypeAssignment::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // TypeAssignment ::=
   // typereference
   // "::="
   // Type
 
-  LOG_START("TypeReference", asnData);
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "TypeReference";
+  LOG_START();
   auto type_reference =
     ProductionFactory::Get(Production::TYPE_REFERENCE);
-  if (type_reference->Parse(asnData, endStop))
+  if (type_reference->Parse(asnData, asnDataIndex, endStop))
   {
     mTypeReference = type_reference;
-    LOG_PASS("TypeReference", asnData);
+    LOG_PASS();
   }
   else
   {
-    LOG_FAIL("TypeReference", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START(":", asnData);
-  auto asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == ":")
+  obj = ":";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS(":", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
   }
   else
   {
-    LOG_FAIL(":", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START(":", asnData);
-  asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == ":")
+  obj = ":";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS(":", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
   }
   else
   {
-    LOG_FAIL(":", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("=", asnData);
-  asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "=")
+  obj = "=";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("=", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
   }
   else
   {
-    LOG_FAIL("=", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("Type", asnData);
+  obj = "Type";
+  LOG_START();
   auto type =
     ProductionFactory::Get(Production::TYPE);
-  if (type->Parse(asnData, endStop))
+  if (type->Parse(asnData, asnDataIndex, endStop))
   {
     mType = type;
-    LOG_PASS("Type", asnData);
+    LOG_PASS();
+    return true;
   }
   else
   {
-    LOG_FAIL("Type", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
-
-  return true;
 }

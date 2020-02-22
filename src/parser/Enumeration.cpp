@@ -1,8 +1,9 @@
 #include "Enumeration.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -16,39 +17,53 @@ GetType() const
 
 bool
 Enumeration::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // Enumeration ::= EnumerationItem | EnumerationItem "," Enumeration
 
+  size_t starting_index = asnDataIndex;
+
   while (1)
   {
-    LOG_START("EnumerationItem", asnData);
+    auto obj = "EnumerationItem";
+    LOG_START();
     auto enumeration_item =
       ProductionFactory::Get(Production::ENUMERATION_ITEM);
-    if (enumeration_item->Parse(asnData, endStop))
+    if (enumeration_item->Parse(asnData, asnDataIndex, endStop))
     {
       mEnumerationItem.push_back(enumeration_item);
-      LOG_PASS("EnumerationItem", asnData);
+      LOG_PASS();
     }
     else
     {
-      LOG_FAIL("EnumerationItem", asnData);
+      LOG_FAIL();
+      asnDataIndex = starting_index;
       return false;
     }
 
-    LOG_START(",", asnData);
-    auto asn_word = asnData.Peek();
-    if (asn_word && std::get<1>(asn_word.value()) == ",")
+    obj = ",";
+    LOG_START();
+    if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
     {
-      asnData.IncrementCurrentIndex();
-      LOG_PASS(",", asnData);
+      LOG_PASS();
+      ++asnDataIndex;
     }
     else
     {
-      LOG_FAIL(",", asnData);
+      LOG_FAIL();
       break;
     }
   }
 
-  return !mEnumerationItem.empty();
+  if (mEnumerationItem.empty())
+  {
+    asnDataIndex = starting_index;
+    return false;
+  }
+  else
+  {
+    return true;
+  }
 }

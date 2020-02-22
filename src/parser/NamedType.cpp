@@ -1,8 +1,9 @@
 #include "NamedType.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -16,37 +17,44 @@ GetType() const
 
 bool
 NamedType::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // NamedType ::= identifier Type
 
-  LOG_START("Identifier", asnData);
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "Identifier";
+  LOG_START();
   auto identifier =
     ProductionFactory::Get(Production::IDENTIFIER);
-  if (identifier->Parse(asnData, endStop))
+  if (identifier->Parse(asnData, asnDataIndex, endStop))
   {
     mIdentifier = identifier;
-    LOG_PASS("Identifier", asnData);
+    LOG_PASS();
   }
   else
   {
-    LOG_FAIL("Identifier", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("Type", asnData);
+  obj = "Type";
+  LOG_START();
   auto type =
     ProductionFactory::Get(Production::TYPE);
-  if (type->Parse(asnData, endStop))
+  if (type->Parse(asnData, asnDataIndex, endStop))
   {
     mType = type;
-    LOG_PASS("Type", asnData);
+    LOG_PASS();
+    return true;
   }
   else
   {
-    LOG_FAIL("Type", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
-
-  return true;
 }

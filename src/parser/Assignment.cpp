@@ -1,11 +1,10 @@
 #include "Assignment.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
-
-#include "ParseHelper.hh"
 
 using namespace OpenASN;
 
@@ -18,7 +17,9 @@ GetType() const
 
 bool
 Assignment::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // Assignment ::=
   //   TypeAssignment
@@ -30,19 +31,22 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   // | ObjectSetAssignment
   // | ParameterizedAssignment
 
-  LOG_START("TypeAssignment", asnData);
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "TypeAssignment";
+  LOG_START();
   auto type_assignment =
     ProductionFactory::Get(Production::TYPE_ASSIGNMENT);
-  if (type_assignment->Parse(asnData, endStop))
+  if (type_assignment->Parse(asnData, asnDataIndex, endStop))
   {
     mTypeAssignment = type_assignment;
-    LOG_PASS("TypeAssignment", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("AssignmentList", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
+    return false;
   }
-
-  return false;
 }

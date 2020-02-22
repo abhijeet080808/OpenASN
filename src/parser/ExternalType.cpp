@@ -1,6 +1,8 @@
 #include "ExternalType.hh"
 
 #include "LoggingMacros.hh"
+#include "ParseHelper.hh"
+
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -14,21 +16,26 @@ GetType() const
 
 bool
 ExternalType::
-Parse(AsnData& asnData, const std::vector<std::string>&)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>&)
 {
   // ExternalType ::= EXTERNAL
 
-  LOG_START("EXTERNAL", asnData);
-  auto asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "EXTERNAL")
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "EXTERNAL";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("EXTERNAL", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
     return true;
   }
   else
   {
-    LOG_FAIL("EXTERNAL", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 }

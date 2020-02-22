@@ -1,8 +1,9 @@
 #include "CharacterStringType.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -16,39 +17,45 @@ GetType() const
 
 bool
 CharacterStringType::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // CharacterStringType ::=
   //   RestrictedCharacterStringType
   // | UnrestrictedCharacterStringType
 
-  LOG_START("RestrictedCharacterStringType", asnData);
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "RestrictedCharacterStringType";
+  LOG_START();
   auto restricted_character_string_type =
     ProductionFactory::Get(Production::RESTRICTED_CHARACTER_STRING_TYPE);
-  if (restricted_character_string_type->Parse(asnData, endStop))
+  if (restricted_character_string_type->Parse(asnData, asnDataIndex, endStop))
   {
     mRestrictedCharacterStringType = restricted_character_string_type;
-    LOG_PASS("RestrictedCharacterStringType", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("RestrictedCharacterStringType", asnData);
+    LOG_FAIL();
   }
 
-  LOG_START("UnrestrictedCharacterStringType", asnData);
+  obj = "UnrestrictedCharacterStringType";
+  LOG_START();
   auto unrestricted_character_string_type =
     ProductionFactory::Get(Production::UNRESTRICTED_CHARACTER_STRING_TYPE);
-  if (unrestricted_character_string_type->Parse(asnData, endStop))
+  if (unrestricted_character_string_type->Parse(asnData, asnDataIndex, endStop))
   {
     mUnrestrictedCharacterStringType = unrestricted_character_string_type;
-    LOG_PASS("UnrestrictedCharacterStringType", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("UnrestrictedCharacterStringType", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
+    return false;
   }
-
-  return false;
 }

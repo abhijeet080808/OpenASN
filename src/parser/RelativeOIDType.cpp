@@ -1,6 +1,8 @@
 #include "RelativeOIDType.hh"
 
 #include "LoggingMacros.hh"
+#include "ParseHelper.hh"
+
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -14,21 +16,26 @@ GetType() const
 
 bool
 RelativeOIDType::
-Parse(AsnData& asnData, const std::vector<std::string>&)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>&)
 {
   // RelativeOIDType ::= RELATIVE-OID
 
-  LOG_START("RELATIVE-OID", asnData);
-  auto asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "RELATIVE-OID")
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "RELATIVE-OID";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("RELATIVE-OID", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
     return true;
   }
   else
   {
-    LOG_FAIL("RELATIVE-OID", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 }

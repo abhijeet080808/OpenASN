@@ -1,8 +1,9 @@
 #include "RootEnumeration.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -16,22 +17,28 @@ GetType() const
 
 bool
 RootEnumeration::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // RootEnumeration ::= Enumeration
 
-  LOG_START("Enumeration", asnData);
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "Enumeration";
+  LOG_START();
   auto enumeration =
     ProductionFactory::Get(Production::ENUMERATION);
-  if (enumeration->Parse(asnData, endStop))
+  if (enumeration->Parse(asnData, asnDataIndex, endStop))
   {
     mEnumeration = enumeration;
-    LOG_PASS("Enumeration", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("Enumeration", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 }

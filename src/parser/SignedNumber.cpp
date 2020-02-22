@@ -1,8 +1,9 @@
 #include "SignedNumber.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -16,39 +17,45 @@ GetType() const
 
 bool
 SignedNumber::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // SignedNumber ::=
   //       number
   // | "-" number
 
-  LOG_START("Number", asnData);
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "Number";
+  LOG_START();
   auto number =
     ProductionFactory::Get(Production::NUMBER);
-  if (number->Parse(asnData, endStop))
+  if (number->Parse(asnData, asnDataIndex, endStop))
   {
     mNumber = number;
-    LOG_PASS("Number", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("Number", asnData);
+    LOG_FAIL();
   }
 
-  LOG_START("NegativeNumber", asnData);
+  obj = "NegativeNumber";
+  LOG_START();
   auto negative_number =
     ProductionFactory::Get(Production::NEGATIVE_NUMBER);
-  if (negative_number->Parse(asnData, endStop))
+  if (negative_number->Parse(asnData, asnDataIndex, endStop))
   {
     mNegativeNumber = negative_number;
-    LOG_PASS("NegativeNumber", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("NegativeNumber", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
+    return false;
   }
-
-  return false;
 }

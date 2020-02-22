@@ -1,6 +1,8 @@
 #include "UnrestrictedCharacterStringType.hh"
 
 #include "LoggingMacros.hh"
+#include "ParseHelper.hh"
+
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -14,35 +16,40 @@ GetType() const
 
 bool
 UnrestrictedCharacterStringType::
-Parse(AsnData& asnData, const std::vector<std::string>&)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>&)
 {
   // UnrestrictedCharacterStringType ::= CHARACTER STRING
 
-  LOG_START("CHARACTER", asnData);
-  auto asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "CHARACTER")
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "CHARACTER";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("CHARACTER", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
   }
   else
   {
-    LOG_FAIL("CHARACTER", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("STRING", asnData);
-  asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "STRING")
+  obj = "STRING";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("STRING", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
+    return true;
   }
   else
   {
-    LOG_FAIL("STRING", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
-
-  return true;
 }

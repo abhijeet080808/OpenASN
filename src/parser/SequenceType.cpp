@@ -1,11 +1,10 @@
 #include "SequenceType.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
-
-#include "ParseHelper.hh"
 
 using namespace OpenASN;
 
@@ -18,81 +17,92 @@ GetType() const
 
 bool
 SequenceType::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // SequenceType ::=
   //   SEQUENCE "{" "}"
   // | SEQUENCE "{" ExtensionAndException OptionalExtensionMarker "}"
   // | SEQUENCE "{" ComponentTypeLists "}"
 
-  LOG_START("SEQUENCE", asnData);
-  auto asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "SEQUENCE")
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "SEQUENCE";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("SEQUENCE", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
   }
   else
   {
-    LOG_FAIL("SEQUENCE", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("{", asnData);
-  asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "{")
+  obj = "{";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("{", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
   }
   else
   {
-    LOG_FAIL("{", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("}", asnData);
-  asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "}")
+  obj = "}";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("}", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
     return true;
   }
   else
   {
-    LOG_FAIL("}", asnData);
+    LOG_FAIL();
   }
 
-  std::vector<std::string> end_stop{ "}" };
-  end_stop.insert(std::end(end_stop), std::begin(endStop), std::end(endStop));
+  endStop.push_back("}");
 
-  LOG_START("ComponentTypeLists", asnData);
+  obj = "ComponentTypeLists";
+  LOG_START();
   auto component_type_lists =
     ProductionFactory::Get(Production::COMPONENT_TYPE_LISTS);
-  if (component_type_lists->Parse(asnData, end_stop))
+  if (component_type_lists->Parse(asnData, asnDataIndex, endStop))
   {
     mComponentTypeLists = component_type_lists;
-    LOG_PASS("ComponentTypeLists", asnData);
+    LOG_PASS();
+    endStop.pop_back();
   }
   else
   {
-    LOG_FAIL("ComponentTypeLists", asnData);
+    LOG_FAIL();
+    endStop.pop_back();
+    asnDataIndex = starting_index;
+    return false;
   }
 
   // ExtensionAndException OptionalExtensionMarker
 
-  LOG_START("}", asnData);
-  asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "}")
+  obj = "}";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("}", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
     return true;
   }
   else
   {
-    LOG_FAIL("}", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 }

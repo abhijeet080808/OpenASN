@@ -1,13 +1,12 @@
 #include "AsnParser.hh"
 
-#include "AsnData.hh"
+#include "LoggingMacros.hh"
 #include "ModuleDefinition.hh"
+#include "ParseDefs.hh"
 #include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
 #include "common/CommonDefs.hh"
-
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 #include <fstream>
@@ -24,7 +23,7 @@ Parse(const std::string& asnFilePath)
               asnFilePath);
 
   std::vector<char> asn_file_data;
-  AsnData parsed_asn_data;
+  std::vector<Word> parsed_asn_data;
 
   std::ifstream asn_file(asnFilePath);
   asn_file >> std::noskipws;
@@ -42,8 +41,8 @@ Parse(const std::string& asnFilePath)
   {
     std::vector<char> asn_word;
 
-    AsnData::PrecedingInfo preceding_info =
-      AsnData::PrecedingInfo::PRECEDED_BY_NEWLINE;
+    PrecedingInfo preceding_info =
+      PrecedingInfo::PRECEDED_BY_NEWLINE;
 
     for (const auto& c : asn_file_data)
     {
@@ -51,7 +50,7 @@ Parse(const std::string& asnFilePath)
       {
         if (ParseHelper::IsNewline(c))
         {
-          preceding_info = AsnData::PrecedingInfo::PRECEDED_BY_NEWLINE;
+          preceding_info = PrecedingInfo::PRECEDED_BY_NEWLINE;
           continue;
         }
         else if (ParseHelper::IsWhitespace(c))
@@ -72,30 +71,30 @@ Parse(const std::string& asnFilePath)
       {
         if (ParseHelper::IsNewline(c))
         {
-          parsed_asn_data.Insert(
+          parsed_asn_data.push_back(std::make_tuple(
               preceding_info,
               std::string(asn_word.begin(), asn_word.end()),
-              AsnData::SucceedingInfo::SUCCEEDED_BY_NEWLINE);
+              SucceedingInfo::SUCCEEDED_BY_NEWLINE));
           asn_word.clear();
-          preceding_info = AsnData::PrecedingInfo::PRECEDED_BY_NEWLINE;
+          preceding_info = PrecedingInfo::PRECEDED_BY_NEWLINE;
         }
         else if (ParseHelper::IsWhitespace(c))
         {
-          parsed_asn_data.Insert(
+          parsed_asn_data.push_back(std::make_tuple(
               preceding_info,
               std::string(asn_word.begin(), asn_word.end()),
-              AsnData::SucceedingInfo::SUCCEEDED_BY_WHITESPACE);
+              SucceedingInfo::SUCCEEDED_BY_WHITESPACE));
           asn_word.clear();
-          preceding_info = AsnData::PrecedingInfo::PRECEDED_BY_WHITESPACE;
+          preceding_info = PrecedingInfo::PRECEDED_BY_WHITESPACE;
         }
         else if (ParseHelper::IsLexicalItem(c))
         {
-          parsed_asn_data.Insert(
+          parsed_asn_data.push_back(std::make_tuple(
               preceding_info,
               std::string(asn_word.begin(), asn_word.end()),
-              AsnData::SucceedingInfo::SUCCEEDED_BY_WHITESPACE);
+              SucceedingInfo::SUCCEEDED_BY_WHITESPACE));
           asn_word.clear();
-          preceding_info = AsnData::PrecedingInfo::PRECEDED_BY_WHITESPACE;
+          preceding_info = PrecedingInfo::PRECEDED_BY_WHITESPACE;
 
           asn_word.push_back(c);
         }
@@ -103,12 +102,12 @@ Parse(const std::string& asnFilePath)
         {
           if (ParseHelper::IsLexicalItem(asn_word.front()))
           {
-            parsed_asn_data.Insert(
+            parsed_asn_data.push_back(std::make_tuple(
               preceding_info,
               std::string(1, asn_word.front()),
-              AsnData::SucceedingInfo::SUCCEEDED_BY_WHITESPACE);
+              SucceedingInfo::SUCCEEDED_BY_WHITESPACE));
             asn_word.clear();
-            preceding_info = AsnData::PrecedingInfo::PRECEDED_BY_WHITESPACE;
+            preceding_info = PrecedingInfo::PRECEDED_BY_WHITESPACE;
 
             asn_word.push_back(c);
           }
@@ -122,46 +121,44 @@ Parse(const std::string& asnFilePath)
 
     if (!asn_word.empty())
     {
-      parsed_asn_data.Insert(preceding_info,
-                             std::string(asn_word.begin(), asn_word.end()),
-                             AsnData::SucceedingInfo::SUCCEEDED_BY_NEWLINE);
+      parsed_asn_data.push_back(std::make_tuple(
+            preceding_info,
+            std::string(asn_word.begin(), asn_word.end()),
+            SucceedingInfo::SUCCEEDED_BY_NEWLINE));
       asn_word.clear();
-      preceding_info = AsnData::PrecedingInfo::PRECEDED_BY_NEWLINE;
+      preceding_info = PrecedingInfo::PRECEDED_BY_NEWLINE;
     }
 
     SPDLOG_INFO("Parsed file split into {} asn words",
-                parsed_asn_data.GetSize());
+                parsed_asn_data.size());
 
-    auto parsed_asn_word = parsed_asn_data.Peek();
-    while (parsed_asn_word.has_value())
+    for (const auto& parsed_asn_word : parsed_asn_data)
     {
       SPDLOG_DEBUG("{}{}{}",
-          std::get<0>(parsed_asn_word.value()) ==
-            AsnData::PrecedingInfo::PRECEDED_BY_WHITESPACE ?
+          std::get<0>(parsed_asn_word) ==
+            PrecedingInfo::PRECEDED_BY_WHITESPACE ?
               "<SPC>" : "<CR/LF>",
-          std::get<1>(parsed_asn_word.value()),
-          std::get<2>(parsed_asn_word.value()) ==
-            AsnData::SucceedingInfo::SUCCEEDED_BY_WHITESPACE ?
+          std::get<1>(parsed_asn_word),
+          std::get<2>(parsed_asn_word) ==
+            SucceedingInfo::SUCCEEDED_BY_WHITESPACE ?
               "<SPC>" : "<CR/LF>");
-
-      parsed_asn_data.IncrementCurrentIndex();
-      parsed_asn_word = parsed_asn_data.Peek();
     }
 
-    parsed_asn_data.ResetCurrentIndex();
-
-    LOG_START("ModuleDefinition", parsed_asn_data);
+    size_t asn_data_index = 0;
+    std::vector<std::string> end_stop;
+    LOG_START_GEN("ModuleDefinition", parsed_asn_data, asn_data_index);
     auto module_definition =
       ProductionFactory::Get(Production::MODULE_DEFINITION);
     if (module_definition->Parse(parsed_asn_data,
-                                 std::vector<std::string>{ "END" }))
+                                 asn_data_index,
+                                 end_stop))
     {
-      LOG_PASS("ModuleDefinition", parsed_asn_data);
+      LOG_PASS_GEN("ModuleDefinition", parsed_asn_data, asn_data_index);
       return module_definition;
     }
     else
     {
-      LOG_FAIL("ModuleDefinition", parsed_asn_data);
+      LOG_FAIL_GEN("ModuleDefinition", parsed_asn_data, asn_data_index);
       return nullptr;
     }
   }

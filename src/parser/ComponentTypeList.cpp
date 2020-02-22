@@ -1,8 +1,9 @@
 #include "ComponentTypeList.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -16,41 +17,55 @@ GetType() const
 
 bool
 ComponentTypeList::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // ComponentTypeList ::=
   //   ComponentType
   // | ComponentTypeList "," ComponentType
 
+  size_t starting_index = asnDataIndex;
+
   while (1)
   {
-    LOG_START("ComponentType", asnData);
+    auto obj = "ComponentType";
+    LOG_START();
     auto component_type =
       ProductionFactory::Get(Production::COMPONENT_TYPE);
-    if (component_type->Parse(asnData, endStop))
+    if (component_type->Parse(asnData, asnDataIndex, endStop))
     {
       mComponentType.push_back(component_type);
-      LOG_PASS("ComponentType", asnData);
+      LOG_PASS();
     }
     else
     {
-      LOG_FAIL("ComponentType", asnData);
+      LOG_FAIL();
+      asnDataIndex = starting_index;
       return false;
     }
 
-    LOG_START(",", asnData);
-    auto asn_word = asnData.Peek();
-    if (asn_word && std::get<1>(asn_word.value()) == ",")
+    obj = ",";
+    LOG_START();
+    if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
     {
-      asnData.IncrementCurrentIndex();
-      LOG_PASS(",", asnData);
+      LOG_PASS();
+      ++asnDataIndex;
     }
     else
     {
-      LOG_FAIL(",", asnData);
+      LOG_FAIL();
       break;
     }
   }
 
-  return !mComponentType.empty();
+  if (mComponentType.empty())
+  {
+    asnDataIndex = starting_index;
+    return false;
+  }
+  else
+  {
+    return true;
+  }
 }

@@ -1,8 +1,9 @@
 #include "Type.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -16,23 +17,28 @@ GetType() const
 
 bool
 Type::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // Type ::= BuiltinType | ReferencedType | ConstrainedType
 
-  LOG_START("BuiltinType", asnData);
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "BuiltinType";
+  LOG_START();
   auto builtin_type =
     ProductionFactory::Get(Production::BUILTIN_TYPE);
-  if (builtin_type->Parse(asnData, endStop))
+  if (builtin_type->Parse(asnData, asnDataIndex, endStop))
   {
     mBuiltinType = builtin_type;
-    LOG_PASS("BuiltinType", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("BuiltinType", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
+    return false;
   }
-
-  return false;
 }

@@ -1,8 +1,9 @@
 #include "RestrictedCharacterStringType.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -16,7 +17,9 @@ GetType() const
 
 bool
 RestrictedCharacterStringType::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // RestrictedCharacterStringType ::=
   //   BMPString
@@ -33,187 +36,203 @@ Parse(AsnData& asnData, const std::vector<std::string>& endStop)
   // | VideotexString
   // | VisibleString
 
-  LOG_START("BMPString", asnData);
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "BMPString";
+  LOG_START();
   auto bmp_string =
     ProductionFactory::Get(Production::BMP_STRING);
-  if (bmp_string->Parse(asnData, endStop))
+  if (bmp_string->Parse(asnData, asnDataIndex, endStop))
   {
     mBMPString = bmp_string;
-    LOG_PASS("BMPString", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("BMPString", asnData);
+    LOG_FAIL();
   }
 
-  LOG_START("GeneralString", asnData);
+  obj = "GeneralString";
+  LOG_START();
   auto general_string =
     ProductionFactory::Get(Production::GENERAL_STRING);
-  if (general_string->Parse(asnData, endStop))
+  if (general_string->Parse(asnData, asnDataIndex, endStop))
   {
     mGeneralString = general_string;
-    LOG_PASS("GeneralString", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("GeneralString", asnData);
+    LOG_FAIL();
   }
 
-  LOG_START("GraphicString", asnData);
+  obj = "GraphicString";
+  LOG_START();
   auto graphic_string =
     ProductionFactory::Get(Production::GRAPHIC_STRING);
-  if (graphic_string->Parse(asnData, endStop))
+  if (graphic_string->Parse(asnData, asnDataIndex, endStop))
   {
     mGraphicString = graphic_string;
-    LOG_PASS("GraphicString", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("GraphicString", asnData);
+    LOG_FAIL();
   }
 
-  LOG_START("IA5String", asnData);
+  obj = "IA5String";
+  LOG_START();
   auto ia5_string =
     ProductionFactory::Get(Production::IA5_STRING);
-  if (ia5_string->Parse(asnData, endStop))
+  if (ia5_string->Parse(asnData, asnDataIndex, endStop))
   {
     mIA5String = ia5_string;
-    LOG_PASS("IA5String", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("IA5String", asnData);
+    LOG_FAIL();
   }
 
-  LOG_START("ISO646String", asnData);
+  obj = "ISO646String";
+  LOG_START();
   auto iso646_string =
     ProductionFactory::Get(Production::ISO646_STRING);
-  if (iso646_string->Parse(asnData, endStop))
+  if (iso646_string->Parse(asnData, asnDataIndex, endStop))
   {
     mISO646String = iso646_string;
-    LOG_PASS("ISO646String", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("ISO646String", asnData);
+    LOG_FAIL();
   }
 
-  LOG_START("NumericString", asnData);
+  obj = "NumericString";
+  LOG_START();
   auto numeric_string =
     ProductionFactory::Get(Production::NUMERIC_STRING);
-  if (numeric_string->Parse(asnData, endStop))
+  if (numeric_string->Parse(asnData, asnDataIndex, endStop))
   {
     mNumericString = numeric_string;
-    LOG_PASS("NumericString", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("NumericString", asnData);
+    LOG_FAIL();
   }
 
-  LOG_START("PrintableString", asnData);
+  obj = "PrintableString";
+  LOG_START();
   auto printable_string =
     ProductionFactory::Get(Production::PRINTABLE_STRING);
-  if (printable_string->Parse(asnData, endStop))
+  if (printable_string->Parse(asnData, asnDataIndex, endStop))
   {
     mPrintableString = printable_string;
-    LOG_PASS("PrintableString", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("PrintableString", asnData);
+    LOG_FAIL();
   }
 
-  LOG_START("T61String", asnData);
+  obj = "T61String";
+  LOG_START();
   auto t61_string =
     ProductionFactory::Get(Production::T61_STRING);
-  if (t61_string->Parse(asnData, endStop))
+  if (t61_string->Parse(asnData, asnDataIndex, endStop))
   {
     mT61String = t61_string;
-    LOG_PASS("T61String", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("T61String", asnData);
+    LOG_FAIL();
   }
 
-  LOG_START("TeletexString", asnData);
+  obj = "TeletexString";
+  LOG_START();
   auto teletex_string =
     ProductionFactory::Get(Production::TELETEX_STRING);
-  if (teletex_string->Parse(asnData, endStop))
+  if (teletex_string->Parse(asnData, asnDataIndex, endStop))
   {
     mTeletexString = teletex_string;
-    LOG_PASS("TeletexString", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("TeletexString", asnData);
+    LOG_FAIL();
   }
 
-  LOG_START("UniversalString", asnData);
+  obj = "UniversalString";
+  LOG_START();
   auto universal_string =
     ProductionFactory::Get(Production::UNIVERSAL_STRING);
-  if (universal_string->Parse(asnData, endStop))
+  if (universal_string->Parse(asnData, asnDataIndex, endStop))
   {
     mUniversalString = universal_string;
-    LOG_PASS("UniversalString", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("UniversalString", asnData);
+    LOG_FAIL();
   }
 
-  LOG_START("UTF8String", asnData);
+  obj = "UTF8String";
+  LOG_START();
   auto utf8_string =
     ProductionFactory::Get(Production::UTF8_STRING);
-  if (utf8_string->Parse(asnData, endStop))
+  if (utf8_string->Parse(asnData, asnDataIndex, endStop))
   {
     mUTF8String = utf8_string;
-    LOG_PASS("UTF8String", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("UTF8String", asnData);
+    LOG_FAIL();
   }
 
-  LOG_START("VideotexString", asnData);
+  obj = "VideotexString";
+  LOG_START();
   auto videotex_string =
     ProductionFactory::Get(Production::VIDEOTEX_STRING);
-  if (videotex_string->Parse(asnData, endStop))
+  if (videotex_string->Parse(asnData, asnDataIndex, endStop))
   {
     mVideotexString = videotex_string;
-    LOG_PASS("VideotexString", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("VideotexString", asnData);
+    LOG_FAIL();
   }
 
-  LOG_START("VisibleString", asnData);
+  obj = "VisibleString";
+  LOG_START();
   auto visible_string =
     ProductionFactory::Get(Production::VISIBLE_STRING);
-  if (visible_string->Parse(asnData, endStop))
+  if (visible_string->Parse(asnData, asnDataIndex, endStop))
   {
     mVisibleString = visible_string;
-    LOG_PASS("VisibleString", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("VisibleString", asnData);
+    LOG_FAIL();
   }
 
+  asnDataIndex = starting_index;
   return false;
 }

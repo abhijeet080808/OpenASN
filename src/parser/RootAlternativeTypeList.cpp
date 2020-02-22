@@ -1,8 +1,9 @@
 #include "RootAlternativeTypeList.hh"
 
+#include "LoggingMacros.hh"
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
-#include "LoggingMacros.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;
@@ -16,22 +17,28 @@ GetType() const
 
 bool
 RootAlternativeTypeList::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // RootAlternativeTypeList ::= AlternativeTypeList
 
-  LOG_START("AlternativeTypeList", asnData);
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "AlternativeTypeList";
+  LOG_START();
   auto alternative_type_list =
     ProductionFactory::Get(Production::ALTERNATIVE_TYPE_LIST);
-  if (alternative_type_list->Parse(asnData, endStop))
+  if (alternative_type_list->Parse(asnData, asnDataIndex, endStop))
   {
     mAlternativeTypeList = alternative_type_list;
-    LOG_PASS("AlternativeTypeList", asnData);
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL("AlternativeTypeList", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 }

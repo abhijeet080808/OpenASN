@@ -1,9 +1,10 @@
 #include "ChoiceType.hh"
 
 #include "LoggingMacros.hh"
-#include "spdlog/spdlog.h"
-
+#include "ParseHelper.hh"
 #include "ProductionFactory.hh"
+
+#include "spdlog/spdlog.h"
 
 using namespace OpenASN;
 
@@ -16,65 +17,74 @@ GetType() const
 
 bool
 ChoiceType::
-Parse(AsnData& asnData, const std::vector<std::string>& endStop)
+Parse(const std::vector<Word>& asnData,
+      size_t& asnDataIndex,
+      std::vector<std::string>& endStop)
 {
   // ChoiceType ::= CHOICE "{" AlternativeTypeLists "}"
 
-  LOG_START("CHOICE", asnData);
-  auto asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "CHOICE")
+  size_t starting_index = asnDataIndex;
+
+  auto obj = "CHOICE";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("CHOICE", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
   }
   else
   {
-    LOG_FAIL("CHOICE", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("{", asnData);
-  asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "{")
+  obj = "{";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("{", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
   }
   else
   {
-    LOG_FAIL("{", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  std::vector<std::string> end_stop{ "}" };
-  end_stop.insert(std::end(end_stop), std::begin(endStop), std::end(endStop));
+  endStop.push_back("}");
 
-  LOG_START("AlternativeTypeLists", asnData);
+  obj = "AlternativeTypeLists";
+  LOG_START();
   auto alternative_type_lists =
     ProductionFactory::Get(Production::ALTERNATIVE_TYPE_LISTS);
-  if (alternative_type_lists->Parse(asnData, end_stop))
+  if (alternative_type_lists->Parse(asnData, asnDataIndex, endStop))
   {
     mAlternativeTypeLists = alternative_type_lists;
-    LOG_PASS("AlternativeTypeLists", asnData);
+    LOG_PASS();
+    endStop.pop_back();
   }
   else
   {
-    LOG_FAIL("AlternativeTypeLists", asnData);
+    LOG_FAIL();
+    endStop.pop_back();
+    asnDataIndex = starting_index;
     return false;
   }
 
-  LOG_START("}", asnData);
-  asn_word = asnData.Peek();
-  if (asn_word && std::get<1>(asn_word.value()) == "}")
+  obj = "}";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    asnData.IncrementCurrentIndex();
-    LOG_PASS("}", asnData);
+    LOG_PASS();
+    ++asnDataIndex;
+    return true;
   }
   else
   {
-    LOG_FAIL("}", asnData);
+    LOG_FAIL();
+    asnDataIndex = starting_index;
     return false;
   }
-
-  return true;
 }
