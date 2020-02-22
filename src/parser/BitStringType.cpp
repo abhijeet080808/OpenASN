@@ -65,8 +65,7 @@ Parse(const std::vector<Word>& asnData,
   else
   {
     LOG_FAIL();
-    asnDataIndex = starting_index;
-    return false;
+    return true;
   }
 
   endStop.push_back("}");
