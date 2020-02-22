@@ -84,4 +84,9 @@ SeqOf1            ::= SEQUENCE OF INTEGER
 SeqOf2            ::= SEQUENCE OF INTEGER { w(-1), x(0), y(1), z(2) }
 SeqOf3            ::= SEQUENCE OF seqOf3Int INTEGER { w(-1), x(0), y(1), z(2) }
 
+Set               ::= SET {
+  setBool           BOOLEAN,
+  setBitStr1        BIT STRING { a(0), b(1), c(100) }
+}
+
 END
