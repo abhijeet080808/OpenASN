@@ -5,7 +5,7 @@ project(OpenASN VERSION 0.1
                 HOMEPAGE_URL "https://github.com/abhijeet080808/OpenASN"
                 LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
