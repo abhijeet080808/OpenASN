@@ -2,6 +2,7 @@
 
 #include "AlternativeTypeList.hh"
 #include "AlternativeTypeLists.hh"
+#include "Application.hh"
 #include "Assignment.hh"
 #include "AssignmentList.hh"
 #include "BitStringType.hh"
@@ -10,26 +11,37 @@
 #include "BuiltinType.hh"
 #include "CharacterStringType.hh"
 #include "ChoiceType.hh"
+#include "Class.hh"
+#include "ClassNumber.hh"
 #include "ComponentType.hh"
 #include "ComponentTypeList.hh"
 #include "ComponentTypeLists.hh"
 #include "DateType.hh"
 #include "DateTimeType.hh"
+#include "DefinedValue.hh"
 #include "DefinitiveIdentification.hh"
 #include "DefinitiveOID.hh"
 #include "DefinitiveObjIdComponent.hh"
 #include "DefinitiveObjIdComponentList.hh"
 #include "DurationType.hh"
 #include "EmbeddedPDVType.hh"
+#include "EncodingPrefix.hh"
+#include "EncodingPrefixedType.hh"
+#include "EncodingReference.hh"
+#include "EncodingReferencePrime.hh"
 #include "EnumeratedType.hh"
 #include "Enumeration.hh"
 #include "EnumerationItem.hh"
 #include "Enumerations.hh"
+#include "Explicit.hh"
 #include "ExternalType.hh"
+#include "ExternalTypeReference.hh"
+#include "ExternalValueReference.hh"
 #include "GeneralString.hh"
 #include "GraphicString.hh"
 #include "IA5String.hh"
 #include "Identifier.hh"
+#include "Implicit.hh"
 #include "IntegerType.hh"
 #include "IRIType.hh"
 #include "ISO646String.hh"
@@ -48,7 +60,9 @@
 #include "NumericString.hh"
 #include "ObjectIdentifierType.hh"
 #include "OctetStringType.hh"
+#include "PrefixedType.hh"
 #include "PrintableString.hh"
+#include "Private.hh"
 #include "RealType.hh"
 #include "RelativeIRIType.hh"
 #include "RelativeOIDType.hh"
@@ -61,11 +75,14 @@
 #include "SetType.hh"
 #include "SetOfType.hh"
 #include "SignedNumber.hh"
+#include "Tag.hh"
+#include "TaggedType.hh"
 #include "T61String.hh"
 #include "TeletexString.hh"
 #include "Type.hh"
 #include "TypeAssignment.hh"
 #include "TypeReference.hh"
+#include "Universal.hh"
 #include "UniversalString.hh"
 #include "UnrestrictedCharacterStringType.hh"
 #include "UTF8String.hh"
@@ -87,6 +104,9 @@ Get(Production production)
 
     case Production::ALTERNATIVE_TYPE_LISTS:
       return std::make_shared<AlternativeTypeLists>();
+
+    case Production::APPLICATION:
+      return std::make_shared<Application>();
 
     case Production::ASSIGNMENT:
       return std::make_shared<Assignment>();
@@ -112,6 +132,12 @@ Get(Production production)
     case Production::CHOICE_TYPE:
       return std::make_shared<ChoiceType>();
 
+    case Production::CLASS:
+      return std::make_shared<Class>();
+
+    case Production::CLASS_NUMBER:
+      return std::make_shared<ClassNumber>();
+
     case Production::COMPONENT_TYPE:
       return std::make_shared<ComponentType>();
 
@@ -126,6 +152,9 @@ Get(Production production)
 
     case Production::DATE_TIME_TYPE:
       return std::make_shared<DateTimeType>();
+
+    case Production::DEFINED_VALUE:
+      return std::make_shared<DefinedValue>();
 
     case Production::DEFINITIVE_IDENTIFICATION:
       return std::make_shared<DefinitiveIdentification>();
@@ -145,6 +174,18 @@ Get(Production production)
     case Production::EMBEDDED_PDV_TYPE:
       return std::make_shared<EmbeddedPDVType>();
 
+    case Production::ENCODING_PREFIX:
+      return std::make_shared<EncodingPrefix>();
+
+    case Production::ENCODING_PREFIXED_TYPE:
+      return std::make_shared<EncodingPrefixedType>();
+
+    case Production::ENCODING_REFERENCE:
+      return std::make_shared<EncodingReference>();
+
+    case Production::ENCODING_REFERENCE_PRIME:
+      return std::make_shared<EncodingReferencePrime>();
+
     case Production::ENUMERATED_TYPE:
       return std::make_shared<EnumeratedType>();
 
@@ -157,8 +198,17 @@ Get(Production production)
     case Production::ENUMERATIONS:
       return std::make_shared<Enumerations>();
 
+    case Production::EXPLICIT:
+      return std::make_shared<Explicit>();
+
     case Production::EXTERNAL_TYPE:
       return std::make_shared<ExternalType>();
+
+    case Production::EXTERNAL_TYPE_REFERENCE:
+      return std::make_shared<ExternalTypeReference>();
+
+    case Production::EXTERNAL_VALUE_REFERENCE:
+      return std::make_shared<ExternalValueReference>();
 
     case Production::GENERAL_STRING:
       return std::make_shared<GeneralString>();
@@ -171,6 +221,9 @@ Get(Production production)
 
     case Production::IDENTIFIER:
       return std::make_shared<Identifier>();
+
+    case Production::IMPLICIT:
+      return std::make_shared<Implicit>();
 
     case Production::INTEGER_TYPE:
       return std::make_shared<IntegerType>();
@@ -229,8 +282,14 @@ Get(Production production)
     case Production::OCTET_STRING_TYPE:
       return std::make_shared<OctetStringType>();
 
+    case Production::PREFIXED_TYPE:
+      return std::make_shared<PrefixedType>();
+
     case Production::PRINTABLE_STRING:
       return std::make_shared<PrintableString>();
+
+    case Production::PRIVATE:
+      return std::make_shared<Private>();
 
     case Production::REAL_TYPE:
       return std::make_shared<RealType>();
@@ -268,6 +327,12 @@ Get(Production production)
     case Production::SIGNED_NUMBER:
       return std::make_shared<SignedNumber>();
 
+    case Production::TAG:
+      return std::make_shared<Tag>();
+
+    case Production::TAGGED_TYPE:
+      return std::make_shared<TaggedType>();
+
     case Production::T61_STRING:
       return std::make_shared<T61String>();
 
@@ -282,6 +347,9 @@ Get(Production production)
 
     case Production::TYPE_REFERENCE:
       return std::make_shared<TypeReference>();
+
+    case Production::UNIVERSAL:
+      return std::make_shared<Universal>();
 
     case Production::UNIVERSAL_STRING:
       return std::make_shared<UniversalString>();

@@ -31,6 +31,7 @@ namespace OpenASN
       std::shared_ptr<IProduction> mNullType;
       std::shared_ptr<IProduction> mObjectIdentifierType;
       std::shared_ptr<IProduction> mOctetStringType;
+      std::shared_ptr<IProduction> mPrefixedType;
       std::shared_ptr<IProduction> mRealType;
       std::shared_ptr<IProduction> mRelativeIRIType;
       std::shared_ptr<IProduction> mRelativeOIDType;

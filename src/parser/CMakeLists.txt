@@ -2,6 +2,7 @@ set(LIB_NAME parser)
 
 set(SOURCES AlternativeTypeList.cpp
             AlternativeTypeLists.cpp
+            Application.cpp
             AsnParser.cpp
             Assignment.cpp
             AssignmentList.cpp
@@ -11,26 +12,37 @@ set(SOURCES AlternativeTypeList.cpp
             BuiltinType.cpp
             CharacterStringType.cpp
             ChoiceType.cpp
+            Class.cpp
+            ClassNumber.cpp
             ComponentType.cpp
             ComponentTypeList.cpp
             ComponentTypeLists.cpp
             DateType.cpp
             DateTimeType.cpp
+            DefinedValue.cpp
             DefinitiveIdentification.cpp
             DefinitiveObjIdComponent.cpp
             DefinitiveObjIdComponentList.cpp
             DefinitiveOID.cpp
             DurationType.cpp
             EmbeddedPDVType.cpp
+            EncodingPrefix.cpp
+            EncodingPrefixedType.cpp
+            EncodingReference.cpp
+            EncodingReferencePrime.cpp
             EnumeratedType.cpp
             Enumeration.cpp
             EnumerationItem.cpp
             Enumerations.cpp
+            Explicit.cpp
             ExternalType.cpp
+            ExternalTypeReference.cpp
+            ExternalValueReference.cpp
             GeneralString.cpp
             GraphicString.cpp
             IA5String.cpp
             Identifier.cpp
+            Implicit.cpp
             IntegerType.cpp
             IRIType.cpp
             ISO646String.cpp
@@ -50,6 +62,8 @@ set(SOURCES AlternativeTypeList.cpp
             ObjectIdentifierType.cpp
             OctetStringType.cpp
             ParseHelper.cpp
+            PrefixedType.cpp
+            Private.cpp
             PrintableString.cpp
             ProductionFactory.cpp
             RealType.cpp
@@ -64,11 +78,14 @@ set(SOURCES AlternativeTypeList.cpp
             SetType.cpp
             SetOfType.cpp
             SignedNumber.cpp
+            Tag.cpp
+            TaggedType.cpp
             T61String.cpp
             TeletexString.cpp
             TypeAssignment.cpp
             Type.cpp
             TypeReference.cpp
+            Universal.cpp
             UniversalString.cpp
             UnrestrictedCharacterStringType.cpp
             UTF8String.cpp

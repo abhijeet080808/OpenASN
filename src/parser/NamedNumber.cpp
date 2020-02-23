@@ -72,12 +72,28 @@ Parse(const std::vector<Word>& asnData,
   else
   {
     LOG_FAIL();
-    endStop.pop_back();
-    asnDataIndex = starting_index;
-    return false;
   }
 
-  // DefinedValue
+  if (!mSignedNumber)
+  {
+    obj = "DefinedValue";
+    LOG_START();
+    auto defined_value =
+      ProductionFactory::Get(Production::DEFINED_VALUE);
+    if (defined_value->Parse(asnData, asnDataIndex, endStop))
+    {
+      mDefinedValue = defined_value;
+      LOG_PASS();
+      endStop.pop_back();
+    }
+    else
+    {
+      LOG_FAIL();
+      endStop.pop_back();
+      asnDataIndex = starting_index;
+      return false;
+    }
+  }
 
   obj = ")";
   LOG_START();

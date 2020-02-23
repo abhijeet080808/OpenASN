@@ -277,6 +277,21 @@ Parse(const std::vector<Word>& asnData,
     LOG_FAIL();
   }
 
+  obj = "PrefixedType";
+  LOG_START();
+  auto prefixed_type =
+    ProductionFactory::Get(Production::PREFIXED_TYPE);
+  if (prefixed_type->Parse(asnData, asnDataIndex, endStop))
+  {
+    mPrefixedType = prefixed_type;
+    LOG_PASS();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
+
   obj = "RealType";
   LOG_START();
   auto real_type =
