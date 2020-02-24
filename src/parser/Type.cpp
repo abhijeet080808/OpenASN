@@ -38,7 +38,23 @@ Parse(const std::vector<Word>& asnData,
   else
   {
     LOG_FAIL();
-    asnDataIndex = starting_index;
-    return false;
   }
+
+  obj = "ReferencedType";
+  LOG_START();
+  auto referenced_type =
+    ProductionFactory::Get(Production::REFERENCED_TYPE);
+  if (referenced_type->Parse(asnData, asnDataIndex, endStop))
+  {
+    mReferencedType = referenced_type;
+    LOG_PASS();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
+
+  asnDataIndex = starting_index;
+  return false;
 }

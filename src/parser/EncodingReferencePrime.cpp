@@ -29,6 +29,11 @@ Parse(const std::vector<Word>& asnData,
     return false;
   }
 
+  if (ParseHelper::IsReserved(std::get<1>(asnData.at(asnDataIndex))))
+  {
+    return false;
+  }
+
   // Last char can not be hyphen
   if (*(std::get<1>(asnData.at(asnDataIndex)).end() - 1) == '-')
   {

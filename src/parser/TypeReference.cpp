@@ -29,6 +29,11 @@ Parse(const std::vector<Word>& asnData,
     return false;
   }
 
+  if (ParseHelper::IsReserved(std::get<1>(asnData.at(asnDataIndex))))
+  {
+    return false;
+  }
+
   // First char must be upper case
   if (!isupper(*(std::get<1>(asnData.at(asnDataIndex))).begin()))
   {

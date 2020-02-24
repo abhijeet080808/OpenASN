@@ -18,6 +18,7 @@
 #include "ComponentTypeLists.hh"
 #include "DateType.hh"
 #include "DateTimeType.hh"
+#include "DefinedType.hh"
 #include "DefinedValue.hh"
 #include "DefinitiveIdentification.hh"
 #include "DefinitiveOID.hh"
@@ -64,6 +65,7 @@
 #include "PrintableString.hh"
 #include "Private.hh"
 #include "RealType.hh"
+#include "ReferencedType.hh"
 #include "RelativeIRIType.hh"
 #include "RelativeOIDType.hh"
 #include "RestrictedCharacterStringType.hh"
@@ -154,6 +156,9 @@ Get(Production production)
 
     case Production::DATE_TIME_TYPE:
       return std::make_shared<DateTimeType>();
+
+    case Production::DEFINED_TYPE:
+      return std::make_shared<DefinedType>();
 
     case Production::DEFINED_VALUE:
       return std::make_shared<DefinedValue>();
@@ -295,6 +300,9 @@ Get(Production production)
 
     case Production::REAL_TYPE:
       return std::make_shared<RealType>();
+
+    case Production::REFERENCED_TYPE:
+      return std::make_shared<ReferencedType>();
 
     case Production::RELATIVE_IRI_TYPE:
       return std::make_shared<RelativeIRIType>();

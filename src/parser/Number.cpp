@@ -29,6 +29,11 @@ Parse(const std::vector<Word>& asnData,
     return false;
   }
 
+  if (ParseHelper::IsReserved(std::get<1>(asnData.at(asnDataIndex))))
+  {
+    return false;
+  }
+
   for (const auto& c : std::get<1>(asnData.at(asnDataIndex)))
   {
     // Only numbers allowed

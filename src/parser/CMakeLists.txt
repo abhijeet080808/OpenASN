@@ -19,6 +19,7 @@ set(SOURCES AlternativeTypeList.cpp
             ComponentTypeLists.cpp
             DateType.cpp
             DateTimeType.cpp
+            DefinedType.cpp
             DefinedValue.cpp
             DefinitiveIdentification.cpp
             DefinitiveObjIdComponent.cpp
@@ -67,6 +68,7 @@ set(SOURCES AlternativeTypeList.cpp
             PrintableString.cpp
             ProductionFactory.cpp
             RealType.cpp
+            ReferencedType.cpp
             RelativeIRIType.cpp
             RelativeOIDType.cpp
             RootAlternativeTypeList.cpp

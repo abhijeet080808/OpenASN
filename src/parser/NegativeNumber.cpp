@@ -29,6 +29,11 @@ Parse(const std::vector<Word>& asnData,
     return false;
   }
 
+  if (ParseHelper::IsReserved(std::get<1>(asnData.at(asnDataIndex))))
+  {
+    return false;
+  }
+
   if (std::get<1>(asnData.at(asnDataIndex)).size() < 2)
   {
     return false;
