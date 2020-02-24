@@ -101,6 +101,10 @@ Prefixed6         ::= [TAG :] INTEGER
 Time              ::= TIME
 TimeOfDay         ::= TIME-OF-DAY
 
-DefinedType       ::= DefAbcModule.DefExtTyperef
+DefinedType1      ::= DefAbcModule.DefExtTyperef
+DefinedType2      ::= LocalTyperef
+UsefulType1       ::= GeneralizedTime
+UsefulType2       ::= UTCTime
+UsefulType3       ::= ObjectDescriptor
 
 END

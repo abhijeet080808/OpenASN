@@ -39,6 +39,7 @@ set(SOURCES AlternativeTypeList.cpp
             ExternalType.cpp
             ExternalTypeReference.cpp
             ExternalValueReference.cpp
+            GeneralizedTime.cpp
             GeneralString.cpp
             GraphicString.cpp
             IA5String.cpp
@@ -60,6 +61,7 @@ set(SOURCES AlternativeTypeList.cpp
             NullType.cpp
             Number.cpp
             NumericString.cpp
+            ObjectDescriptor.cpp
             ObjectIdentifierType.cpp
             OctetStringType.cpp
             ParseHelper.cpp
@@ -92,6 +94,8 @@ set(SOURCES AlternativeTypeList.cpp
             Universal.cpp
             UniversalString.cpp
             UnrestrictedCharacterStringType.cpp
+            UsefulType.cpp
+            UTCTime.cpp
             UTF8String.cpp
             VideotexString.cpp
             VisibleString.cpp

@@ -38,6 +38,7 @@
 #include "ExternalType.hh"
 #include "ExternalTypeReference.hh"
 #include "ExternalValueReference.hh"
+#include "GeneralizedTime.hh"
 #include "GeneralString.hh"
 #include "GraphicString.hh"
 #include "IA5String.hh"
@@ -59,6 +60,7 @@
 #include "NullType.hh"
 #include "Number.hh"
 #include "NumericString.hh"
+#include "ObjectDescriptor.hh"
 #include "ObjectIdentifierType.hh"
 #include "OctetStringType.hh"
 #include "PrefixedType.hh"
@@ -89,6 +91,8 @@
 #include "Universal.hh"
 #include "UniversalString.hh"
 #include "UnrestrictedCharacterStringType.hh"
+#include "UsefulType.hh"
+#include "UTCTime.hh"
 #include "UTF8String.hh"
 #include "VideotexString.hh"
 #include "VisibleString.hh"
@@ -217,6 +221,9 @@ Get(Production production)
     case Production::EXTERNAL_VALUE_REFERENCE:
       return std::make_shared<ExternalValueReference>();
 
+    case Production::GENERALIZED_TIME:
+      return std::make_shared<GeneralizedTime>();
+
     case Production::GENERAL_STRING:
       return std::make_shared<GeneralString>();
 
@@ -282,6 +289,9 @@ Get(Production production)
 
     case Production::NUMERIC_STRING:
       return std::make_shared<NumericString>();
+
+    case Production::OBJECT_DESCRIPTOR:
+      return std::make_shared<ObjectDescriptor>();
 
     case Production::OBJECT_IDENTIFIER_TYPE:
       return std::make_shared<ObjectIdentifierType>();
@@ -372,6 +382,12 @@ Get(Production production)
 
     case Production::UNRESTRICTED_CHARACTER_STRING_TYPE:
       return std::make_shared<UnrestrictedCharacterStringType>();
+
+    case Production::USEFUL_TYPE:
+      return std::make_shared<UsefulType>();
+
+    case Production::UTC_TIME:
+      return std::make_shared<UTCTime>();
 
     case Production::UTF8_STRING:
       return std::make_shared<UTF8String>();

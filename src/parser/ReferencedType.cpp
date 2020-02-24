@@ -45,6 +45,21 @@ Parse(const std::vector<Word>& asnData,
     LOG_FAIL();
   }
 
+  obj = "UsefulType";
+  LOG_START();
+  auto useful_type =
+    ProductionFactory::Get(Production::USEFUL_TYPE);
+  if (useful_type->Parse(asnData, asnDataIndex, endStop))
+  {
+    mUsefulType = useful_type;
+    LOG_PASS();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
+
   asnDataIndex = starting_index;
   return false;
 }
