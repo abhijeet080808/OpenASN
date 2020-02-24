@@ -102,7 +102,7 @@ Time              ::= TIME
 TimeOfDay         ::= TIME-OF-DAY
 
 DefinedType1      ::= DefAbcModule.DefExtTyperef
-DefinedType2      ::= LocalTyperef
+DefinedType2      ::= Prefixed1
 UsefulType1       ::= GeneralizedTime
 UsefulType2       ::= UTCTime
 UsefulType3       ::= ObjectDescriptor
