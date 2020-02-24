@@ -397,6 +397,21 @@ Parse(const std::vector<Word>& asnData,
     LOG_FAIL();
   }
 
+  obj = "TimeOfDayType";
+  LOG_START();
+  auto time_of_day_type =
+    ProductionFactory::Get(Production::TIME_OF_DAY_TYPE);
+  if (time_of_day_type->Parse(asnData, asnDataIndex, endStop))
+  {
+    mTimeOfDayType = time_of_day_type;
+    LOG_PASS();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
+
   obj = "TimeType";
   LOG_START();
   auto time_type =

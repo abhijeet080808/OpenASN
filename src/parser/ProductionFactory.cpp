@@ -79,6 +79,7 @@
 #include "TaggedType.hh"
 #include "T61String.hh"
 #include "TeletexString.hh"
+#include "TimeOfDayType.hh"
 #include "TimeType.hh"
 #include "Type.hh"
 #include "TypeAssignment.hh"
@@ -339,6 +340,9 @@ Get(Production production)
 
     case Production::TELETEX_STRING:
       return std::make_shared<TeletexString>();
+
+    case Production::TIME_OF_DAY_TYPE:
+      return std::make_shared<TimeOfDayType>();
 
     case Production::TIME_TYPE:
       return std::make_shared<TimeType>();
