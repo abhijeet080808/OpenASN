@@ -85,6 +85,7 @@ namespace OpenASN
     TAGGED_TYPE,
     T61_STRING,
     TELETEX_STRING,
+    TIME_TYPE,
     TYPE,
     TYPE_ASSIGNMENT,
     TYPE_REFERENCE,

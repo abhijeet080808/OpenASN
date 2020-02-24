@@ -98,5 +98,6 @@ Prefixed3         ::= [5] INTEGER
 Prefixed4         ::= [AbcModule.extTyperef] INTEGER { w(-1), x(0), y(1), z(2) }
 Prefixed5         ::= [localTyperef] SET OF INTEGER { w(-1), x(0), y(1), z(2) }
 Prefixed6         ::= [TAG :] INTEGER
+Time              ::= TIME
 
 END

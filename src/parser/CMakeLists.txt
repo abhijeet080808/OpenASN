@@ -82,6 +82,7 @@ set(SOURCES AlternativeTypeList.cpp
             TaggedType.cpp
             T61String.cpp
             TeletexString.cpp
+            TimeType.cpp
             TypeAssignment.cpp
             Type.cpp
             TypeReference.cpp
