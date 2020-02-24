@@ -60,6 +60,22 @@ Parse(const std::vector<Word>& asnData,
     LOG_FAIL();
   }
 
+  obj = "SelectionType";
+  LOG_START();
+  auto selection_type =
+    ProductionFactory::Get(Production::SELECTION_TYPE);
+  if (selection_type->Parse(asnData, asnDataIndex, endStop))
+  {
+    mSelectionType = selection_type;
+    LOG_PASS();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
+
+
   asnDataIndex = starting_index;
   return false;
 }

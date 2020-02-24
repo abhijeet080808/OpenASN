@@ -77,6 +77,7 @@ set(SOURCES AlternativeTypeList.cpp
             RootComponentTypeList.cpp
             RootEnumeration.cpp
             RestrictedCharacterStringType.cpp
+            SelectionType.cpp
             SequenceType.cpp
             SequenceOfType.cpp
             SetType.cpp

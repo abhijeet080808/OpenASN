@@ -7,7 +7,7 @@
 namespace OpenASN
 {
   // X.680 08/2015 Annex L
-  class ReferencedType : public IProduction
+  class SelectionType : public IProduction
   {
     public:
       Production GetType() const override;
@@ -17,10 +17,7 @@ namespace OpenASN
                  std::vector<std::string>& endStop) override;
 
     public:
-      std::shared_ptr<IProduction> mDefinedType;
-      std::shared_ptr<IProduction> mUsefulType;
-      std::shared_ptr<IProduction> mSelectionType;
-      //std::shared_ptr<IProduction> mTypeFromObject;
-      //std::shared_ptr<IProduction> mValueSetFromObjects;
+      std::shared_ptr<IProduction> mIdentifier;
+      std::shared_ptr<IProduction> mType;
   };
 }

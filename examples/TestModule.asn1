@@ -19,7 +19,7 @@ CharStr12         ::= VideotexString
 CharStr13         ::= VisibleString
 CharStr14         ::= CHARACTER STRING
 
-Ch                ::= CHOICE {
+Choice            ::= CHOICE {
   chInt             INTEGER,
   chBool            BOOLEAN
 }
@@ -41,7 +41,7 @@ Real              ::= REAL
 RelativeIri       ::= RELATIVE-OID-IRI
 RelativeOid       ::= RELATIVE-OID
 
-Seq               ::= SEQUENCE {
+Sequence          ::= SEQUENCE {
   seqBool           BOOLEAN,
   seqBitStr1        BIT STRING { a(0), b(1), c(100) },
   seqBitStr2        BIT STRING,
@@ -106,5 +106,7 @@ DefinedType2      ::= LocalTyperef
 UsefulType1       ::= GeneralizedTime
 UsefulType2       ::= UTCTime
 UsefulType3       ::= ObjectDescriptor
+
+SelectionType     ::= chInt < Choice
 
 END

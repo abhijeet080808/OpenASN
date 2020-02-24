@@ -74,6 +74,7 @@
 #include "RootAlternativeTypeList.hh"
 #include "RootComponentTypeList.hh"
 #include "RootEnumeration.hh"
+#include "SelectionType.hh"
 #include "SequenceType.hh"
 #include "SequenceOfType.hh"
 #include "SetType.hh"
@@ -331,6 +332,9 @@ Get(Production production)
 
     case Production::RESTRICTED_CHARACTER_STRING_TYPE:
       return std::make_shared<RestrictedCharacterStringType>();
+
+    case Production::SELECTION_TYPE:
+      return std::make_shared<SelectionType>();
 
     case Production::SEQUENCE_TYPE:
       return std::make_shared<SequenceType>();
