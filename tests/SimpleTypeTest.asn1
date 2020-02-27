@@ -1,8 +1,20 @@
-SimpleTypeTest DEFINITIONS ::=
-BEGIN
+/* 
+ * This is a test asn1 module. Lots of funny comments to try and break
+ * the parser.
+ */
 
-SimpleTypeTestBool ::= BOOLEAN
-SimpleTypeTestInt ::= INTEGER
+-- TestModule
+-- TestModule
 
-END
+--Module Under Test--SimpleTypeTest DEFINITIONS----::=----
+----BEGIN -- module begin
 
+-- # -- SimpleTypeTestBool   ::= BOOLEAN   -- bool builtin type
+-- # -- SimpleTypeTestInt    ::= INTEGER   -- integer builtin type
+
+/*bla/*bla/**/bla*/bla*/
+
+----END -- module end
+
+-- TestModule
+-- TestModule
