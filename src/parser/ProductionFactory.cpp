@@ -1,5 +1,6 @@
 #include "ProductionFactory.hh"
 
+#include "AdditionalElementSetSpec.hh"
 #include "AlternativeTypeList.hh"
 #include "AlternativeTypeLists.hh"
 #include "Application.hh"
@@ -8,7 +9,9 @@
 #include "BitStringType.hh"
 #include "BMPString.hh"
 #include "BooleanType.hh"
+#include "BooleanValue.hh"
 #include "BuiltinType.hh"
+#include "BuiltinValue.hh"
 #include "CharacterStringType.hh"
 #include "ChoiceType.hh"
 #include "Class.hh"
@@ -16,6 +19,9 @@
 #include "ComponentType.hh"
 #include "ComponentTypeList.hh"
 #include "ComponentTypeLists.hh"
+#include "ConstrainedType.hh"
+#include "Constraint.hh"
+#include "ConstraintSpec.hh"
 #include "DateType.hh"
 #include "DateTimeType.hh"
 #include "DefinedType.hh"
@@ -25,6 +31,10 @@
 #include "DefinitiveObjIdComponent.hh"
 #include "DefinitiveObjIdComponentList.hh"
 #include "DurationType.hh"
+#include "Elements.hh"
+#include "ElementSetSpec.hh"
+#include "ElementSetSpecs.hh"
+#include "Ellipsis.hh"
 #include "EmbeddedPDVType.hh"
 #include "EncodingPrefix.hh"
 #include "EncodingPrefixedType.hh"
@@ -34,6 +44,9 @@
 #include "Enumeration.hh"
 #include "EnumerationItem.hh"
 #include "Enumerations.hh"
+#include "ExceptionIdentification.hh"
+#include "ExceptionSpec.hh"
+#include "Exclusions.hh"
 #include "Explicit.hh"
 #include "ExternalType.hh"
 #include "ExternalTypeReference.hh"
@@ -45,6 +58,8 @@
 #include "Identifier.hh"
 #include "Implicit.hh"
 #include "IntegerType.hh"
+#include "IntersectionElements.hh"
+#include "Intersections.hh"
 #include "IRIType.hh"
 #include "ISO646String.hh"
 #include "ModuleBody.hh"
@@ -73,6 +88,7 @@
 #include "RestrictedCharacterStringType.hh"
 #include "RootAlternativeTypeList.hh"
 #include "RootComponentTypeList.hh"
+#include "RootElementSetSpec.hh"
 #include "RootEnumeration.hh"
 #include "SelectionType.hh"
 #include "SequenceType.hh"
@@ -80,6 +96,9 @@
 #include "SetType.hh"
 #include "SetOfType.hh"
 #include "SignedNumber.hh"
+#include "SingleValue.hh"
+#include "SubtypeConstraint.hh"
+#include "SubtypeElements.hh"
 #include "Tag.hh"
 #include "TaggedType.hh"
 #include "T61String.hh"
@@ -89,12 +108,14 @@
 #include "Type.hh"
 #include "TypeAssignment.hh"
 #include "TypeReference.hh"
+#include "Unions.hh"
 #include "Universal.hh"
 #include "UniversalString.hh"
 #include "UnrestrictedCharacterStringType.hh"
 #include "UsefulType.hh"
 #include "UTCTime.hh"
 #include "UTF8String.hh"
+#include "Value.hh"
 #include "VideotexString.hh"
 #include "VisibleString.hh"
 
@@ -108,6 +129,9 @@ Get(Production production)
 {
   switch (production)
   {
+    case Production::ADDITIONAL_ELEMENT_SET_SPEC:
+      return std::make_shared<AdditionalElementSetSpec>();
+
     case Production::ALTERNATIVE_TYPE_LIST:
       return std::make_shared<AlternativeTypeList>();
 
@@ -132,8 +156,14 @@ Get(Production production)
     case Production::BOOLEAN_TYPE:
       return std::make_shared<BooleanType>();
 
+    case Production::BOOLEAN_VALUE:
+      return std::make_shared<BooleanValue>();
+
     case Production::BUILTIN_TYPE:
       return std::make_shared<BuiltinType>();
+
+    case Production::BUILTIN_VALUE:
+      return std::make_shared<BuiltinValue>();
 
     case Production::CHARACTER_STRING_TYPE:
       return std::make_shared<CharacterStringType>();
@@ -155,6 +185,15 @@ Get(Production production)
 
     case Production::COMPONENT_TYPE_LISTS:
       return std::make_shared<ComponentTypeLists>();
+
+    case Production::CONSTRAINED_TYPE:
+      return std::make_shared<ConstrainedType>();
+
+    case Production::CONSTRAINT:
+      return std::make_shared<Constraint>();
+
+    case Production::CONSTRAINT_SPEC:
+      return std::make_shared<ConstraintSpec>();
 
     case Production::DATE_TYPE:
       return std::make_shared<DateType>();
@@ -183,6 +222,18 @@ Get(Production production)
     case Production::DURATION_TYPE:
       return std::make_shared<DurationType>();
 
+    case Production::ELEMENTS:
+      return std::make_shared<Elements>();
+
+    case Production::ELEMENT_SET_SPEC:
+      return std::make_shared<ElementSetSpec>();
+
+    case Production::ELEMENT_SET_SPECS:
+      return std::make_shared<ElementSetSpecs>();
+
+    case Production::ELLIPSIS:
+      return std::make_shared<Ellipsis>();
+
     case Production::EMBEDDED_PDV_TYPE:
       return std::make_shared<EmbeddedPDVType>();
 
@@ -209,6 +260,15 @@ Get(Production production)
 
     case Production::ENUMERATIONS:
       return std::make_shared<Enumerations>();
+
+    case Production::EXCEPTION_IDENTIFICATION:
+      return std::make_shared<ExceptionIdentification>();
+
+    case Production::EXCEPTION_SPEC:
+      return std::make_shared<ExceptionSpec>();
+
+    case Production::EXCLUSIONS:
+      return std::make_shared<Exclusions>();
 
     case Production::EXPLICIT:
       return std::make_shared<Explicit>();
@@ -242,6 +302,12 @@ Get(Production production)
 
     case Production::INTEGER_TYPE:
       return std::make_shared<IntegerType>();
+
+    case Production::INTERSECTION_ELEMENTS:
+      return std::make_shared<IntersectionElements>();
+
+    case Production::INTERSECTIONS:
+      return std::make_shared<Intersections>();
 
     case Production::IRI_TYPE:
       return std::make_shared<IRIType>();
@@ -327,6 +393,9 @@ Get(Production production)
     case Production::ROOT_COMPONENT_TYPE_LIST:
       return std::make_shared<RootComponentTypeList>();
 
+    case Production::ROOT_ELEMENT_SET_SPEC:
+      return std::make_shared<RootElementSetSpec>();
+
     case Production::ROOT_ENUMERATION:
       return std::make_shared<RootEnumeration>();
 
@@ -350,6 +419,15 @@ Get(Production production)
 
     case Production::SIGNED_NUMBER:
       return std::make_shared<SignedNumber>();
+
+    case Production::SINGLE_VALUE:
+      return std::make_shared<SingleValue>();
+
+    case Production::SUBTYPE_CONSTRAINT:
+      return std::make_shared<SubtypeConstraint>();
+
+    case Production::SUBTYPE_ELEMENTS:
+      return std::make_shared<SubtypeElements>();
 
     case Production::TAG:
       return std::make_shared<Tag>();
@@ -378,6 +456,9 @@ Get(Production production)
     case Production::TYPE_REFERENCE:
       return std::make_shared<TypeReference>();
 
+    case Production::UNIONS:
+      return std::make_shared<Unions>();
+
     case Production::UNIVERSAL:
       return std::make_shared<Universal>();
 
@@ -398,6 +479,9 @@ Get(Production production)
 
     case Production::VALUE_REFERENCE:
       return std::make_shared<ValueReference>();
+
+    case Production::VALUE:
+      return std::make_shared<Value>();
 
     case Production::VIDEOTEX_STRING:
       return std::make_shared<VideotexString>();

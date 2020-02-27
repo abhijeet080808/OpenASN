@@ -1,6 +1,7 @@
 set(LIB_NAME parser)
 
-set(SOURCES AlternativeTypeList.cpp
+set(SOURCES AdditionalElementSetSpec.cpp
+            AlternativeTypeList.cpp
             AlternativeTypeLists.cpp
             Application.cpp
             AsnParser.cpp
@@ -9,7 +10,9 @@ set(SOURCES AlternativeTypeList.cpp
             BitStringType.cpp
             BMPString.cpp
             BooleanType.cpp
+            BooleanValue.cpp
             BuiltinType.cpp
+            BuiltinValue.cpp
             CharacterStringType.cpp
             ChoiceType.cpp
             Class.cpp
@@ -17,6 +20,9 @@ set(SOURCES AlternativeTypeList.cpp
             ComponentType.cpp
             ComponentTypeList.cpp
             ComponentTypeLists.cpp
+            ConstrainedType.cpp
+            Constraint.cpp
+            ConstraintSpec.cpp
             DateType.cpp
             DateTimeType.cpp
             DefinedType.cpp
@@ -26,6 +32,10 @@ set(SOURCES AlternativeTypeList.cpp
             DefinitiveObjIdComponentList.cpp
             DefinitiveOID.cpp
             DurationType.cpp
+            Elements.cpp
+            ElementSetSpec.cpp
+            ElementSetSpecs.cpp
+            Ellipsis.cpp
             EmbeddedPDVType.cpp
             EncodingPrefix.cpp
             EncodingPrefixedType.cpp
@@ -35,6 +45,9 @@ set(SOURCES AlternativeTypeList.cpp
             Enumeration.cpp
             EnumerationItem.cpp
             Enumerations.cpp
+            ExceptionIdentification.cpp
+            ExceptionSpec.cpp
+            Exclusions.cpp
             Explicit.cpp
             ExternalType.cpp
             ExternalTypeReference.cpp
@@ -46,6 +59,8 @@ set(SOURCES AlternativeTypeList.cpp
             Identifier.cpp
             Implicit.cpp
             IntegerType.cpp
+            IntersectionElements.cpp
+            Intersections.cpp
             IRIType.cpp
             ISO646String.cpp
             ModuleBody.cpp
@@ -75,6 +90,7 @@ set(SOURCES AlternativeTypeList.cpp
             RelativeOIDType.cpp
             RootAlternativeTypeList.cpp
             RootComponentTypeList.cpp
+            RootElementSetSpec.cpp
             RootEnumeration.cpp
             RestrictedCharacterStringType.cpp
             SelectionType.cpp
@@ -83,6 +99,9 @@ set(SOURCES AlternativeTypeList.cpp
             SetType.cpp
             SetOfType.cpp
             SignedNumber.cpp
+            SingleValue.cpp
+            SubtypeConstraint.cpp
+            SubtypeElements.cpp
             Tag.cpp
             TaggedType.cpp
             T61String.cpp
@@ -92,12 +111,14 @@ set(SOURCES AlternativeTypeList.cpp
             TypeAssignment.cpp
             Type.cpp
             TypeReference.cpp
+            Unions.cpp
             Universal.cpp
             UniversalString.cpp
             UnrestrictedCharacterStringType.cpp
             UsefulType.cpp
             UTCTime.cpp
             UTF8String.cpp
+            Value.cpp
             VideotexString.cpp
             VisibleString.cpp
 )

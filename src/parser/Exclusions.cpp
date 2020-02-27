@@ -1,4 +1,4 @@
-#include "ElementSetSpec.hh"
+#include "Exclusions.hh"
 
 #include "LoggingMacros.hh"
 #include "ParseHelper.hh"
@@ -9,40 +9,23 @@
 using namespace OpenASN;
 
 Production
-ElementSetSpec::
+Exclusions::
 GetType() const
 {
-  return Production::ELEMENT_SET_SPEC;
+  return Production::EXCLUSIONS;
 }
 
 bool
-ElementSetSpec::
+Exclusions::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
       std::vector<std::string>& endStop)
 {
-  // ElementSetSpecs ::=
-  //   Unions
-  // | ALL Exclusions
+  // Exclusions ::= EXCEPT Elements
 
   size_t starting_index = asnDataIndex;
 
-  auto obj = "Unions";
-  LOG_START();
-  auto unions =
-    ProductionFactory::Get(Production::UNIONS);
-  if (unions->Parse(asnData, asnDataIndex, endStop))
-  {
-    mUnions = unions;
-    LOG_PASS();
-    return true;
-  }
-  else
-  {
-    LOG_FAIL();
-  }
-
-  obj = "ALL";
+  auto obj = "EXCEPT";
   LOG_START();
   if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
@@ -56,13 +39,13 @@ Parse(const std::vector<Word>& asnData,
     return false;
   }
 
-  obj = "Exclusions";
+  obj = "Elements";
   LOG_START();
-  auto exclusions =
-    ProductionFactory::Get(Production::EXCLUSIONS);
-  if (exclusions->Parse(asnData, asnDataIndex, endStop))
+  auto elements =
+    ProductionFactory::Get(Production::ELEMENTS);
+  if (elements->Parse(asnData, asnDataIndex, endStop))
   {
-    mExclusions = exclusions;
+    mElements = elements;
     LOG_PASS();
     return true;
   }

@@ -27,13 +27,13 @@ Parse(const std::vector<Word>& asnData,
 
   size_t starting_index = asnDataIndex;
 
-  auto obj = "SubtypeConstaint";
+  auto obj = "SubtypeConstraint";
   LOG_START();
-  auto subtype_constaint =
+  auto subtype_constraint =
     ProductionFactory::Get(Production::SUBTYPE_CONSTRAINT);
-  if (subtype_constaint->Parse(asnData, asnDataIndex, endStop))
+  if (subtype_constraint->Parse(asnData, asnDataIndex, endStop))
   {
-    mSubtypeConstaint = subtype_constaint;
+    mSubtypeConstraint = subtype_constraint;
     LOG_PASS();
     return true;
   }

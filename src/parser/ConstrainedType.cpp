@@ -61,6 +61,7 @@ Parse(const std::vector<Word>& asnData,
     }
   }
 
+#if 0
   obj = "TypeWithConstraint";
   LOG_START();
   auto type_with_constraint =
@@ -77,4 +78,7 @@ Parse(const std::vector<Word>& asnData,
     asnDataIndex = starting_index;
     return false;
   }
+#endif
+  asnDataIndex = starting_index;
+  return false;
 }

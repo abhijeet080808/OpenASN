@@ -47,7 +47,7 @@ Parse(const std::vector<Word>& asnData,
     return false;
   }
 
-  obj = "EXCEPT"
+  obj = "EXCEPT";
   LOG_START();
   if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
@@ -62,7 +62,7 @@ Parse(const std::vector<Word>& asnData,
 
   obj = "Elements";
   LOG_START();
-  auto elements =
+  elements =
     ProductionFactory::Get(Production::ELEMENTS);
   if (elements->Parse(asnData, asnDataIndex, endStop))
   {

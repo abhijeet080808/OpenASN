@@ -25,13 +25,13 @@ Parse(const std::vector<Word>& asnData,
 
   size_t starting_index = asnDataIndex;
 
-  auto obj = "AdditionalElementSetSpec";
+  auto obj = "ElementSetSpec";
   LOG_START();
-  auto additional_element_set_spec =
-    ProductionFactory::Get(Production::ADDITIONAL_ELEMENT_SET_SPEC);
-  if (additional_element_set_spec->Parse(asnData, asnDataIndex, endStop))
+  auto element_set_spec =
+    ProductionFactory::Get(Production::ELEMENT_SET_SPEC);
+  if (element_set_spec->Parse(asnData, asnDataIndex, endStop))
   {
-    mAdditionalElementSetSpec = additional_element_set_spec;
+    mElementSetSpec = element_set_spec;
     LOG_PASS();
     return true;
   }
