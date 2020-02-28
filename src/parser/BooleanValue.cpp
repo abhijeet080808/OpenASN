@@ -29,8 +29,8 @@ Parse(const std::vector<Word>& asnData,
   if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
     mValue = "TRUE";
-    LOG_PASS();
     ++asnDataIndex;
+    LOG_PASS();
     return true;
   }
   else
@@ -43,14 +43,14 @@ Parse(const std::vector<Word>& asnData,
   if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
     mValue = "FALSE";
-    LOG_PASS();
     ++asnDataIndex;
+    LOG_PASS();
     return true;
   }
   else
   {
-    LOG_FAIL();
     asnDataIndex = starting_index;
+    LOG_FAIL();
     return false;
   }
 }

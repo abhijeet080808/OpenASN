@@ -19,6 +19,6 @@ namespace OpenASN
     public:
       std::shared_ptr<IProduction> mBuiltinType;
       std::shared_ptr<IProduction> mReferencedType;
-      // ConstrainedType
+      std::shared_ptr<IProduction> mConstrainedType;
   };
 }

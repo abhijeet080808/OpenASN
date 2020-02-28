@@ -55,6 +55,21 @@ Parse(const std::vector<Word>& asnData,
     LOG_FAIL();
   }
 
+  obj = "ConstrainedType";
+  LOG_START();
+  auto constrained_type =
+    ProductionFactory::Get(Production::CONSTRAINED_TYPE);
+  if (constrained_type->Parse(asnData, asnDataIndex, endStop))
+  {
+    mConstrainedType = constrained_type;
+    LOG_PASS();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
+
   asnDataIndex = starting_index;
   return false;
 }
