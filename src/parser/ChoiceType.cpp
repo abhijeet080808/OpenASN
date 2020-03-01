@@ -19,8 +19,11 @@ bool
 ChoiceType::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("ChoiceType");
+
   // ChoiceType ::= CHOICE "{" AlternativeTypeLists "}"
 
   size_t starting_index = asnDataIndex;
@@ -36,6 +39,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -50,6 +54,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -59,7 +64,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto alternative_type_lists =
     ProductionFactory::Get(Production::ALTERNATIVE_TYPE_LISTS);
-  if (alternative_type_lists->Parse(asnData, asnDataIndex, endStop))
+  if (alternative_type_lists->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mAlternativeTypeLists = alternative_type_lists;
     endStop.pop_back();
@@ -70,6 +75,7 @@ Parse(const std::vector<Word>& asnData,
     endStop.pop_back();
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -79,12 +85,14 @@ Parse(const std::vector<Word>& asnData,
   {
     ++asnDataIndex;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

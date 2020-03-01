@@ -19,8 +19,11 @@ bool
 SetOfType::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("SetOfType");
+
   // SetOfType ::= SET OF Type | SET OF NamedType
 
   size_t starting_index = asnDataIndex;
@@ -36,6 +39,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -50,6 +54,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -57,10 +62,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto type =
     ProductionFactory::Get(Production::TYPE);
-  if (type->Parse(asnData, asnDataIndex, endStop))
+  if (type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mType = type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -72,16 +78,18 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto named_type =
     ProductionFactory::Get(Production::NAMED_TYPE);
-  if (named_type->Parse(asnData, asnDataIndex, endStop))
+  if (named_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mNamedType = named_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

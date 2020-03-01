@@ -1,6 +1,9 @@
 #include "ParseHelper.hh"
 
+#include "spdlog/spdlog.h"
+
 #include <algorithm>
+#include <set>
 
 using namespace OpenASN;
 

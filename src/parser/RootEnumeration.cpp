@@ -19,8 +19,11 @@ bool
 RootEnumeration::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("RootEnumeration");
+
   // RootEnumeration ::= Enumeration
 
   size_t starting_index = asnDataIndex;
@@ -29,16 +32,18 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto enumeration =
     ProductionFactory::Get(Production::ENUMERATION);
-  if (enumeration->Parse(asnData, asnDataIndex, endStop))
+  if (enumeration->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mEnumeration = enumeration;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

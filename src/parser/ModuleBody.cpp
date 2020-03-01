@@ -19,8 +19,11 @@ bool
 ModuleBody::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("ModuleBody");
+
   // ModuleBody ::=
   //   Exports Imports AssignmentList
   // | empty
@@ -35,16 +38,18 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto assignment_list =
     ProductionFactory::Get(Production::ASSIGNMENT_LIST);
-	if (assignment_list->Parse(asnData, asnDataIndex, endStop))
+	if (assignment_list->Parse(asnData, asnDataIndex, endStop, parsePath))
 	{
     mAssignmentList = assignment_list;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
 	}
 

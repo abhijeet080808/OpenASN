@@ -19,8 +19,11 @@ bool
 ElementSetSpecs::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("ElementSetSpecs");
+
   // ElementSetSpecs ::=
   //   RootElementSetSpec
   // | RootElementSetSpec "," "..."
@@ -32,7 +35,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto root_element_set_spec =
     ProductionFactory::Get(Production::ROOT_ELEMENT_SET_SPEC);
-  if (root_element_set_spec->Parse(asnData, asnDataIndex, endStop))
+  if (root_element_set_spec->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mRootElementSetSpec = root_element_set_spec;
     LOG_PASS();
@@ -41,6 +44,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -54,6 +58,7 @@ Parse(const std::vector<Word>& asnData,
   else
   {
     LOG_FAIL();
+    parsePath.pop_back();
     return true;
   }
 
@@ -61,7 +66,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto ellipsis =
     ProductionFactory::Get(Production::ELLIPSIS);
-  if (ellipsis->Parse(asnData, asnDataIndex, endStop))
+  if (ellipsis->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mEllipsis = ellipsis;
     LOG_PASS();
@@ -70,6 +75,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -83,6 +89,7 @@ Parse(const std::vector<Word>& asnData,
   else
   {
     LOG_FAIL();
+    parsePath.pop_back();
     return true;
   }
 
@@ -90,16 +97,18 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto additional_element_set_spec =
     ProductionFactory::Get(Production::ADDITIONAL_ELEMENT_SET_SPEC);
-  if (additional_element_set_spec->Parse(asnData, asnDataIndex, endStop))
+  if (additional_element_set_spec->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mAdditionalElementSetSpec = additional_element_set_spec;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

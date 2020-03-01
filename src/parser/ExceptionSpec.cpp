@@ -19,8 +19,11 @@ bool
 ExceptionSpec::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("ExceptionSpec");
+
   // ExceptionSpec ::= "!" ExceptionIdentification | empty
 
   size_t starting_index = asnDataIndex;
@@ -35,6 +38,7 @@ Parse(const std::vector<Word>& asnData,
   else
   {
     LOG_FAIL();
+    parsePath.pop_back();
     return true;
   }
 
@@ -42,16 +46,18 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto exception_identification =
     ProductionFactory::Get(Production::EXCEPTION_IDENTIFICATION);
-  if (exception_identification->Parse(asnData, asnDataIndex, endStop))
+  if (exception_identification->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mExceptionIdentification = exception_identification;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

@@ -19,8 +19,11 @@ bool
 DefinitiveObjIdComponent::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("DefinitiveObjIdComponent");
+
   // DefinitiveObjIdComponent ::=
   //   NameForm
   // | DefinitiveNumberForm
@@ -35,10 +38,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto name_form =
     ProductionFactory::Get(Production::NAME_FORM);
-  if (name_form->Parse(asnData, asnDataIndex, endStop))
+  if (name_form->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mNameForm = name_form;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -50,5 +54,6 @@ Parse(const std::vector<Word>& asnData,
   // DefinitiveNameAndNumberForm
 
   asnDataIndex = starting_index;
+  parsePath.pop_back();
   return false;
 }

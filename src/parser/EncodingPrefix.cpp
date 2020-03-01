@@ -19,8 +19,11 @@ bool
 EncodingPrefix::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("EncodingPrefix");
+
   // EncodingPrefix ::= "[" EncodingReference EncodingInstruction "]"
 
   size_t starting_index = asnDataIndex;
@@ -36,6 +39,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -45,7 +49,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto encoding_reference =
     ProductionFactory::Get(Production::ENCODING_REFERENCE);
-  if (encoding_reference->Parse(asnData, asnDataIndex, endStop))
+  if (encoding_reference->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mEncodingReference = encoding_reference;
     endStop.pop_back();
@@ -56,6 +60,7 @@ Parse(const std::vector<Word>& asnData,
     endStop.pop_back();
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -64,7 +69,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto encoding_instruction =
     ProductionFactory::Get(Production::ENCODING_INSTRUCTION);
-  if (encoding_instruction->Parse(asnData, asnDataIndex, endStop))
+  if (encoding_instruction->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mEncodingInstruction = encoding_instruction;
     endStop.pop_back();
@@ -75,6 +80,7 @@ Parse(const std::vector<Word>& asnData,
     endStop.pop_back();
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 #endif
@@ -85,12 +91,14 @@ Parse(const std::vector<Word>& asnData,
   {
     ++asnDataIndex;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

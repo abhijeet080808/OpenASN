@@ -17,7 +17,8 @@ bool
 TypeReference::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>&)
 {
   if (asnData.size() <= asnDataIndex)
   {

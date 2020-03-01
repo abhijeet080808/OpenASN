@@ -19,8 +19,11 @@ bool
 Enumeration::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("Enumeration");
+
   // Enumeration ::= EnumerationItem | EnumerationItem "," Enumeration
 
   size_t starting_index = asnDataIndex;
@@ -31,7 +34,7 @@ Parse(const std::vector<Word>& asnData,
     LOG_START();
     auto enumeration_item =
       ProductionFactory::Get(Production::ENUMERATION_ITEM);
-    if (enumeration_item->Parse(asnData, asnDataIndex, endStop))
+    if (enumeration_item->Parse(asnData, asnDataIndex, endStop, parsePath))
     {
       mEnumerationItem.push_back(enumeration_item);
       LOG_PASS();
@@ -40,6 +43,7 @@ Parse(const std::vector<Word>& asnData,
     {
       asnDataIndex = starting_index;
       LOG_FAIL();
+      parsePath.pop_back();
       return false;
     }
 
@@ -60,10 +64,12 @@ Parse(const std::vector<Word>& asnData,
   if (mEnumerationItem.empty())
   {
     asnDataIndex = starting_index;
+    parsePath.pop_back();
     return false;
   }
   else
   {
+    parsePath.pop_back();
     return true;
   }
 }

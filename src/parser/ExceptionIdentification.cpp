@@ -19,8 +19,11 @@ bool
 ExceptionIdentification::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("ExceptionIdentification");
+
   // ExceptionIdentification ::=
   //   SignedNumber
   // | DefinedValue
@@ -32,10 +35,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto signed_number =
     ProductionFactory::Get(Production::SIGNED_NUMBER);
-  if (signed_number->Parse(asnData, asnDataIndex, endStop))
+  if (signed_number->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mSignedNumber = signed_number;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -47,10 +51,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto defined_value =
     ProductionFactory::Get(Production::DEFINED_VALUE);
-  if (defined_value->Parse(asnData, asnDataIndex, endStop))
+  if (defined_value->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mDefinedValue = defined_value;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -62,7 +67,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto type =
     ProductionFactory::Get(Production::TYPE);
-  if (type->Parse(asnData, asnDataIndex, endStop))
+  if (type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mType = type;
     LOG_PASS();
@@ -71,6 +76,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -85,6 +91,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -92,16 +99,18 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto value =
     ProductionFactory::Get(Production::VALUE);
-  if (value->Parse(asnData, asnDataIndex, endStop))
+  if (value->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mValue = value;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

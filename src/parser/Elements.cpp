@@ -19,8 +19,11 @@ bool
 Elements::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("Elements");
+
   // Elements ::=
   //   SubtypeElements
   // | ObjectSetElements
@@ -32,10 +35,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto subtype_elements =
     ProductionFactory::Get(Production::SUBTYPE_ELEMENTS);
-  if (subtype_elements->Parse(asnData, asnDataIndex, endStop))
+  if (subtype_elements->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mSubtypeElements = subtype_elements;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -48,10 +52,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto object_set_elements =
     ProductionFactory::Get(Production::OBJECT_SET_ELEMENTS);
-  if (object_set_elements->Parse(asnData, asnDataIndex, endStop))
+  if (object_set_elements->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mObjectSetElements = object_set_elements;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -71,6 +76,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -80,7 +86,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto element_set_spec =
     ProductionFactory::Get(Production::ELEMENT_SET_SPEC);
-  if (element_set_spec->Parse(asnData, asnDataIndex, endStop))
+  if (element_set_spec->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mElementSetSpec = element_set_spec;
     endStop.pop_back();
@@ -91,6 +97,7 @@ Parse(const std::vector<Word>& asnData,
     endStop.pop_back();
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -100,12 +107,14 @@ Parse(const std::vector<Word>& asnData,
   {
     ++asnDataIndex;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

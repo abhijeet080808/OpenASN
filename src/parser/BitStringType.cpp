@@ -19,8 +19,11 @@ bool
 BitStringType::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("BitStringType");
+
   // BitStringType ::=
   //   BIT STRING
   // | BIT STRING "{" NamedBitList "}"
@@ -38,6 +41,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -52,6 +56,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -65,6 +70,7 @@ Parse(const std::vector<Word>& asnData,
   else
   {
     LOG_FAIL();
+    parsePath.pop_back();
     return true;
   }
 
@@ -74,7 +80,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto named_bit_list =
     ProductionFactory::Get(Production::NAMED_BIT_LIST);
-  if (named_bit_list->Parse(asnData, asnDataIndex, endStop))
+  if (named_bit_list->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mNamedBitList = named_bit_list;
     endStop.pop_back();
@@ -85,6 +91,7 @@ Parse(const std::vector<Word>& asnData,
     endStop.pop_back();
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -94,12 +101,14 @@ Parse(const std::vector<Word>& asnData,
   {
     ++asnDataIndex;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

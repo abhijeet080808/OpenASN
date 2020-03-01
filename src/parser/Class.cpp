@@ -19,8 +19,11 @@ bool
 Class::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("Class");
+
   // Class ::=
   //   UNIVERSAL
   // | APPLICATION
@@ -33,10 +36,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto universal =
     ProductionFactory::Get(Production::UNIVERSAL);
-  if (universal->Parse(asnData, asnDataIndex, endStop))
+  if (universal->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mUniversal = universal;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -48,10 +52,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto application =
     ProductionFactory::Get(Production::APPLICATION);
-  if (application->Parse(asnData, asnDataIndex, endStop))
+  if (application->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mApplication = application;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -63,10 +68,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto _private =
     ProductionFactory::Get(Production::PRIVATE);
-  if (_private->Parse(asnData, asnDataIndex, endStop))
+  if (_private->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mPrivate = _private;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -75,5 +81,6 @@ Parse(const std::vector<Word>& asnData,
   }
 
   asnDataIndex = starting_index;
+  parsePath.pop_back();
   return true;
 }

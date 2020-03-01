@@ -18,6 +18,7 @@ namespace OpenASN
 
       virtual bool Parse(const std::vector<Word>& asnData,
                          size_t& asnDataIndex,
-                         std::vector<std::string>& endStop) = 0;
+                         std::vector<std::string>& endStop,
+                         std::vector<std::string>& parsePath) = 0;
   };
 }

@@ -19,8 +19,11 @@ bool
 Assignment::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("Assignment");
+
   // Assignment ::=
   //   TypeAssignment
   // | ValueAssignment
@@ -37,16 +40,18 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto type_assignment =
     ProductionFactory::Get(Production::TYPE_ASSIGNMENT);
-  if (type_assignment->Parse(asnData, asnDataIndex, endStop))
+  if (type_assignment->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mTypeAssignment = type_assignment;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

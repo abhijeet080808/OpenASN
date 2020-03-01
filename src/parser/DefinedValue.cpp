@@ -19,8 +19,11 @@ bool
 DefinedValue::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("DefinedValue");
+
   // DefinedValue ::=
   //   ExternalValueReference
   // | valuereference
@@ -32,10 +35,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto external_value_reference =
     ProductionFactory::Get(Production::EXTERNAL_VALUE_REFERENCE);
-  if (external_value_reference->Parse(asnData, asnDataIndex, endStop))
+  if (external_value_reference->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mExternalValueReference = external_value_reference;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -47,16 +51,18 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto value_reference =
     ProductionFactory::Get(Production::VALUE_REFERENCE);
-  if (value_reference->Parse(asnData, asnDataIndex, endStop))
+  if (value_reference->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mValueReference = value_reference;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 

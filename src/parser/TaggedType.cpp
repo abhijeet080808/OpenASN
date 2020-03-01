@@ -19,8 +19,11 @@ bool
 TaggedType::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("TaggedType");
+
   // TaggedType ::=
   //   Tag Type
   // | Tag IMPLICIT Type
@@ -32,7 +35,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto tag =
     ProductionFactory::Get(Production::TAG);
-  if (tag->Parse(asnData, asnDataIndex, endStop))
+  if (tag->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mTag = tag;
     LOG_PASS();
@@ -41,6 +44,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -48,10 +52,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto type =
     ProductionFactory::Get(Production::TYPE);
-  if (type->Parse(asnData, asnDataIndex, endStop))
+  if (type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mType = type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -63,7 +68,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto implicit =
     ProductionFactory::Get(Production::IMPLICIT);
-  if (implicit->Parse(asnData, asnDataIndex, endStop))
+  if (implicit->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mImplicit = implicit;
     LOG_PASS();
@@ -79,7 +84,7 @@ Parse(const std::vector<Word>& asnData,
     LOG_START();
     auto _explicit =
       ProductionFactory::Get(Production::EXPLICIT);
-    if (_explicit->Parse(asnData, asnDataIndex, endStop))
+    if (_explicit->Parse(asnData, asnDataIndex, endStop, parsePath))
     {
       mExplicit = _explicit;
       LOG_PASS();
@@ -88,6 +93,7 @@ Parse(const std::vector<Word>& asnData,
     {
       asnDataIndex = starting_index;
       LOG_FAIL();
+      parsePath.pop_back();
       return false;
     }
   }
@@ -96,16 +102,18 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   type =
     ProductionFactory::Get(Production::TYPE);
-  if (type->Parse(asnData, asnDataIndex, endStop))
+  if (type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mType = type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

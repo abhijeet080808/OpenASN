@@ -19,8 +19,11 @@ bool
 ElementSetSpec::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("ElementSetSpec");
+
   // ElementSetSpecs ::=
   //   Unions
   // | ALL Exclusions
@@ -31,10 +34,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto unions =
     ProductionFactory::Get(Production::UNIONS);
-  if (unions->Parse(asnData, asnDataIndex, endStop))
+  if (unions->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mUnions = unions;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -53,6 +57,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -60,16 +65,18 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto exclusions =
     ProductionFactory::Get(Production::EXCLUSIONS);
-  if (exclusions->Parse(asnData, asnDataIndex, endStop))
+  if (exclusions->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mExclusions = exclusions;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

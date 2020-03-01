@@ -19,8 +19,11 @@ bool
 NamedBit::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("NamedBit");
+
   // NamedBit ::=
   //   identifier "(" number ")"
   // | identifier "(" DefinedValue ")"
@@ -31,7 +34,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto identifier =
     ProductionFactory::Get(Production::IDENTIFIER);
-  if (identifier->Parse(asnData, asnDataIndex, endStop))
+  if (identifier->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mIdentifier = identifier;
     LOG_PASS();
@@ -40,6 +43,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -54,6 +58,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -63,7 +68,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto number =
     ProductionFactory::Get(Production::NUMBER);
-  if (number->Parse(asnData, asnDataIndex, endStop))
+  if (number->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mNumber = number;
     endStop.pop_back();
@@ -74,6 +79,7 @@ Parse(const std::vector<Word>& asnData,
     endStop.pop_back();
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -85,12 +91,14 @@ Parse(const std::vector<Word>& asnData,
   {
     ++asnDataIndex;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

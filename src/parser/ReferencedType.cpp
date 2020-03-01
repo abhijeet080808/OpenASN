@@ -19,8 +19,11 @@ bool
 ReferencedType::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("ReferencedType");
+
   // ReferencedType ::=
   //   DefinedType
   // | UsefulType
@@ -34,10 +37,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto defined_type =
     ProductionFactory::Get(Production::DEFINED_TYPE);
-  if (defined_type->Parse(asnData, asnDataIndex, endStop))
+  if (defined_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mDefinedType = defined_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -49,10 +53,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto useful_type =
     ProductionFactory::Get(Production::USEFUL_TYPE);
-  if (useful_type->Parse(asnData, asnDataIndex, endStop))
+  if (useful_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mUsefulType = useful_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -64,10 +69,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto selection_type =
     ProductionFactory::Get(Production::SELECTION_TYPE);
-  if (selection_type->Parse(asnData, asnDataIndex, endStop))
+  if (selection_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mSelectionType = selection_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -77,5 +83,6 @@ Parse(const std::vector<Word>& asnData,
 
 
   asnDataIndex = starting_index;
+  parsePath.pop_back();
   return false;
 }

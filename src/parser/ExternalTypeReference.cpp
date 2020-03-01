@@ -19,8 +19,11 @@ bool
 ExternalTypeReference::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("ExternalTypeReference");
+
   // ExternalTypeReference ::= modulereference "." typereference
 
   size_t starting_index = asnDataIndex;
@@ -29,7 +32,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto module_reference =
     ProductionFactory::Get(Production::MODULE_REFERENCE);
-  if (module_reference->Parse(asnData, asnDataIndex, endStop))
+  if (module_reference->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mModuleReference = module_reference;
     LOG_PASS();
@@ -38,6 +41,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -52,6 +56,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -59,16 +64,18 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto type_reference =
     ProductionFactory::Get(Production::TYPE_REFERENCE);
-  if (type_reference->Parse(asnData, asnDataIndex, endStop))
+  if (type_reference->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mTypeReference = type_reference;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

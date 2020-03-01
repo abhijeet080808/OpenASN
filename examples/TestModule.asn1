@@ -110,15 +110,16 @@ UsefulType3       ::= ObjectDescriptor
 SelectionType     ::= chInt < Choice
 
 ConstrainedType1  ::= BOOLEAN (TRUE)
-ConstrainedType2  ::= BOOLEAN (TRUE ^ FALSE EXCEPT TRUE)
-ConstrainedType3  ::= BOOLEAN (TRUE | FALSE EXCEPT FALSE)
-ConstrainedType4  ::= BOOLEAN (TRUE ^ FALSE | FALSE ^ TRUE EXCEPT FALSE)
-ConstrainedType5  ::= BOOLEAN (TRUE , ... )
-ConstrainedType6  ::= BOOLEAN (TRUE , ... ! BOOLEAN : FALSE)
-ConstrainedType7  ::= BOOLEAN (TRUE , ... , FALSE)
-ConstrainedType8  ::= BOOLEAN (ALL EXCEPT TRUE)
-ConstrainedType9  ::= BOOLEAN (TRUE , ... , ALL EXCEPT FALSE)
-ConstrainedType10 ::= BOOLEAN (TRUE , ... , FALSE ! BOOLEAN : FALSE)
-ConstrainedType11 ::= BOOLEAN (TRUE , ... , FALSE EXCEPT TRUE ! BOOLEAN : FALSE)
+ConstrainedType2  ::= BOOLEAN (TRUE) (TRUE)
+ConstrainedType3  ::= BOOLEAN (TRUE ^ FALSE EXCEPT TRUE)
+ConstrainedType4  ::= BOOLEAN (TRUE | FALSE EXCEPT FALSE)
+ConstrainedType5  ::= BOOLEAN (TRUE ^ FALSE | FALSE ^ TRUE EXCEPT FALSE)
+ConstrainedType6  ::= BOOLEAN (TRUE , ... )
+ConstrainedType7  ::= BOOLEAN (TRUE , ... ! BOOLEAN : FALSE)
+ConstrainedType8  ::= BOOLEAN (TRUE , ... , FALSE)
+ConstrainedType9  ::= BOOLEAN (ALL EXCEPT TRUE)
+ConstrainedType10 ::= BOOLEAN (TRUE , ... , ALL EXCEPT FALSE)
+ConstrainedType11 ::= BOOLEAN (TRUE , ... , FALSE ! BOOLEAN : FALSE)
+ConstrainedType12 ::= BOOLEAN (TRUE , ... , FALSE EXCEPT TRUE ! BOOLEAN : FALSE)
 
 END

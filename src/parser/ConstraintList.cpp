@@ -1,4 +1,4 @@
-#include "AssignmentList.hh"
+#include "ConstraintList.hh"
 
 #include "LoggingMacros.hh"
 #include "ParseHelper.hh"
@@ -9,36 +9,37 @@
 using namespace OpenASN;
 
 Production
-AssignmentList::
+ConstraintList::
 GetType() const
 {
-  return Production::ASSIGNMENT_LIST;
+  return Production::CONSTRAINT_LIST;
 }
 
 bool
-AssignmentList::
+ConstraintList::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
       std::vector<std::string>& endStop,
       std::vector<std::string>& parsePath)
 {
-  parsePath.push_back("AssignmentList");
+  parsePath.push_back("ConstraintList");
 
-  // AssignmentList ::=
-  //   Assignment
-  // | AssignmentList Assignment
+  // (See Type)
+  // ConstraintList ::=
+  //   Constraint
+  // | ConstraintList Constraint
 
   size_t starting_index = asnDataIndex;
 
   while (1)
   {
-    auto obj = "Assignment";
+    auto obj = "Constraint";
     LOG_START();
-    auto assignment =
-      ProductionFactory::Get(Production::ASSIGNMENT);
-    if (assignment->Parse(asnData, asnDataIndex, endStop, parsePath))
+    auto constraint =
+      ProductionFactory::Get(Production::CONSTRAINT);
+    if (constraint->Parse(asnData, asnDataIndex, endStop, parsePath))
     {
-      mAssignment.push_back(assignment);
+      mConstraint.push_back(constraint);
       LOG_PASS();
     }
     else
@@ -48,7 +49,7 @@ Parse(const std::vector<Word>& asnData,
     }
   }
 
-  if (mAssignment.empty())
+  if (mConstraint.empty())
   {
     asnDataIndex = starting_index;
     parsePath.pop_back();

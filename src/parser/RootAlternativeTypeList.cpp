@@ -19,8 +19,11 @@ bool
 RootAlternativeTypeList::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("RootAlternativeTypeList");
+
   // RootAlternativeTypeList ::= AlternativeTypeList
 
   size_t starting_index = asnDataIndex;
@@ -29,16 +32,18 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto alternative_type_list =
     ProductionFactory::Get(Production::ALTERNATIVE_TYPE_LIST);
-  if (alternative_type_list->Parse(asnData, asnDataIndex, endStop))
+  if (alternative_type_list->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mAlternativeTypeList = alternative_type_list;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

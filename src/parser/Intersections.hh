@@ -14,7 +14,8 @@ namespace OpenASN
 
       bool Parse(const std::vector<Word>& asnData,
                  size_t& asnDataIndex,
-                 std::vector<std::string>& endStop) override;
+                 std::vector<std::string>& endStop,
+                 std::vector<std::string>& parsePath) override;
 
     public:
       std::vector<std::shared_ptr<IProduction>> mIntersectionElements;

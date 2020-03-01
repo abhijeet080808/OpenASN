@@ -19,8 +19,11 @@ bool
 Constraint::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("Constraint");
+
   // Constraint ::= "(" ConstraintSpec ExceptionSpec ")"
 
   size_t starting_index = asnDataIndex;
@@ -36,6 +39,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -45,7 +49,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto constraint_spec =
     ProductionFactory::Get(Production::CONSTRAINT_SPEC);
-  if (constraint_spec->Parse(asnData, asnDataIndex, endStop))
+  if (constraint_spec->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mConstraintSpec = constraint_spec;
     LOG_PASS();
@@ -55,6 +59,7 @@ Parse(const std::vector<Word>& asnData,
     endStop.pop_back();
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -62,7 +67,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto exception_spec =
     ProductionFactory::Get(Production::EXCEPTION_SPEC);
-  if (exception_spec->Parse(asnData, asnDataIndex, endStop))
+  if (exception_spec->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mExceptionSpec = exception_spec;
     endStop.pop_back();
@@ -73,6 +78,7 @@ Parse(const std::vector<Word>& asnData,
     endStop.pop_back();
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -82,12 +88,14 @@ Parse(const std::vector<Word>& asnData,
   {
     ++asnDataIndex;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

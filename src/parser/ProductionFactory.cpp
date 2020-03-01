@@ -19,8 +19,8 @@
 #include "ComponentType.hh"
 #include "ComponentTypeList.hh"
 #include "ComponentTypeLists.hh"
-#include "ConstrainedType.hh"
 #include "Constraint.hh"
+#include "ConstraintList.hh"
 #include "ConstraintSpec.hh"
 #include "DateType.hh"
 #include "DateTimeType.hh"
@@ -186,11 +186,11 @@ Get(Production production)
     case Production::COMPONENT_TYPE_LISTS:
       return std::make_shared<ComponentTypeLists>();
 
-    case Production::CONSTRAINED_TYPE:
-      return std::make_shared<ConstrainedType>();
-
     case Production::CONSTRAINT:
       return std::make_shared<Constraint>();
+
+    case Production::CONSTRAINT_LIST:
+      return std::make_shared<ConstraintList>();
 
     case Production::CONSTRAINT_SPEC:
       return std::make_shared<ConstraintSpec>();

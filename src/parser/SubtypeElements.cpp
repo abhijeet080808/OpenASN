@@ -19,8 +19,11 @@ bool
 SubtypeElements::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("SubtypeElements");
+
   // SubtypeElements ::=
   //   SingleValue
   // | ContainedSubtype
@@ -41,10 +44,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto single_value =
     ProductionFactory::Get(Production::SINGLE_VALUE);
-  if (single_value->Parse(asnData, asnDataIndex, endStop))
+  if (single_value->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mSingleValue = single_value;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -53,5 +57,6 @@ Parse(const std::vector<Word>& asnData,
   }
 
   asnDataIndex = starting_index;
+  parsePath.pop_back();
   return false;
 }

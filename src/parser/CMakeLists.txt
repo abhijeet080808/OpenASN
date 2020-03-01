@@ -20,8 +20,8 @@ set(SOURCES AdditionalElementSetSpec.cpp
             ComponentType.cpp
             ComponentTypeList.cpp
             ComponentTypeLists.cpp
-            ConstrainedType.cpp
             Constraint.cpp
+            ConstraintList.cpp
             ConstraintSpec.cpp
             DateType.cpp
             DateTimeType.cpp

@@ -19,8 +19,11 @@ bool
 Value::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("Value");
+
   // Value ::= BuiltinValue | ReferencedValue | ObjectClassFieldValue
 
   size_t starting_index = asnDataIndex;
@@ -29,10 +32,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto builtin_value =
     ProductionFactory::Get(Production::BUILTIN_VALUE);
-  if (builtin_value->Parse(asnData, asnDataIndex, endStop))
+  if (builtin_value->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mBuiltinValue = builtin_value;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -41,5 +45,6 @@ Parse(const std::vector<Word>& asnData,
   }
 
   asnDataIndex = starting_index;
+  parsePath.pop_back();
   return false;
 }

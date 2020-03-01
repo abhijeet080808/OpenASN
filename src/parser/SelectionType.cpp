@@ -19,8 +19,11 @@ bool
 SelectionType::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("SelectionType");
+
   // SelectionType ::= identifier "<" Type
 
   size_t starting_index = asnDataIndex;
@@ -29,7 +32,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto identifier =
     ProductionFactory::Get(Production::IDENTIFIER);
-  if (identifier->Parse(asnData, asnDataIndex, endStop))
+  if (identifier->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mIdentifier = identifier;
   }
@@ -37,6 +40,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -51,6 +55,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -58,15 +63,17 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto type =
     ProductionFactory::Get(Production::TYPE);
-  if (type->Parse(asnData, asnDataIndex, endStop))
+  if (type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mType = type;
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

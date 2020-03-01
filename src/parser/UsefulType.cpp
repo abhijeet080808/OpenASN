@@ -19,8 +19,11 @@ bool
 UsefulType::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("UsefulType");
+
   // UsefulType ::=
   //   GeneralizedTime
   // | UTCTime
@@ -32,10 +35,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto generalized_time =
     ProductionFactory::Get(Production::GENERALIZED_TIME);
-  if (generalized_time->Parse(asnData, asnDataIndex, endStop))
+  if (generalized_time->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mGeneralizedTime = generalized_time;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -47,10 +51,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto utc_time =
     ProductionFactory::Get(Production::UTC_TIME);
-  if (utc_time->Parse(asnData, asnDataIndex, endStop))
+  if (utc_time->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mUTCTime = utc_time;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -62,16 +67,18 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto object_descriptor =
     ProductionFactory::Get(Production::OBJECT_DESCRIPTOR);
-  if (object_descriptor->Parse(asnData, asnDataIndex, endStop))
+  if (object_descriptor->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mObjectDescriptor = object_descriptor;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

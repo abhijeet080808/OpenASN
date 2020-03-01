@@ -19,8 +19,11 @@ bool
 Unions::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("Unions");
+
   // Unions ::=
   //   Intersections
   // | UElems UnionMark Intersections
@@ -37,7 +40,7 @@ Parse(const std::vector<Word>& asnData,
     LOG_START();
     auto intersections =
       ProductionFactory::Get(Production::INTERSECTIONS);
-    if (intersections->Parse(asnData, asnDataIndex, endStop))
+    if (intersections->Parse(asnData, asnDataIndex, endStop, parsePath))
     {
       mIntersections.push_back(intersections);
       LOG_PASS();
@@ -46,6 +49,7 @@ Parse(const std::vector<Word>& asnData,
     {
       asnDataIndex = starting_index;
       LOG_FAIL();
+      parsePath.pop_back();
       return false;
     }
 
@@ -79,10 +83,12 @@ Parse(const std::vector<Word>& asnData,
   if (mIntersections.empty())
   {
     asnDataIndex = starting_index;
+    parsePath.pop_back();
     return false;
   }
   else
   {
+    parsePath.pop_back();
     return true;
   }
 }

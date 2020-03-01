@@ -18,8 +18,11 @@ bool
 DurationType::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>&)
+      std::vector<std::string>&,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("DurationType");
+
   // DurationType ::= DURATION
 
   size_t starting_index = asnDataIndex;
@@ -30,12 +33,14 @@ Parse(const std::vector<Word>& asnData,
   {
     ++asnDataIndex;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

@@ -19,8 +19,11 @@ bool
 IntersectionElements::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("IntersectionElements");
+
   // IntersectionElements ::=
   //   Elements
   // | Elems Exclusions
@@ -35,7 +38,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto elements =
     ProductionFactory::Get(Production::ELEMENTS);
-  if (elements->Parse(asnData, asnDataIndex, endStop))
+  if (elements->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mElements = elements;
     LOG_PASS();
@@ -44,6 +47,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -57,6 +61,7 @@ Parse(const std::vector<Word>& asnData,
   else
   {
     LOG_FAIL();
+    parsePath.pop_back();
     return true;
   }
 
@@ -64,16 +69,18 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   elements =
     ProductionFactory::Get(Production::ELEMENTS);
-  if (elements->Parse(asnData, asnDataIndex, endStop))
+  if (elements->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mExceptElements = elements;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

@@ -19,8 +19,11 @@ bool
 Tag::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("Tag");
+
   // Tag ::= "[" EncodingReference Class ClassNumber "]"
 
   size_t starting_index = asnDataIndex;
@@ -36,6 +39,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -45,7 +49,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto encoding_reference =
     ProductionFactory::Get(Production::ENCODING_REFERENCE);
-  if (encoding_reference->Parse(asnData, asnDataIndex, endStop))
+  if (encoding_reference->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mEncodingReference = encoding_reference;
     LOG_PASS();
@@ -55,6 +59,7 @@ Parse(const std::vector<Word>& asnData,
     endStop.pop_back();
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -62,7 +67,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto _class =
     ProductionFactory::Get(Production::CLASS);
-  if (_class->Parse(asnData, asnDataIndex, endStop))
+  if (_class->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mClass = _class;
     LOG_PASS();
@@ -72,6 +77,7 @@ Parse(const std::vector<Word>& asnData,
     endStop.pop_back();
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -79,7 +85,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto class_number =
     ProductionFactory::Get(Production::CLASS_NUMBER);
-  if (class_number->Parse(asnData, asnDataIndex, endStop))
+  if (class_number->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mClassNumber = class_number;
     endStop.pop_back();
@@ -90,6 +96,7 @@ Parse(const std::vector<Word>& asnData,
     endStop.pop_back();
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -99,12 +106,14 @@ Parse(const std::vector<Word>& asnData,
   {
     ++asnDataIndex;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

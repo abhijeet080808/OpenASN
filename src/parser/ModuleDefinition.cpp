@@ -19,8 +19,11 @@ bool
 ModuleDefinition::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("ModuleDefinition");
+
   // ModuleDefinition ::=
   // ModuleIdentifier
   // DEFINITIONS
@@ -41,7 +44,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto module_identifier =
     ProductionFactory::Get(Production::MODULE_IDENTIFIER);
-  if (module_identifier->Parse(asnData, asnDataIndex, endStop))
+  if (module_identifier->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mModuleIdentifier = module_identifier;
     endStop.pop_back();
@@ -52,6 +55,7 @@ Parse(const std::vector<Word>& asnData,
     endStop.pop_back();
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -66,6 +70,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -80,6 +85,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -94,6 +100,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -108,6 +115,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -122,6 +130,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -131,7 +140,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto module_body =
     ProductionFactory::Get(Production::MODULE_BODY);
-  if (module_body->Parse(asnData, asnDataIndex, endStop))
+  if (module_body->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mModuleBody = module_body;
     endStop.pop_back();
@@ -142,6 +151,7 @@ Parse(const std::vector<Word>& asnData,
     endStop.pop_back();
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -151,12 +161,14 @@ Parse(const std::vector<Word>& asnData,
   {
     ++asnDataIndex;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

@@ -19,8 +19,11 @@ bool
 ComponentTypeList::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("ComponentTypeList");
+
   // ComponentTypeList ::=
   //   ComponentType
   // | ComponentTypeList "," ComponentType
@@ -33,7 +36,7 @@ Parse(const std::vector<Word>& asnData,
     LOG_START();
     auto component_type =
       ProductionFactory::Get(Production::COMPONENT_TYPE);
-    if (component_type->Parse(asnData, asnDataIndex, endStop))
+    if (component_type->Parse(asnData, asnDataIndex, endStop, parsePath))
     {
       mComponentType.push_back(component_type);
       LOG_PASS();
@@ -42,6 +45,7 @@ Parse(const std::vector<Word>& asnData,
     {
       asnDataIndex = starting_index;
       LOG_FAIL();
+      parsePath.pop_back();
       return false;
     }
 
@@ -62,10 +66,12 @@ Parse(const std::vector<Word>& asnData,
   if (mComponentType.empty())
   {
     asnDataIndex = starting_index;
+    parsePath.pop_back();
     return false;
   }
   else
   {
+    parsePath.pop_back();
     return true;
   }
 }

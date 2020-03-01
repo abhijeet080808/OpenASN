@@ -235,19 +235,30 @@ Parse(const std::string& asnFilePath)
 
   size_t asn_data_index = 0;
   std::vector<std::string> end_stop;
-  LOG_START_GEN("ModuleDefinition", parsed_asn_data, asn_data_index);
+  std::vector<std::string> parse_path;
+  LOG_START_GEN("ModuleDefinition",
+                parsed_asn_data,
+                asn_data_index,
+                parse_path);
   auto module_definition =
     ProductionFactory::Get(Production::MODULE_DEFINITION);
   if (module_definition->Parse(parsed_asn_data,
                                asn_data_index,
-                               end_stop))
+                               end_stop,
+                               parse_path))
   {
-    LOG_PASS_GEN("ModuleDefinition", parsed_asn_data, asn_data_index);
+    LOG_PASS_GEN("ModuleDefinition",
+                 parsed_asn_data,
+                 asn_data_index,
+                 parse_path);
     return module_definition;
   }
   else
   {
-    LOG_FAIL_GEN("ModuleDefinition", parsed_asn_data, asn_data_index);
+    LOG_FAIL_GEN("ModuleDefinition",
+                 parsed_asn_data,
+                 asn_data_index,
+                 parse_path);
     return nullptr;
   }
 }

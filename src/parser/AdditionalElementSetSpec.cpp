@@ -19,8 +19,11 @@ bool
 AdditionalElementSetSpec::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("AdditionalElementSetSpec");
+
   // AdditionalElementSetSpec ::= ElementSetSpec
 
   size_t starting_index = asnDataIndex;
@@ -29,16 +32,18 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto element_set_spec =
     ProductionFactory::Get(Production::ELEMENT_SET_SPEC);
-  if (element_set_spec->Parse(asnData, asnDataIndex, endStop))
+  if (element_set_spec->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mElementSetSpec = element_set_spec;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

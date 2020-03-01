@@ -14,11 +14,12 @@ namespace OpenASN
 
       bool Parse(const std::vector<Word>& asnData,
                  size_t& asnDataIndex,
-                 std::vector<std::string>& endStop) override;
+                 std::vector<std::string>& endStop,
+                 std::vector<std::string>& parsePath) override;
 
     public:
       std::shared_ptr<IProduction> mBuiltinType;
       std::shared_ptr<IProduction> mReferencedType;
-      std::shared_ptr<IProduction> mConstrainedType;
+      std::shared_ptr<IProduction> mConstraintList;
   };
 }

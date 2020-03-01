@@ -19,8 +19,11 @@ bool
 Intersections::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("Intersections");
+
   // Intersections ::=
   //   IntersectionElements
   // | IElems IntersectionMark IntersectionElements
@@ -37,7 +40,7 @@ Parse(const std::vector<Word>& asnData,
     LOG_START();
     auto intersection_elements =
       ProductionFactory::Get(Production::INTERSECTION_ELEMENTS);
-    if (intersection_elements->Parse(asnData, asnDataIndex, endStop))
+    if (intersection_elements->Parse(asnData, asnDataIndex, endStop, parsePath))
     {
       mIntersectionElements.push_back(intersection_elements);
       LOG_PASS();
@@ -46,6 +49,7 @@ Parse(const std::vector<Word>& asnData,
     {
       asnDataIndex = starting_index;
       LOG_FAIL();
+      parsePath.pop_back();
       return false;
     }
 
@@ -79,10 +83,12 @@ Parse(const std::vector<Word>& asnData,
   if (mIntersectionElements.empty())
   {
     asnDataIndex = starting_index;
+    parsePath.pop_back();
     return false;
   }
   else
   {
+    parsePath.pop_back();
     return true;
   }
 }

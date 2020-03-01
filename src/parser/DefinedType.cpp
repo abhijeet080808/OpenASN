@@ -19,8 +19,11 @@ bool
 DefinedType::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("DefinedType");
+
   // DefinedType ::=
   //   ExternalTypeReference
   // | typereference
@@ -33,10 +36,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto external_type_reference =
     ProductionFactory::Get(Production::EXTERNAL_TYPE_REFERENCE);
-  if (external_type_reference->Parse(asnData, asnDataIndex, endStop))
+  if (external_type_reference->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mExternalTypeReference = external_type_reference;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -48,16 +52,18 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto type_reference =
     ProductionFactory::Get(Production::TYPE_REFERENCE);
-  if (type_reference->Parse(asnData, asnDataIndex, endStop))
+  if (type_reference->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mTypeReference = type_reference;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 

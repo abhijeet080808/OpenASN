@@ -19,8 +19,11 @@ bool
 BuiltinType::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("BuiltinType");
+
   // BuiltinType ::=
   //   BitStringType
   // | BooleanType
@@ -56,10 +59,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto bit_string_type =
     ProductionFactory::Get(Production::BIT_STRING_TYPE);
-  if (bit_string_type->Parse(asnData, asnDataIndex, endStop))
+  if (bit_string_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mBitStringType = bit_string_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -71,10 +75,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto boolean_type =
     ProductionFactory::Get(Production::BOOLEAN_TYPE);
-  if (boolean_type->Parse(asnData, asnDataIndex, endStop))
+  if (boolean_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mBooleanType = boolean_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -86,10 +91,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto character_string_type =
     ProductionFactory::Get(Production::CHARACTER_STRING_TYPE);
-  if (character_string_type->Parse(asnData, asnDataIndex, endStop))
+  if (character_string_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mBooleanType = boolean_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -101,10 +107,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto choice_type =
     ProductionFactory::Get(Production::CHOICE_TYPE);
-  if (choice_type->Parse(asnData, asnDataIndex, endStop))
+  if (choice_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mChoiceType = choice_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -116,10 +123,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto date_type =
     ProductionFactory::Get(Production::DATE_TYPE);
-  if (date_type->Parse(asnData, asnDataIndex, endStop))
+  if (date_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mDateType = date_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -131,10 +139,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto date_time_type =
     ProductionFactory::Get(Production::DATE_TIME_TYPE);
-  if (date_time_type->Parse(asnData, asnDataIndex, endStop))
+  if (date_time_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mDateTimeType = date_time_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -146,10 +155,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto duration_type =
     ProductionFactory::Get(Production::DURATION_TYPE);
-  if (duration_type->Parse(asnData, asnDataIndex, endStop))
+  if (duration_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mDurationType = duration_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -161,10 +171,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto embedded_pdv_type =
     ProductionFactory::Get(Production::EMBEDDED_PDV_TYPE);
-  if (embedded_pdv_type->Parse(asnData, asnDataIndex, endStop))
+  if (embedded_pdv_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mEmbeddedPDVType = embedded_pdv_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -176,10 +187,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto enumerated_type =
     ProductionFactory::Get(Production::ENUMERATED_TYPE);
-  if (enumerated_type->Parse(asnData, asnDataIndex, endStop))
+  if (enumerated_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mEnumeratedType = enumerated_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -191,10 +203,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto external_type =
     ProductionFactory::Get(Production::EXTERNAL_TYPE);
-  if (external_type->Parse(asnData, asnDataIndex, endStop))
+  if (external_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mExternalType = external_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -206,10 +219,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto integer_type =
     ProductionFactory::Get(Production::INTEGER_TYPE);
-  if (integer_type->Parse(asnData, asnDataIndex, endStop))
+  if (integer_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mIntegerType = integer_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -221,10 +235,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto iri_type =
     ProductionFactory::Get(Production::IRI_TYPE);
-  if (iri_type->Parse(asnData, asnDataIndex, endStop))
+  if (iri_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mIRIType = iri_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -236,10 +251,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto null_type =
     ProductionFactory::Get(Production::NULL_TYPE);
-  if (null_type->Parse(asnData, asnDataIndex, endStop))
+  if (null_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mNullType = null_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -251,10 +267,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto object_identifier_type =
     ProductionFactory::Get(Production::OBJECT_IDENTIFIER_TYPE);
-  if (object_identifier_type->Parse(asnData, asnDataIndex, endStop))
+  if (object_identifier_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mObjectIdentifierType = object_identifier_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -266,10 +283,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto octet_string_type =
     ProductionFactory::Get(Production::OCTET_STRING_TYPE);
-  if (octet_string_type->Parse(asnData, asnDataIndex, endStop))
+  if (octet_string_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mOctetStringType = octet_string_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -281,10 +299,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto prefixed_type =
     ProductionFactory::Get(Production::PREFIXED_TYPE);
-  if (prefixed_type->Parse(asnData, asnDataIndex, endStop))
+  if (prefixed_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mPrefixedType = prefixed_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -296,10 +315,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto real_type =
     ProductionFactory::Get(Production::REAL_TYPE);
-  if (real_type->Parse(asnData, asnDataIndex, endStop))
+  if (real_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mRealType = real_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -311,10 +331,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto relative_iri_type =
     ProductionFactory::Get(Production::RELATIVE_IRI_TYPE);
-  if (relative_iri_type->Parse(asnData, asnDataIndex, endStop))
+  if (relative_iri_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mRelativeIRIType = relative_iri_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -326,10 +347,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto relative_oid_type =
     ProductionFactory::Get(Production::RELATIVE_OID_TYPE);
-  if (relative_oid_type->Parse(asnData, asnDataIndex, endStop))
+  if (relative_oid_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mRelativeOIDType = relative_oid_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -341,10 +363,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto sequence_type =
     ProductionFactory::Get(Production::SEQUENCE_TYPE);
-  if (sequence_type->Parse(asnData, asnDataIndex, endStop))
+  if (sequence_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mSequenceType = sequence_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -356,10 +379,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto sequence_of_type =
     ProductionFactory::Get(Production::SEQUENCE_OF_TYPE);
-  if (sequence_of_type->Parse(asnData, asnDataIndex, endStop))
+  if (sequence_of_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mSequenceOfType = sequence_of_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -371,10 +395,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto set_type =
     ProductionFactory::Get(Production::SET_TYPE);
-  if (set_type->Parse(asnData, asnDataIndex, endStop))
+  if (set_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mSetType = set_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -386,10 +411,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto set_of_type =
     ProductionFactory::Get(Production::SET_OF_TYPE);
-  if (set_of_type->Parse(asnData, asnDataIndex, endStop))
+  if (set_of_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mSetOfType = set_of_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -401,10 +427,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto time_of_day_type =
     ProductionFactory::Get(Production::TIME_OF_DAY_TYPE);
-  if (time_of_day_type->Parse(asnData, asnDataIndex, endStop))
+  if (time_of_day_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mTimeOfDayType = time_of_day_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -416,10 +443,11 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto time_type =
     ProductionFactory::Get(Production::TIME_TYPE);
-  if (time_type->Parse(asnData, asnDataIndex, endStop))
+  if (time_type->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mTimeType = time_type;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
@@ -428,5 +456,6 @@ Parse(const std::vector<Word>& asnData,
   }
 
   asnDataIndex = starting_index;
+  parsePath.pop_back();
   return false;
 }

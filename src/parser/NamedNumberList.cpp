@@ -19,8 +19,11 @@ bool
 NamedNumberList::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("NamedNumberList");
+
   // NamedNumberList ::=
   //   NamedNumber
   // | NamedNumberList "," NamedNumber
@@ -33,7 +36,7 @@ Parse(const std::vector<Word>& asnData,
     LOG_START();
     auto named_number =
       ProductionFactory::Get(Production::NAMED_NUMBER);
-    if (named_number->Parse(asnData, asnDataIndex, endStop))
+    if (named_number->Parse(asnData, asnDataIndex, endStop, parsePath))
     {
       mNamedNumber.push_back(named_number);
       LOG_PASS();
@@ -42,6 +45,7 @@ Parse(const std::vector<Word>& asnData,
     {
       asnDataIndex = starting_index;
       LOG_FAIL();
+      parsePath.pop_back();
       return false;
     }
 
@@ -62,10 +66,12 @@ Parse(const std::vector<Word>& asnData,
   if (mNamedNumber.empty())
   {
     asnDataIndex = starting_index;
+    parsePath.pop_back();
     return false;
   }
   else
   {
+    parsePath.pop_back();
     return true;
   }
 }

@@ -19,8 +19,11 @@ bool
 NamedNumber::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("NamedNumber");
+
   // NamedNumber ::=
   //   identifier "(" SignedNumber ")"
   // | identifier "(" DefinedValue ")"
@@ -31,7 +34,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto identifier =
     ProductionFactory::Get(Production::IDENTIFIER);
-  if (identifier->Parse(asnData, asnDataIndex, endStop))
+  if (identifier->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mIdentifier = identifier;
     LOG_PASS();
@@ -40,6 +43,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -54,6 +58,7 @@ Parse(const std::vector<Word>& asnData,
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -63,7 +68,7 @@ Parse(const std::vector<Word>& asnData,
   LOG_START();
   auto signed_number =
     ProductionFactory::Get(Production::SIGNED_NUMBER);
-  if (signed_number->Parse(asnData, asnDataIndex, endStop))
+  if (signed_number->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mSignedNumber = signed_number;
     endStop.pop_back();
@@ -80,7 +85,7 @@ Parse(const std::vector<Word>& asnData,
     LOG_START();
     auto defined_value =
       ProductionFactory::Get(Production::DEFINED_VALUE);
-    if (defined_value->Parse(asnData, asnDataIndex, endStop))
+    if (defined_value->Parse(asnData, asnDataIndex, endStop, parsePath))
     {
       mDefinedValue = defined_value;
       endStop.pop_back();
@@ -91,6 +96,7 @@ Parse(const std::vector<Word>& asnData,
       endStop.pop_back();
       asnDataIndex = starting_index;
       LOG_FAIL();
+      parsePath.pop_back();
       return false;
     }
   }
@@ -101,12 +107,14 @@ Parse(const std::vector<Word>& asnData,
   {
     ++asnDataIndex;
     LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
     asnDataIndex = starting_index;
     LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 }

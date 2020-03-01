@@ -19,8 +19,11 @@ bool
 DefinitiveObjIdComponentList::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
-      std::vector<std::string>& endStop)
+      std::vector<std::string>& endStop,
+      std::vector<std::string>& parsePath)
 {
+  parsePath.push_back("DefinitiveObjIdComponentList");
+
   // DefinitiveObjIdComponentList ::=
   //   DefinitiveObjIdComponent
   // | DefinitiveObjIdComponent DefinitiveObjIdComponentList
@@ -33,7 +36,7 @@ Parse(const std::vector<Word>& asnData,
     LOG_START();
     auto definitive_obj_id_component =
       ProductionFactory::Get(Production::DEFINITIVE_OBJ_ID_COMPONENT);
-    if (definitive_obj_id_component->Parse(asnData, asnDataIndex, endStop))
+    if (definitive_obj_id_component->Parse(asnData, asnDataIndex, endStop, parsePath))
     {
       mDefinitiveObjIdComponent.push_back(definitive_obj_id_component);
       LOG_PASS();
@@ -48,10 +51,12 @@ Parse(const std::vector<Word>& asnData,
   if (mDefinitiveObjIdComponent.empty())
   {
     asnDataIndex = starting_index;
+    parsePath.pop_back();
     return false;
   }
   else
   {
+    parsePath.pop_back();
     return true;
   }
 }
