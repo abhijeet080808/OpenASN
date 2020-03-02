@@ -1,125 +1,129 @@
 TestModule DEFINITIONS ::=
 BEGIN
 
-Bool              ::= BOOLEAN
-BitStr1           ::= BIT STRING { a(0), b(1), c(100) }
-BitStr2           ::= BIT STRING
-CharStr1          ::= BMPString
-CharStr2          ::= GeneralString
-CharStr3          ::= GraphicString
-CharStr4          ::= IA5String
-CharStr5          ::= ISO646String
-CharStr6          ::= NumericString
-CharStr7          ::= PrintableString
-CharStr8          ::= TeletexString
-CharStr9          ::= T61String
-CharStr10         ::= UniversalString
-CharStr11         ::= UTF8String
-CharStr12         ::= VideotexString
-CharStr13         ::= VisibleString
-CharStr14         ::= CHARACTER STRING
+Bool                  ::= BOOLEAN
+BitStr1               ::= BIT STRING { a(0), b(1), c(100) }
+BitStr2               ::= BIT STRING
+CharStr1              ::= BMPString
+CharStr2              ::= GeneralString
+CharStr3              ::= GraphicString
+CharStr4              ::= IA5String
+CharStr5              ::= ISO646String
+CharStr6              ::= NumericString
+CharStr7              ::= PrintableString
+CharStr8              ::= TeletexString
+CharStr9              ::= T61String
+CharStr10             ::= UniversalString
+CharStr11             ::= UTF8String
+CharStr12             ::= VideotexString
+CharStr13             ::= VisibleString
+CharStr14             ::= CHARACTER STRING
 
-Choice            ::= CHOICE {
-  chInt             INTEGER,
-  chBool            BOOLEAN
+Choice                ::= CHOICE {
+  chInt                 INTEGER,
+  chBool                BOOLEAN
 }
 
-Date              ::= DATE
-DateTime          ::= DATE-TIME
-Duration          ::= DURATION
-EmbeddedPDV       ::= EMBEDDED PDV
-Enumerated1       ::= ENUMERATED { a, b, c, d }
-Enumerated2       ::= ENUMERATED { w(-1), x(0), y(1), z(2) }
-External          ::= EXTERNAL
-Int1              ::= INTEGER
-Int2              ::= INTEGER { w(-1), x(0), y(1), z(2) }
-Iri               ::= OID-IRI
-Null              ::= NULL
-ObjId             ::= OBJECT IDENTIFIER
-OctetStr          ::= OCTET STRING
-Real              ::= REAL
-RelativeIri       ::= RELATIVE-OID-IRI
-RelativeOid       ::= RELATIVE-OID
+Date                  ::= DATE
+DateTime              ::= DATE-TIME
+Duration              ::= DURATION
+EmbeddedPDV           ::= EMBEDDED PDV
+Enumerated1           ::= ENUMERATED { a, b, c, d }
+Enumerated2           ::= ENUMERATED { w(-1), x(0), y(1), z(2) }
+External              ::= EXTERNAL
+Int1                  ::= INTEGER
+Int2                  ::= INTEGER { w(-1), x(0), y(1), z(2) }
+Iri                   ::= OID-IRI
+Null                  ::= NULL
+ObjId                 ::= OBJECT IDENTIFIER
+OctetStr              ::= OCTET STRING
+Real                  ::= REAL
+RelativeIri           ::= RELATIVE-OID-IRI
+RelativeOid           ::= RELATIVE-OID
 
-Sequence          ::= SEQUENCE {
-  seqBool           BOOLEAN,
-  seqBitStr1        BIT STRING { a(0), b(1), c(100) },
-  seqBitStr2        BIT STRING,
-  seqCharStr1       BMPString,
-  seqCharStr2       GeneralString,
-  seqCharStr3       GraphicString,
-  seqCharStr4       IA5String,
-  seqCharStr5       ISO646String,
-  seqCharStr6       NumericString,
-  seqCharStr7       PrintableString,
-  seqCharStr8       TeletexString,
-  seqCharStr9       T61String,
-  seqCharStr10      UniversalString,
-  seqCharStr11      UTF8String,
-  seqCharStr12      VideotexString,
-  seqCharStr13      VisibleString,
-  seqCharStr14      CHARACTER STRING,
-  seqCh             CHOICE { i INTEGER, b BOOLEAN },
-  seqDate           DATE,
-  seqDateTime       DATE-TIME,
-  seqDuration       DURATION,
-  seqEmbeddedPDV    EMBEDDED PDV,
-  seqEnumerated1    ENUMERATED { a, b, c, d },
-  seqEnumerated2    ENUMERATED { w(-1), x(0), y(1), z(2) },
-  seqInt1           INTEGER,
-  seqInt2           INTEGER { w(-1), x(0), y(1), z(2) },
-  seqIri            OID-IRI,
-  seqNull           NULL,
-  seqObjId          OBJECT IDENTIFIER,
-  seqOctetStr       OCTET STRING,
-  seqReal           REAL,
-  seqRelativeIri    RELATIVE-OID-IRI,
-  seqRelativeOid    RELATIVE-OID,
-  seqSeqOf1         SEQUENCE OF INTEGER,
-  seqSeqOf2         SEQUENCE OF INTEGER { w(-1), x(0), y(1), z(2) },
-  seqSeqOf3         SEQUENCE OF seqSeqOf3Int INTEGER { w(-1), x(0), y(1), z(2) }
+Sequence              ::= SEQUENCE {
+  seqBool               BOOLEAN,
+  seqBitStr1            BIT STRING { a(0), b(1), c(100) },
+  seqBitStr2            BIT STRING,
+  seqCharStr1           BMPString,
+  seqCharStr2           GeneralString,
+  seqCharStr3           GraphicString,
+  seqCharStr4           IA5String,
+  seqCharStr5           ISO646String,
+  seqCharStr6           NumericString,
+  seqCharStr7           PrintableString,
+  seqCharStr8           TeletexString,
+  seqCharStr9           T61String,
+  seqCharStr10          UniversalString,
+  seqCharStr11          UTF8String,
+  seqCharStr12          VideotexString,
+  seqCharStr13          VisibleString,
+  seqCharStr14          CHARACTER STRING,
+  seqCh                 CHOICE { i INTEGER, b BOOLEAN },
+  seqDate               DATE,
+  seqDateTime           DATE-TIME,
+  seqDuration           DURATION,
+  seqEmbeddedPDV        EMBEDDED PDV,
+  seqEnumerated1        ENUMERATED { a, b, c, d },
+  seqEnumerated2        ENUMERATED { w(-1), x(0), y(1), z(2) },
+  seqInt1               INTEGER,
+  seqInt2               INTEGER { w(-1), x(0), y(1), z(2) },
+  seqIri                OID-IRI,
+  seqNull               NULL,
+  seqObjId              OBJECT IDENTIFIER,
+  seqOctetStr           OCTET STRING,
+  seqReal               REAL,
+  seqRelativeIri        RELATIVE-OID-IRI,
+  seqRelativeOid        RELATIVE-OID,
+  seqSeqOf1             SEQUENCE OF INTEGER,
+  seqSeqOf2             SEQUENCE OF INTEGER { w(-1), x(0), y(1), z(2) },
+  seqSeqOf3             SEQUENCE OF seqSeqOf3Int INTEGER { w(-1), x(0), y(1), z(2) }
 }
 
-SeqOf1            ::= SEQUENCE OF INTEGER
-SeqOf2            ::= SEQUENCE OF INTEGER { w(-1), x(0), y(1), z(2) }
-SeqOf3            ::= SEQUENCE OF seqOf3Int INTEGER { w(-1), x(0), y(1), z(2) }
+SeqOf1                ::= SEQUENCE OF INTEGER
+SeqOf2                ::= SEQUENCE OF INTEGER { w(-1), x(0), y(1), z(2) }
+SeqOf3                ::= SEQUENCE OF seqOf3Int INTEGER { w(-1), x(0), y(1), z(2) }
 
-Set               ::= SET {
-  setBool           BOOLEAN,
-  setBitStr1        BIT STRING { a(0), b(1), c(100) }
+Set                   ::= SET {
+  setBool               BOOLEAN,
+  setBitStr1            BIT STRING { a(0), b(1), c(100) }
 }
 
-SetOf1            ::= SET OF INTEGER
-SetOf2            ::= SET OF INTEGER { w(-1), x(0), y(1), z(2) }
-SetOf3            ::= SET OF prefSetOf3Int INTEGER { w(-1), x(0), y(1), z(2) }
-Prefixed1         ::= [TAG : APPLICATION 5] IMPLICIT INTEGER
-Prefixed2         ::= [PRIVATE 5] EXPLICIT INTEGER
-Prefixed3         ::= [5] INTEGER
-Prefixed4         ::= [PrefAbcModule.prefExtValueRef] INTEGER { w(-1), x(0), y(1), z(2) }
-Prefixed5         ::= [localValueRef] SET OF INTEGER { w(-1), x(0), y(1), z(2) }
-Prefixed6         ::= [TAG :] INTEGER
-Time              ::= TIME
-TimeOfDay         ::= TIME-OF-DAY
+SetOf1                ::= SET OF INTEGER
+SetOf2                ::= SET OF INTEGER { w(-1), x(0), y(1), z(2) }
+SetOf3                ::= SET OF prefSetOf3Int INTEGER { w(-1), x(0), y(1), z(2) }
+Prefixed1             ::= [TAG : APPLICATION 5] IMPLICIT INTEGER
+Prefixed2             ::= [PRIVATE 5] EXPLICIT INTEGER
+Prefixed3             ::= [5] INTEGER
+Prefixed4             ::= [PrefAbcModule.prefExtValueRef] INTEGER { w(-1), x(0), y(1), z(2) }
+Prefixed5             ::= [localValueRef] SET OF INTEGER { w(-1), x(0), y(1), z(2) }
+Prefixed6             ::= [TAG :] INTEGER
+Time                  ::= TIME
+TimeOfDay             ::= TIME-OF-DAY
 
-DefinedType1      ::= DefAbcModule.DefExtTyperef
-DefinedType2      ::= Prefixed1
-UsefulType1       ::= GeneralizedTime
-UsefulType2       ::= UTCTime
-UsefulType3       ::= ObjectDescriptor
+DefinedType1          ::= DefAbcModule.DefExtTyperef
+DefinedType2          ::= Prefixed1
+UsefulType1           ::= GeneralizedTime
+UsefulType2           ::= UTCTime
+UsefulType3           ::= ObjectDescriptor
 
-SelectionType     ::= chInt < Choice
+SelectionType         ::= chInt < Choice
 
-ConstrainedType1  ::= BOOLEAN (TRUE)
-ConstrainedType2  ::= BOOLEAN (TRUE) (TRUE)
-ConstrainedType3  ::= BOOLEAN (TRUE ^ FALSE EXCEPT TRUE)
-ConstrainedType4  ::= BOOLEAN (TRUE | FALSE EXCEPT FALSE)
-ConstrainedType5  ::= BOOLEAN (TRUE ^ FALSE | FALSE ^ TRUE EXCEPT FALSE)
-ConstrainedType6  ::= BOOLEAN (TRUE , ... )
-ConstrainedType7  ::= BOOLEAN (TRUE , ... ! BOOLEAN : FALSE)
-ConstrainedType8  ::= BOOLEAN (TRUE , ... , FALSE)
-ConstrainedType9  ::= BOOLEAN (ALL EXCEPT TRUE)
-ConstrainedType10 ::= BOOLEAN (TRUE , ... , ALL EXCEPT FALSE)
-ConstrainedType11 ::= BOOLEAN (TRUE , ... , FALSE ! BOOLEAN : FALSE)
-ConstrainedType12 ::= BOOLEAN (TRUE , ... , FALSE EXCEPT TRUE ! BOOLEAN : FALSE)
+--SingleValue
+ConstrainedType1      ::= BOOLEAN (TRUE)
+ConstrainedType2      ::= BOOLEAN (TRUE) (TRUE)
+ConstrainedType3      ::= BOOLEAN (TRUE ^ FALSE EXCEPT TRUE)
+ConstrainedType4      ::= BOOLEAN (TRUE | FALSE EXCEPT FALSE)
+ConstrainedType5      ::= BOOLEAN (TRUE ^ FALSE | FALSE ^ TRUE EXCEPT FALSE)
+ConstrainedType6      ::= BOOLEAN (TRUE , ... )
+ConstrainedType7      ::= BOOLEAN (TRUE , ... ! BOOLEAN : FALSE)
+ConstrainedType8      ::= BOOLEAN (TRUE , ... , FALSE)
+ConstrainedType9      ::= BOOLEAN (ALL EXCEPT TRUE)
+ConstrainedType10     ::= BOOLEAN (TRUE , ... , ALL EXCEPT FALSE)
+ConstrainedType11     ::= BOOLEAN (TRUE , ... , FALSE ! BOOLEAN : FALSE)
+ConstrainedType12     ::= BOOLEAN (TRUE , ... , FALSE EXCEPT TRUE ! BOOLEAN : FALSE)
+
+--ContainedSubtype
+ConstrainedType13     ::= BOOLEAN (INCLUDES BOOLEAN)
 
 END

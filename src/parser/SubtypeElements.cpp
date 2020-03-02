@@ -56,6 +56,22 @@ Parse(const std::vector<Word>& asnData,
     LOG_FAIL();
   }
 
+  obj = "ContainedSubtype";
+  LOG_START();
+  auto contained_subtype =
+    ProductionFactory::Get(Production::CONTAINED_SUBTYPE);
+  if (contained_subtype->Parse(asnData, asnDataIndex, endStop, parsePath))
+  {
+    mContainedSubtype = contained_subtype;
+    LOG_PASS();
+    parsePath.pop_back();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
+
   asnDataIndex = starting_index;
   parsePath.pop_back();
   return false;

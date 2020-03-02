@@ -22,6 +22,7 @@
 #include "Constraint.hh"
 #include "ConstraintList.hh"
 #include "ConstraintSpec.hh"
+#include "ContainedSubtype.hh"
 #include "DateType.hh"
 #include "DateTimeType.hh"
 #include "DefinedType.hh"
@@ -57,6 +58,7 @@
 #include "IA5String.hh"
 #include "Identifier.hh"
 #include "Implicit.hh"
+#include "Includes.hh"
 #include "IntegerType.hh"
 #include "IntersectionElements.hh"
 #include "Intersections.hh"
@@ -195,6 +197,9 @@ Get(Production production)
     case Production::CONSTRAINT_SPEC:
       return std::make_shared<ConstraintSpec>();
 
+    case Production::CONTAINED_SUBTYPE:
+      return std::make_shared<ContainedSubtype>();
+
     case Production::DATE_TYPE:
       return std::make_shared<DateType>();
 
@@ -299,6 +304,9 @@ Get(Production production)
 
     case Production::IMPLICIT:
       return std::make_shared<Implicit>();
+
+    case Production::INCLUDES:
+      return std::make_shared<Includes>();
 
     case Production::INTEGER_TYPE:
       return std::make_shared<IntegerType>();

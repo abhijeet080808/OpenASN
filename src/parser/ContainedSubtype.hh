@@ -7,7 +7,7 @@
 namespace OpenASN
 {
   // X.680 08/2015 Annex L
-  class SubtypeElements : public IProduction
+  class ContainedSubtype : public IProduction
   {
     public:
       Production GetType() const override;
@@ -18,7 +18,7 @@ namespace OpenASN
                  std::vector<std::string>& parsePath) override;
 
     public:
-      std::shared_ptr<IProduction> mSingleValue;
-      std::shared_ptr<IProduction> mContainedSubtype;
+      std::shared_ptr<IProduction> mIncludes;
+      std::shared_ptr<IProduction> mType;
   };
 }

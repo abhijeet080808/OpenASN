@@ -23,6 +23,7 @@ set(SOURCES AdditionalElementSetSpec.cpp
             Constraint.cpp
             ConstraintList.cpp
             ConstraintSpec.cpp
+            ContainedSubtype.cpp
             DateType.cpp
             DateTimeType.cpp
             DefinedType.cpp
@@ -58,6 +59,7 @@ set(SOURCES AdditionalElementSetSpec.cpp
             IA5String.cpp
             Identifier.cpp
             Implicit.cpp
+            Includes.cpp
             IntegerType.cpp
             IntersectionElements.cpp
             Intersections.cpp
