@@ -64,6 +64,11 @@
 #include "Intersections.hh"
 #include "IRIType.hh"
 #include "ISO646String.hh"
+#include "LessThan.hh"
+#include "LowerEndpoint.hh"
+#include "LowerEndValue.hh"
+#include "Max.hh"
+#include "Min.hh"
 #include "ModuleBody.hh"
 #include "ModuleDefinition.hh"
 #include "ModuleIdentifier.hh"
@@ -114,10 +119,13 @@
 #include "Universal.hh"
 #include "UniversalString.hh"
 #include "UnrestrictedCharacterStringType.hh"
+#include "UpperEndpoint.hh"
+#include "UpperEndValue.hh"
 #include "UsefulType.hh"
 #include "UTCTime.hh"
 #include "UTF8String.hh"
 #include "Value.hh"
+#include "ValueRange.hh"
 #include "VideotexString.hh"
 #include "VisibleString.hh"
 
@@ -323,6 +331,21 @@ Get(Production production)
     case Production::ISO646_STRING:
       return std::make_shared<ISO646String>();
 
+    case Production::LESS_THAN:
+      return std::make_shared<LessThan>();
+
+    case Production::LOWER_ENDPOINT:
+      return std::make_shared<LowerEndpoint>();
+
+    case Production::LOWER_END_VALUE:
+      return std::make_shared<LowerEndValue>();
+
+    case Production::MAX:
+      return std::make_shared<Max>();
+
+    case Production::MIN:
+      return std::make_shared<Min>();
+
     case Production::MODULE_BODY:
       return std::make_shared<ModuleBody>();
 
@@ -476,6 +499,12 @@ Get(Production production)
     case Production::UNRESTRICTED_CHARACTER_STRING_TYPE:
       return std::make_shared<UnrestrictedCharacterStringType>();
 
+    case Production::UPPER_ENDPOINT:
+      return std::make_shared<UpperEndpoint>();
+
+    case Production::UPPER_END_VALUE:
+      return std::make_shared<UpperEndValue>();
+
     case Production::USEFUL_TYPE:
       return std::make_shared<UsefulType>();
 
@@ -485,11 +514,14 @@ Get(Production production)
     case Production::UTF8_STRING:
       return std::make_shared<UTF8String>();
 
-    case Production::VALUE_REFERENCE:
-      return std::make_shared<ValueReference>();
-
     case Production::VALUE:
       return std::make_shared<Value>();
+
+    case Production::VALUE_RANGE:
+      return std::make_shared<ValueRange>();
+
+    case Production::VALUE_REFERENCE:
+      return std::make_shared<ValueReference>();
 
     case Production::VIDEOTEX_STRING:
       return std::make_shared<VideotexString>();

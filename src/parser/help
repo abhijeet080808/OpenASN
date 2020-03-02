@@ -26,16 +26,18 @@ std::vector<std::shared_ptr<IProduction>> mNamedBit;
     ProductionFactory::Get(Production::TYPE_ASSIGNMENT);
   if (type_assignment->Parse(asnData, asnDataIndex, endStop))
   {
+    endStop.pop_back();
     mTypeAssignment = type_assignment;
     LOG_PASS();
-    endStop.pop_back();
+    parsePath.pop_back();
     return true;
   }
   else
   {
-    LOG_FAIL();
     endStop.pop_back();
     asnDataIndex = starting_index;
+    LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -43,20 +45,26 @@ std::vector<std::shared_ptr<IProduction>> mNamedBit;
 
 #include "ParseHelper.hh"
 
+  parsePath.push_back("BooleanType");
+
   size_t starting_index = asnDataIndex;
 
   auto obj = "T61String";
   LOG_START();
   if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
-    LOG_PASS();
+    endStop.pop_back();
     ++asnDataIndex;
+    LOG_PASS();
+    parsePath.pop_back();
     return true;
   }
   else
   {
-    LOG_FAIL();
+    endStop.pop_back();
     asnDataIndex = starting_index;
+    LOG_FAIL();
+    parsePath.pop_back();
     return false;
   }
 
@@ -77,8 +85,10 @@ std::vector<std::shared_ptr<IProduction>> mNamedBit;
     }
     else
     {
-      LOG_FAIL();
+      endStop.pop_back();
       asnDataIndex = starting_index;
+      LOG_FAIL();
+      parsePath.pop_back();
       return false;
     }
 
@@ -86,8 +96,8 @@ std::vector<std::shared_ptr<IProduction>> mNamedBit;
     LOG_START();
     if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
     {
-      LOG_PASS();
       ++asnDataIndex;
+      LOG_PASS();
     }
     else
     {
@@ -98,11 +108,15 @@ std::vector<std::shared_ptr<IProduction>> mNamedBit;
 
   if (mNamedNumber.empty())
   {
+    parsePath.pop_back();
     asnDataIndex = starting_index;
+    parsePath.pop_back();
     return false;
   }
   else
   {
+    endStop.pop_back();
+    parsePath.pop_back();
     return true;
   }
 

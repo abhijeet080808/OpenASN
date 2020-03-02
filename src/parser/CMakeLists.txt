@@ -65,6 +65,11 @@ set(SOURCES AdditionalElementSetSpec.cpp
             Intersections.cpp
             IRIType.cpp
             ISO646String.cpp
+            LessThan.cpp
+            LowerEndpoint.cpp
+            LowerEndValue.cpp
+            Max.cpp
+            Min.cpp
             ModuleBody.cpp
             ModuleDefinition.cpp
             ModuleIdentifier.cpp
@@ -117,10 +122,13 @@ set(SOURCES AdditionalElementSetSpec.cpp
             Universal.cpp
             UniversalString.cpp
             UnrestrictedCharacterStringType.cpp
+            UpperEndpoint.cpp
+            UpperEndValue.cpp
             UsefulType.cpp
             UTCTime.cpp
             UTF8String.cpp
             Value.cpp
+            ValueRange.cpp
             VideotexString.cpp
             VisibleString.cpp
 )

@@ -40,13 +40,13 @@ Parse(const std::vector<Word>& asnData,
 
   size_t starting_index = asnDataIndex;
 
-  auto obj = "SingleValue";
+  auto obj = "ContainedSubtype";
   LOG_START();
-  auto single_value =
-    ProductionFactory::Get(Production::SINGLE_VALUE);
-  if (single_value->Parse(asnData, asnDataIndex, endStop, parsePath))
+  auto contained_subtype =
+    ProductionFactory::Get(Production::CONTAINED_SUBTYPE);
+  if (contained_subtype->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
-    mSingleValue = single_value;
+    mContainedSubtype = contained_subtype;
     LOG_PASS();
     parsePath.pop_back();
     return true;
@@ -56,13 +56,31 @@ Parse(const std::vector<Word>& asnData,
     LOG_FAIL();
   }
 
-  obj = "ContainedSubtype";
+  // This is added before SingleValue to prevent SingleValue from wrongly
+  // consuming values meant for this type
+  obj = "ValueRange";
   LOG_START();
-  auto contained_subtype =
-    ProductionFactory::Get(Production::CONTAINED_SUBTYPE);
-  if (contained_subtype->Parse(asnData, asnDataIndex, endStop, parsePath))
+  auto value_range =
+    ProductionFactory::Get(Production::VALUE_RANGE);
+  if (value_range->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
-    mContainedSubtype = contained_subtype;
+    mValueRange = value_range;
+    LOG_PASS();
+    parsePath.pop_back();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
+
+  obj = "SingleValue";
+  LOG_START();
+  auto single_value =
+    ProductionFactory::Get(Production::SINGLE_VALUE);
+  if (single_value->Parse(asnData, asnDataIndex, endStop, parsePath))
+  {
+    mSingleValue = single_value;
     LOG_PASS();
     parsePath.pop_back();
     return true;

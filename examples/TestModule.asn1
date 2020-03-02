@@ -125,5 +125,10 @@ ConstrainedType12     ::= BOOLEAN (TRUE , ... , FALSE EXCEPT TRUE ! BOOLEAN : FA
 
 --ContainedSubtype
 ConstrainedType13     ::= BOOLEAN (INCLUDES BOOLEAN)
+ConstrainedType14     ::= BOOLEAN (BOOLEAN)
+
+--ValueRange
+ConstrainedType15     ::= BOOLEAN (MIN..MAX)
+ConstrainedType16     ::= BOOLEAN (FALSE..TRUE)
 
 END
