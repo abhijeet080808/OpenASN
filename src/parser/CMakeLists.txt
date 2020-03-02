@@ -61,6 +61,7 @@ set(SOURCES AdditionalElementSetSpec.cpp
             Implicit.cpp
             Includes.cpp
             IntegerType.cpp
+            IntegerValue.cpp
             IntersectionElements.cpp
             Intersections.cpp
             IRIType.cpp
@@ -107,6 +108,7 @@ set(SOURCES AdditionalElementSetSpec.cpp
             SetOfType.cpp
             SignedNumber.cpp
             SingleValue.cpp
+            SizeConstraint.cpp
             SubtypeConstraint.cpp
             SubtypeElements.cpp
             Tag.cpp

@@ -109,6 +109,8 @@ UsefulType3           ::= ObjectDescriptor
 
 SelectionType         ::= chInt < Choice
 
+-- TODO check precedence of EXCEPT ^ | 50.1 note 2
+
 --SingleValue
 ConstrainedType1      ::= BOOLEAN (TRUE)
 ConstrainedType2      ::= BOOLEAN (TRUE) (TRUE)
@@ -129,6 +131,10 @@ ConstrainedType14     ::= BOOLEAN (BOOLEAN)
 
 --ValueRange
 ConstrainedType15     ::= BOOLEAN (MIN..MAX)
-ConstrainedType16     ::= BOOLEAN (FALSE..TRUE)
+ConstrainedType16     ::= INTEGER (-100..100)
+
+--SizeConstraint
+ConstrainedType17     ::= BIT STRING (SIZE (10))
+ConstrainedType18     ::= BIT STRING (SIZE (0..10))
 
 END

@@ -66,6 +66,22 @@ Parse(const std::vector<Word>& asnData,
     LOG_FAIL();
   }
 
+  obj = "IntegerValue";
+  LOG_START();
+  auto integer_value =
+    ProductionFactory::Get(Production::INTEGER_VALUE);
+  if (integer_value->Parse(asnData, asnDataIndex, endStop, parsePath))
+  {
+    mIntegerValue = integer_value;
+    LOG_PASS();
+    parsePath.pop_back();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
+
   asnDataIndex = starting_index;
   parsePath.pop_back();
   return false;

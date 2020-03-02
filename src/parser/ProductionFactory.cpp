@@ -60,6 +60,7 @@
 #include "Implicit.hh"
 #include "Includes.hh"
 #include "IntegerType.hh"
+#include "IntegerValue.hh"
 #include "IntersectionElements.hh"
 #include "Intersections.hh"
 #include "IRIType.hh"
@@ -104,6 +105,7 @@
 #include "SetOfType.hh"
 #include "SignedNumber.hh"
 #include "SingleValue.hh"
+#include "SizeConstraint.hh"
 #include "SubtypeConstraint.hh"
 #include "SubtypeElements.hh"
 #include "Tag.hh"
@@ -319,6 +321,9 @@ Get(Production production)
     case Production::INTEGER_TYPE:
       return std::make_shared<IntegerType>();
 
+    case Production::INTEGER_VALUE:
+      return std::make_shared<IntegerValue>();
+
     case Production::INTERSECTION_ELEMENTS:
       return std::make_shared<IntersectionElements>();
 
@@ -453,6 +458,9 @@ Get(Production production)
 
     case Production::SINGLE_VALUE:
       return std::make_shared<SingleValue>();
+
+    case Production::SIZE_CONSTRAINT:
+      return std::make_shared<SizeConstraint>();
 
     case Production::SUBTYPE_CONSTRAINT:
       return std::make_shared<SubtypeConstraint>();
