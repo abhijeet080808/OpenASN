@@ -88,6 +88,7 @@ set(SOURCES AdditionalElementSetSpec.cpp
             ObjectIdentifierType.cpp
             OctetStringType.cpp
             ParseHelper.cpp
+            PermittedAlphabet.cpp
             PrefixedType.cpp
             Private.cpp
             PrintableString.cpp

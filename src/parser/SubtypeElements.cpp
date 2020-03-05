@@ -106,6 +106,22 @@ Parse(const std::vector<Word>& asnData,
     LOG_FAIL();
   }
 
+  obj = "PermittedAlphabet";
+  LOG_START();
+  auto permitted_alphabet =
+    ProductionFactory::Get(Production::PERMITTED_ALPHABET);
+  if (permitted_alphabet->Parse(asnData, asnDataIndex, endStop, parsePath))
+  {
+    mPermittedAlphabet = permitted_alphabet;
+    LOG_PASS();
+    parsePath.pop_back();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
+
   asnDataIndex = starting_index;
   parsePath.pop_back();
   return false;

@@ -7,7 +7,7 @@
 namespace OpenASN
 {
   // X.680 08/2015 Annex L
-  class SubtypeElements : public IProduction
+  class PermittedAlphabet : public IProduction
   {
     public:
       Production GetType() const override;
@@ -18,10 +18,6 @@ namespace OpenASN
                  std::vector<std::string>& parsePath) override;
 
     public:
-      std::shared_ptr<IProduction> mContainedSubtype;
-      std::shared_ptr<IProduction> mValueRange;
-      std::shared_ptr<IProduction> mSingleValue;
-      std::shared_ptr<IProduction> mSizeConstraint;
-      std::shared_ptr<IProduction> mPermittedAlphabet;
+      std::shared_ptr<IProduction> mConstraint;
   };
 }

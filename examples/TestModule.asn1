@@ -112,29 +112,36 @@ SelectionType         ::= chInt < Choice
 -- TODO check precedence of EXCEPT ^ | 50.1 note 2
 
 --SingleValue
-ConstrainedType1      ::= BOOLEAN (TRUE)
-ConstrainedType2      ::= BOOLEAN (TRUE) (TRUE)
-ConstrainedType3      ::= BOOLEAN (TRUE ^ FALSE EXCEPT TRUE)
-ConstrainedType4      ::= BOOLEAN (TRUE | FALSE EXCEPT FALSE)
-ConstrainedType5      ::= BOOLEAN (TRUE ^ FALSE | FALSE ^ TRUE EXCEPT FALSE)
-ConstrainedType6      ::= BOOLEAN (TRUE , ... )
-ConstrainedType7      ::= BOOLEAN (TRUE , ... ! BOOLEAN : FALSE)
-ConstrainedType8      ::= BOOLEAN (TRUE , ... , FALSE)
-ConstrainedType9      ::= BOOLEAN (ALL EXCEPT TRUE)
-ConstrainedType10     ::= BOOLEAN (TRUE , ... , ALL EXCEPT FALSE)
-ConstrainedType11     ::= BOOLEAN (TRUE , ... , FALSE ! BOOLEAN : FALSE)
-ConstrainedType12     ::= BOOLEAN (TRUE , ... , FALSE EXCEPT TRUE ! BOOLEAN : FALSE)
+SvConstrainedType1    ::= BOOLEAN (TRUE)
+SvConstrainedType2    ::= BOOLEAN (TRUE) (TRUE)
+SvConstrainedType3    ::= BOOLEAN (TRUE ^ FALSE EXCEPT TRUE)
+SvConstrainedType4    ::= BOOLEAN (TRUE | FALSE EXCEPT FALSE)
+SvConstrainedType5    ::= BOOLEAN (TRUE ^ FALSE | FALSE ^ TRUE EXCEPT FALSE)
+SvConstrainedType6    ::= BOOLEAN (TRUE , ... )
+SvConstrainedType7    ::= BOOLEAN (TRUE , ... ! BOOLEAN : FALSE)
+SvConstrainedType8    ::= BOOLEAN (TRUE , ... , FALSE)
+SvConstrainedType9    ::= BOOLEAN (ALL EXCEPT TRUE)
+SvConstrainedType10   ::= BOOLEAN (TRUE , ... , ALL EXCEPT FALSE)
+SvConstrainedType11   ::= BOOLEAN (TRUE , ... , FALSE ! BOOLEAN : FALSE)
+SvConstrainedType12   ::= BOOLEAN (TRUE , ... , FALSE EXCEPT TRUE ! BOOLEAN : FALSE)
 
 --ContainedSubtype
-ConstrainedType13     ::= BOOLEAN (INCLUDES BOOLEAN)
-ConstrainedType14     ::= BOOLEAN (BOOLEAN)
+CsConstrainedType1    ::= BOOLEAN (INCLUDES BOOLEAN)
+CsConstrainedType2    ::= BOOLEAN (BOOLEAN)
 
 --ValueRange
-ConstrainedType15     ::= BOOLEAN (MIN..MAX)
-ConstrainedType16     ::= INTEGER (-100..100)
+VrConstrainedType1    ::= BOOLEAN (MIN..MAX)
+VrConstrainedType2    ::= INTEGER (-100..100)
 
 --SizeConstraint
-ConstrainedType17     ::= BIT STRING (SIZE (10))
-ConstrainedType18     ::= BIT STRING (SIZE (0..10))
+ScConstrainedType1    ::= BIT STRING (SIZE (10))
+ScConstrainedType2    ::= BIT STRING (SIZE (0..10))
+
+--PermittedAlphabet
+-- TODO Change to meaningful constraints
+PaConstrainedType1    ::= NumericString (FROM (TRUE | FALSE | TRUE))
+PaConstrainedType2    ::= NumericString (BOOLEAN (INCLUDES BOOLEAN))
+PaConstrainedType3    ::= NumericString (INTEGER (-100..100))
+PaConstrainedType4    ::= NumericString (BIT STRING (SIZE (0..10))
 
 END

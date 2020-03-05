@@ -86,6 +86,7 @@
 #include "ObjectDescriptor.hh"
 #include "ObjectIdentifierType.hh"
 #include "OctetStringType.hh"
+#include "PermittedAlphabet.hh"
 #include "PrefixedType.hh"
 #include "PrintableString.hh"
 #include "Private.hh"
@@ -401,6 +402,9 @@ Get(Production production)
 
     case Production::OCTET_STRING_TYPE:
       return std::make_shared<OctetStringType>();
+
+    case Production::PERMITTED_ALPHABET:
+      return std::make_shared<PermittedAlphabet>();
 
     case Production::PREFIXED_TYPE:
       return std::make_shared<PrefixedType>();
