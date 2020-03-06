@@ -19,16 +19,18 @@ foreach(TEST_CASE ${TEST_CASES})
   # remove first token (rest tokens are names of files generated from asn1 file)
   list(REMOVE_AT TEST_TOKENS 0)
   # append cpp to all generated file names
-  list(TRANSFORM TEST_TOKENS APPEND ".cpp")
+  list(TRANSFORM TEST_TOKENS APPEND ".cpp" OUTPUT_VARIABLE TEST_TOKENS_CPP)
+  # append hh to all generated file names
+  list(TRANSFORM TEST_TOKENS APPEND ".hh" OUTPUT_VARIABLE TEST_TOKENS_HH)
 
-  # use asn1c to parse asn1 file and generate cpp files
+  # use asn1c to parse asn1 file and generate hh/cpp files
   add_custom_command(
-    OUTPUT  ${TEST_TOKENS}
+    OUTPUT  ${TEST_TOKENS_HH} ${TEST_TOKENS_CPP}
     COMMAND asn1c -a ${CMAKE_CURRENT_SOURCE_DIR}/${TEST_NAME}.asn1
     DEPENDS asn1c ${TEST_NAME}.asn1
   )
 
-  add_executable(${TEST_NAME} ${TEST_NAME}.cpp ${TEST_TOKENS})
+  add_executable(${TEST_NAME} ${TEST_NAME}.cpp ${TEST_TOKENS_CPP})
 
   target_include_directories(${TEST_NAME}
     PRIVATE
