@@ -102,11 +102,15 @@ int main(int argc, char* argv[])
     {
       if (module_definition)
       {
-        SPDLOG_INFO("Parse \"{}\" completed", f);
+        SPDLOG_INFO("----------------------------------------");
+        SPDLOG_INFO("Parse \"{}\": PASSED", f);
+        SPDLOG_INFO("----------------------------------------");
       }
       else
       {
-        SPDLOG_INFO("Parse \"{}\" failed", f);
+        SPDLOG_INFO("----------------------------------------");
+        SPDLOG_INFO("Parse \"{}\": FAILED", f);
+        SPDLOG_INFO("----------------------------------------");
         exit(1);
       }
     }
@@ -114,12 +118,16 @@ int main(int argc, char* argv[])
     {
       if (module_definition)
       {
-        SPDLOG_INFO("Parse \"{}\" completed", f);
+        SPDLOG_INFO("----------------------------------------");
+        SPDLOG_INFO("Parse \"{}\": PASSED", f);
+        SPDLOG_INFO("----------------------------------------");
         g.Generate(dynamic_cast<ModuleDefinition*>(module_definition.get()));
       }
       else
       {
-        SPDLOG_INFO("Parse \"{}\" failed", f);
+        SPDLOG_INFO("----------------------------------------");
+        SPDLOG_INFO("Parse \"{}\": FAILED", f);
+        SPDLOG_INFO("----------------------------------------");
         exit(1);
       }
     }

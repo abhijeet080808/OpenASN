@@ -110,7 +110,6 @@ UsefulType3           ::= ObjectDescriptor
 SelectionType         ::= chInt < Choice
 
 -- TODO check precedence of EXCEPT ^ | 50.1 note 2
-
 --SingleValue
 SvConstrainedType1    ::= BOOLEAN (TRUE)
 SvConstrainedType2    ::= BOOLEAN (TRUE) (TRUE)
@@ -142,6 +141,6 @@ ScConstrainedType2    ::= BIT STRING (SIZE (0..10))
 PaConstrainedType1    ::= NumericString (FROM (TRUE | FALSE | TRUE))
 PaConstrainedType2    ::= NumericString (BOOLEAN (INCLUDES BOOLEAN))
 PaConstrainedType3    ::= NumericString (INTEGER (-100..100))
-PaConstrainedType4    ::= NumericString (BIT STRING (SIZE (0..10))
+PaConstrainedType4    ::= NumericString (BIT STRING (SIZE (0..10)))
 
 END
