@@ -1,6 +1,7 @@
 set(LIB_NAME parser)
 
-set(SOURCES AdditionalElementSetSpec.cpp
+set(SOURCES Absent.cpp
+            AdditionalElementSetSpec.cpp
             AlternativeTypeList.cpp
             AlternativeTypeLists.cpp
             Application.cpp
@@ -17,6 +18,7 @@ set(SOURCES AdditionalElementSetSpec.cpp
             ChoiceType.cpp
             Class.cpp
             ClassNumber.cpp
+            ComponentConstraint.cpp
             ComponentType.cpp
             ComponentTypeList.cpp
             ComponentTypeLists.cpp
@@ -53,6 +55,7 @@ set(SOURCES AdditionalElementSetSpec.cpp
             ExternalType.cpp
             ExternalTypeReference.cpp
             ExternalValueReference.cpp
+            FullSpecification.cpp
             GeneralizedTime.cpp
             GeneralString.cpp
             GraphicString.cpp
@@ -60,6 +63,7 @@ set(SOURCES AdditionalElementSetSpec.cpp
             Identifier.cpp
             Implicit.cpp
             Includes.cpp
+            InnerTypeConstraints.cpp
             IntegerType.cpp
             IntegerValue.cpp
             IntersectionElements.cpp
@@ -74,8 +78,10 @@ set(SOURCES AdditionalElementSetSpec.cpp
             ModuleBody.cpp
             ModuleDefinition.cpp
             ModuleIdentifier.cpp
+            MultipleTypeConstraints.cpp
             NamedBit.cpp
             NamedBitList.cpp
+            NamedConstraint.cpp
             NamedNumber.cpp
             NamedNumberList.cpp
             NamedType.cpp
@@ -87,9 +93,13 @@ set(SOURCES AdditionalElementSetSpec.cpp
             ObjectDescriptor.cpp
             ObjectIdentifierType.cpp
             OctetStringType.cpp
+            Optional.cpp
             ParseHelper.cpp
+            PartialSpecification.cpp
             PermittedAlphabet.cpp
             PrefixedType.cpp
+            PresenceConstraint.cpp
+            Present.cpp
             Private.cpp
             PrintableString.cpp
             ProductionFactory.cpp
@@ -108,6 +118,7 @@ set(SOURCES AdditionalElementSetSpec.cpp
             SetType.cpp
             SetOfType.cpp
             SignedNumber.cpp
+            SingleTypeConstraint.cpp
             SingleValue.cpp
             SizeConstraint.cpp
             SubtypeConstraint.cpp
@@ -120,6 +131,7 @@ set(SOURCES AdditionalElementSetSpec.cpp
             TimeType.cpp
             TypeAssignment.cpp
             TypeConstraint.cpp
+            TypeConstraints.cpp
             Type.cpp
             TypeReference.cpp
             Unions.cpp
@@ -132,6 +144,7 @@ set(SOURCES AdditionalElementSetSpec.cpp
             UTCTime.cpp
             UTF8String.cpp
             Value.cpp
+            ValueConstraint.cpp
             ValueRange.cpp
             VideotexString.cpp
             VisibleString.cpp

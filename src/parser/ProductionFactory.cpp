@@ -1,5 +1,6 @@
 #include "ProductionFactory.hh"
 
+#include "Absent.hh"
 #include "AdditionalElementSetSpec.hh"
 #include "AlternativeTypeList.hh"
 #include "AlternativeTypeLists.hh"
@@ -16,6 +17,7 @@
 #include "ChoiceType.hh"
 #include "Class.hh"
 #include "ClassNumber.hh"
+#include "ComponentConstraint.hh"
 #include "ComponentType.hh"
 #include "ComponentTypeList.hh"
 #include "ComponentTypeLists.hh"
@@ -52,6 +54,7 @@
 #include "ExternalType.hh"
 #include "ExternalTypeReference.hh"
 #include "ExternalValueReference.hh"
+#include "FullSpecification.hh"
 #include "GeneralizedTime.hh"
 #include "GeneralString.hh"
 #include "GraphicString.hh"
@@ -59,6 +62,7 @@
 #include "Identifier.hh"
 #include "Implicit.hh"
 #include "Includes.hh"
+#include "InnerTypeConstraints.hh"
 #include "IntegerType.hh"
 #include "IntegerValue.hh"
 #include "IntersectionElements.hh"
@@ -73,9 +77,11 @@
 #include "ModuleBody.hh"
 #include "ModuleDefinition.hh"
 #include "ModuleIdentifier.hh"
+#include "MultipleTypeConstraints.hh"
 #include "NameForm.hh"
 #include "NamedBit.hh"
 #include "NamedBitList.hh"
+#include "NamedConstraint.hh"
 #include "NamedNumber.hh"
 #include "NamedNumberList.hh"
 #include "NamedType.hh"
@@ -86,8 +92,12 @@
 #include "ObjectDescriptor.hh"
 #include "ObjectIdentifierType.hh"
 #include "OctetStringType.hh"
+#include "Optional.hh"
+#include "PartialSpecification.hh"
 #include "PermittedAlphabet.hh"
 #include "PrefixedType.hh"
+#include "PresenceConstraint.hh"
+#include "Present.hh"
 #include "PrintableString.hh"
 #include "Private.hh"
 #include "RealType.hh"
@@ -105,6 +115,7 @@
 #include "SetType.hh"
 #include "SetOfType.hh"
 #include "SignedNumber.hh"
+#include "SingleTypeConstraint.hh"
 #include "SingleValue.hh"
 #include "SizeConstraint.hh"
 #include "SubtypeConstraint.hh"
@@ -118,6 +129,7 @@
 #include "Type.hh"
 #include "TypeAssignment.hh"
 #include "TypeConstraint.hh"
+#include "TypeConstraints.hh"
 #include "TypeReference.hh"
 #include "Unions.hh"
 #include "Universal.hh"
@@ -129,6 +141,7 @@
 #include "UTCTime.hh"
 #include "UTF8String.hh"
 #include "Value.hh"
+#include "ValueConstraint.hh"
 #include "ValueRange.hh"
 #include "VideotexString.hh"
 #include "VisibleString.hh"
@@ -143,6 +156,9 @@ Get(Production production)
 {
   switch (production)
   {
+    case Production::ABSENT:
+      return std::make_shared<Absent>();
+
     case Production::ADDITIONAL_ELEMENT_SET_SPEC:
       return std::make_shared<AdditionalElementSetSpec>();
 
@@ -190,6 +206,9 @@ Get(Production production)
 
     case Production::CLASS_NUMBER:
       return std::make_shared<ClassNumber>();
+
+    case Production::COMPONENT_CONSTRAINT:
+      return std::make_shared<ComponentConstraint>();
 
     case Production::COMPONENT_TYPE:
       return std::make_shared<ComponentType>();
@@ -299,6 +318,9 @@ Get(Production production)
     case Production::EXTERNAL_VALUE_REFERENCE:
       return std::make_shared<ExternalValueReference>();
 
+    case Production::FULL_SPECIFICATION:
+      return std::make_shared<FullSpecification>();
+
     case Production::GENERALIZED_TIME:
       return std::make_shared<GeneralizedTime>();
 
@@ -319,6 +341,9 @@ Get(Production production)
 
     case Production::INCLUDES:
       return std::make_shared<Includes>();
+
+    case Production::INNER_TYPE_CONSTRAINTS:
+      return std::make_shared<InnerTypeConstraints>();
 
     case Production::INTEGER_TYPE:
       return std::make_shared<IntegerType>();
@@ -362,6 +387,9 @@ Get(Production production)
     case Production::MODULE_IDENTIFIER:
       return std::make_shared<ModuleIdentifier>();
 
+    case Production::MULTIPLE_TYPE_CONSTRAINTS:
+      return std::make_shared<MultipleTypeConstraints>();
+
     case Production::MODULE_REFERENCE:
       return std::make_shared<ModuleReference>();
 
@@ -373,6 +401,9 @@ Get(Production production)
 
     case Production::NAMED_BIT_LIST:
       return std::make_shared<NamedBitList>();
+
+    case Production::NAMED_CONSTRAINT:
+      return std::make_shared<NamedConstraint>();
 
     case Production::NAMED_NUMBER:
       return std::make_shared<NamedNumber>();
@@ -404,11 +435,23 @@ Get(Production production)
     case Production::OCTET_STRING_TYPE:
       return std::make_shared<OctetStringType>();
 
+    case Production::OPTIONAL:
+      return std::make_shared<Optional>();
+
+    case Production::PARTIAL_SPECIFICATION:
+      return std::make_shared<PartialSpecification>();
+
     case Production::PERMITTED_ALPHABET:
       return std::make_shared<PermittedAlphabet>();
 
     case Production::PREFIXED_TYPE:
       return std::make_shared<PrefixedType>();
+
+    case Production::PRESENCE_CONSTRAINT:
+      return std::make_shared<PresenceConstraint>();
+
+    case Production::PRESENT:
+      return std::make_shared<Present>();
 
     case Production::PRINTABLE_STRING:
       return std::make_shared<PrintableString>();
@@ -461,6 +504,9 @@ Get(Production production)
     case Production::SIGNED_NUMBER:
       return std::make_shared<SignedNumber>();
 
+    case Production::SINGLE_TYPE_CONSTRAINT:
+      return std::make_shared<SingleTypeConstraint>();
+
     case Production::SINGLE_VALUE:
       return std::make_shared<SingleValue>();
 
@@ -500,6 +546,9 @@ Get(Production production)
     case Production::TYPE_CONSTRAINT:
       return std::make_shared<TypeConstraint>();
 
+    case Production::TYPE_CONSTRAINTS:
+      return std::make_shared<TypeConstraints>();
+
     case Production::TYPE_REFERENCE:
       return std::make_shared<TypeReference>();
 
@@ -532,6 +581,9 @@ Get(Production production)
 
     case Production::VALUE:
       return std::make_shared<Value>();
+
+    case Production::VALUE_CONSTRAINT:
+      return std::make_shared<ValueConstraint>();
 
     case Production::VALUE_RANGE:
       return std::make_shared<ValueRange>();

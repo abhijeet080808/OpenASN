@@ -7,7 +7,7 @@
 namespace OpenASN
 {
   // X.680 08/2015 Annex L
-  class ComponentType : public IProduction
+  class NamedConstraint : public IProduction
   {
     public:
       Production GetType() const override;
@@ -18,9 +18,7 @@ namespace OpenASN
                  std::vector<std::string>& parsePath) override;
 
     public:
-      std::shared_ptr<IProduction> mNamedType;
-      std::shared_ptr<IProduction> mOptional;
-      std::shared_ptr<IProduction> mValue;    // DEFAULT
-      std::shared_ptr<IProduction> mType;     // COMPONENTS OF
+      std::shared_ptr<IProduction> mIdentifier;
+      std::shared_ptr<IProduction> mComponentConstraint;
   };
 }

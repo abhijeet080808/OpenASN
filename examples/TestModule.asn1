@@ -80,6 +80,11 @@ Sequence              ::= SEQUENCE {
   seqSeqOf3             SEQUENCE OF seqSeqOf3Int INTEGER { w(-1), x(0), y(1), z(2) }
 }
 
+Sequence1             ::= SEQUENCE {
+  COMPONENTS OF Sequence,
+  seq1Int               INTEGER
+}
+
 SeqOf1                ::= SEQUENCE OF INTEGER
 SeqOf2                ::= SEQUENCE OF INTEGER { w(-1), x(0), y(1), z(2) }
 SeqOf3                ::= SEQUENCE OF seqOf3Int INTEGER { w(-1), x(0), y(1), z(2) }
@@ -145,5 +150,26 @@ PaConstrainedType4    ::= NumericString (BIT STRING (SIZE (0..10)))
 
 --TypeConstraint
 TcConstrainedType1    ::= NumericString (BOOLEAN | INTEGER)
+
+--InnerTypeConstraints
+-- https://www.obj-sys.com/asn1tutorial/node18.html
+ItcSeqOf1             ::= SEQUENCE OF INTEGER
+-- Can only be applied to restrict set-of, sequence-of types
+ItcConstrainedType1   ::= ItcSeqOf1 (WITH COMPONENT (-100..100))
+ItcSeq1               ::= SEQUENCE {
+  a                     BOOLEAN DEFAULT TRUE,
+  b                     INTEGER OPTIONAL
+}
+
+ItcConstrainedType2    ::= ItcSeq1 (WITH COMPONENTS {
+  a (TRUE | FALSE),
+  b
+})
+-- Can only be applied to restrict set, sequence and choice types
+ItcConstrainedType3    ::= ItcSeq1 (WITH COMPONENTS {
+  ...,
+  a (TRUE | FALSE),
+  b ABSENT
+})
 
 END

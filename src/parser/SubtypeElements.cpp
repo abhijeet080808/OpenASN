@@ -122,7 +122,7 @@ Parse(const std::vector<Word>& asnData,
     LOG_FAIL();
   }
 
-#if 0
+  /* XXX Gets consumed via ContainedSubtype
   obj = "TypeConstraint";
   LOG_START();
   auto type_constraint =
@@ -138,7 +138,23 @@ Parse(const std::vector<Word>& asnData,
   {
     LOG_FAIL();
   }
-#endif
+  */
+
+  obj = "InnerTypeConstraints";
+  LOG_START();
+  auto inner_type_constraints =
+    ProductionFactory::Get(Production::INNER_TYPE_CONSTRAINTS);
+  if (inner_type_constraints->Parse(asnData, asnDataIndex, endStop, parsePath))
+  {
+    mInnerTypeConstraints = inner_type_constraints;
+    LOG_PASS();
+    parsePath.pop_back();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
 
   asnDataIndex = starting_index;
   parsePath.pop_back();
