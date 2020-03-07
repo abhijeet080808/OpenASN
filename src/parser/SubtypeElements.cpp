@@ -122,6 +122,24 @@ Parse(const std::vector<Word>& asnData,
     LOG_FAIL();
   }
 
+#if 0
+  obj = "TypeConstraint";
+  LOG_START();
+  auto type_constraint =
+    ProductionFactory::Get(Production::TYPE_CONSTRAINT);
+  if (type_constraint->Parse(asnData, asnDataIndex, endStop, parsePath))
+  {
+    mTypeConstraint = type_constraint;
+    LOG_PASS();
+    parsePath.pop_back();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
+#endif
+
   asnDataIndex = starting_index;
   parsePath.pop_back();
   return false;

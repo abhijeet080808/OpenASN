@@ -119,6 +119,7 @@ set(SOURCES AdditionalElementSetSpec.cpp
             TimeOfDayType.cpp
             TimeType.cpp
             TypeAssignment.cpp
+            TypeConstraint.cpp
             Type.cpp
             TypeReference.cpp
             Unions.cpp

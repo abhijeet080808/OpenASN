@@ -117,6 +117,7 @@
 #include "TimeType.hh"
 #include "Type.hh"
 #include "TypeAssignment.hh"
+#include "TypeConstraint.hh"
 #include "TypeReference.hh"
 #include "Unions.hh"
 #include "Universal.hh"
@@ -495,6 +496,9 @@ Get(Production production)
 
     case Production::TYPE_ASSIGNMENT:
       return std::make_shared<TypeAssignment>();
+
+    case Production::TYPE_CONSTRAINT:
+      return std::make_shared<TypeConstraint>();
 
     case Production::TYPE_REFERENCE:
       return std::make_shared<TypeReference>();

@@ -143,4 +143,7 @@ PaConstrainedType2    ::= NumericString (BOOLEAN (INCLUDES BOOLEAN))
 PaConstrainedType3    ::= NumericString (INTEGER (-100..100))
 PaConstrainedType4    ::= NumericString (BIT STRING (SIZE (0..10)))
 
+--TypeConstraint
+TcConstrainedType1    ::= NumericString (BOOLEAN | INTEGER)
+
 END
