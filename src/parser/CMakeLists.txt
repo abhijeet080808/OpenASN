@@ -96,6 +96,7 @@ set(SOURCES Absent.cpp
             Optional.cpp
             ParseHelper.cpp
             PartialSpecification.cpp
+            PatternConstraint.cpp
             PermittedAlphabet.cpp
             PrefixedType.cpp
             PresenceConstraint.cpp

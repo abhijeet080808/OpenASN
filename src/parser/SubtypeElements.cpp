@@ -156,6 +156,22 @@ Parse(const std::vector<Word>& asnData,
     LOG_FAIL();
   }
 
+  obj = "PatternConstraint";
+  LOG_START();
+  auto pattern_constraint =
+    ProductionFactory::Get(Production::PATTERN_CONSTRAINT);
+  if (pattern_constraint->Parse(asnData, asnDataIndex, endStop, parsePath))
+  {
+    mPatternConstraint = pattern_constraint;
+    LOG_PASS();
+    parsePath.pop_back();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
+
   asnDataIndex = starting_index;
   parsePath.pop_back();
   return false;

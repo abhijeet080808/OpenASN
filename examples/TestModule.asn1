@@ -161,15 +161,18 @@ ItcSeq1               ::= SEQUENCE {
   b                     INTEGER OPTIONAL
 }
 
-ItcConstrainedType2    ::= ItcSeq1 (WITH COMPONENTS {
+ItcConstrainedType2   ::= ItcSeq1 (WITH COMPONENTS {
   a (TRUE | FALSE),
   b
 })
 -- Can only be applied to restrict set, sequence and choice types
-ItcConstrainedType3    ::= ItcSeq1 (WITH COMPONENTS {
+ItcConstrainedType3   ::= ItcSeq1 (WITH COMPONENTS {
   ...,
   a (TRUE | FALSE),
   b ABSENT
 })
+
+--PatternConstraint
+PcConstrainedType1    ::= BOOLEAN (PATTERN TRUE)
 
 END

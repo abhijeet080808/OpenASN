@@ -94,6 +94,7 @@
 #include "OctetStringType.hh"
 #include "Optional.hh"
 #include "PartialSpecification.hh"
+#include "PatternConstraint.hh"
 #include "PermittedAlphabet.hh"
 #include "PrefixedType.hh"
 #include "PresenceConstraint.hh"
@@ -440,6 +441,9 @@ Get(Production production)
 
     case Production::PARTIAL_SPECIFICATION:
       return std::make_shared<PartialSpecification>();
+
+    case Production::PATTERN_CONSTRAINT:
+      return std::make_shared<PatternConstraint>();
 
     case Production::PERMITTED_ALPHABET:
       return std::make_shared<PermittedAlphabet>();

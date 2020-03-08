@@ -25,5 +25,6 @@ namespace OpenASN
       std::shared_ptr<IProduction> mPermittedAlphabet;
       std::shared_ptr<IProduction> mTypeConstraint;
       std::shared_ptr<IProduction> mInnerTypeConstraints;
+      std::shared_ptr<IProduction> mPatternConstraint;
   };
 }
