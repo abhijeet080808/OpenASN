@@ -172,6 +172,22 @@ Parse(const std::vector<Word>& asnData,
     LOG_FAIL();
   }
 
+  obj = "PropertySettings";
+  LOG_START();
+  auto property_settings =
+    ProductionFactory::Get(Production::PROPERTY_SETTINGS);
+  if (property_settings->Parse(asnData, asnDataIndex, endStop, parsePath))
+  {
+    mPropertySettings = property_settings;
+    LOG_PASS();
+    parsePath.pop_back();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
+
   asnDataIndex = starting_index;
   parsePath.pop_back();
   return false;

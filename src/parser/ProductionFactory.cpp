@@ -101,6 +101,10 @@
 #include "Present.hh"
 #include "PrintableString.hh"
 #include "Private.hh"
+#include "PropertyAndSettingPair.hh"
+#include "PropertyName.hh"
+#include "PropertySettings.hh"
+#include "PropertySettingsList.hh"
 #include "RealType.hh"
 #include "ReferencedType.hh"
 #include "RelativeIRIType.hh"
@@ -113,6 +117,7 @@
 #include "SelectionType.hh"
 #include "SequenceType.hh"
 #include "SequenceOfType.hh"
+#include "SettingName.hh"
 #include "SetType.hh"
 #include "SetOfType.hh"
 #include "SignedNumber.hh"
@@ -463,6 +468,21 @@ Get(Production production)
     case Production::PRIVATE:
       return std::make_shared<Private>();
 
+    case Production::PROPERTY_AND_SETTING_PAIR:
+      return std::make_shared<PropertyAndSettingPair>();
+
+    case Production::PROPERTY_NAME:
+      return std::make_shared<PropertyName>();
+
+    case Production::PROPERTY_SETTINGS:
+      return std::make_shared<PropertySettings>();
+
+    case Production::PROPERTY_SETTINGS_LIST:
+      return std::make_shared<PropertySettingsList>();
+
+    case Production::PS_NAME:
+      return std::make_shared<PsName>();
+
     case Production::REAL_TYPE:
       return std::make_shared<RealType>();
 
@@ -498,6 +518,9 @@ Get(Production production)
 
     case Production::SEQUENCE_OF_TYPE:
       return std::make_shared<SequenceOfType>();
+
+    case Production::SETTING_NAME:
+      return std::make_shared<SettingName>();
 
     case Production::SET_TYPE:
       return std::make_shared<SetType>();

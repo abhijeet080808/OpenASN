@@ -2,10 +2,12 @@
 
 #include "IProduction.hh"
 
+#include <memory>
+
 namespace OpenASN
 {
   // X.680 08/2015 Annex L
-  class TypeReference : public IProduction
+  class PropertyAndSettingPair : public IProduction
   {
     public:
       Production GetType() const override;
@@ -16,9 +18,7 @@ namespace OpenASN
                  std::vector<std::string>& parsePath) override;
 
     public:
-      std::string mValue;
+      std::shared_ptr<IProduction> mPropertyName;
+      std::shared_ptr<IProduction> mSettingName;
   };
-
-  using ModuleReference = TypeReference;
-  using PsName = TypeReference;
 }

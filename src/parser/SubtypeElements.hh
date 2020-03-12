@@ -26,5 +26,6 @@ namespace OpenASN
       std::shared_ptr<IProduction> mTypeConstraint;
       std::shared_ptr<IProduction> mInnerTypeConstraints;
       std::shared_ptr<IProduction> mPatternConstraint;
+      std::shared_ptr<IProduction> mPropertySettings;
   };
 }

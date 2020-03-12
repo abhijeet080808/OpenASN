@@ -104,6 +104,10 @@ set(SOURCES Absent.cpp
             Private.cpp
             PrintableString.cpp
             ProductionFactory.cpp
+            PropertyAndSettingPair.cpp
+            PropertyName.cpp
+            PropertySettings.cpp
+            PropertySettingsList.cpp
             RealType.cpp
             ReferencedType.cpp
             RelativeIRIType.cpp
@@ -116,6 +120,7 @@ set(SOURCES Absent.cpp
             SelectionType.cpp
             SequenceType.cpp
             SequenceOfType.cpp
+            SettingName.cpp
             SetType.cpp
             SetOfType.cpp
             SignedNumber.cpp
