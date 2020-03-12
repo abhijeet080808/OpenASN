@@ -176,7 +176,7 @@ ItcConstrainedType3   ::= ItcSeq1 (WITH COMPONENTS {
 PcConstrainedType1    ::= BOOLEAN (PATTERN TRUE)
 
 --PropertySettings
--- TODO Change to meaningful constraints as per table 6
-PsConstrainedType1    ::= DATE (SETTINGS "Basic = Date Date = YMD")
+PsConstrainedType1    ::= DATE (SETTINGS "Basic=Date Date=YMD")
+PsConstrainedType2    ::= TIME (SETTINGS "Midnight=Start")
 
 END
