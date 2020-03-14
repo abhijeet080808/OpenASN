@@ -24,7 +24,7 @@ std::vector<std::shared_ptr<IProduction>> mNamedBit;
   LOG_START();
   auto type_assignment =
     ProductionFactory::Get(Production::TYPE_ASSIGNMENT);
-  if (type_assignment->Parse(asnData, asnDataIndex, endStop))
+  if (type_assignment->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     endStop.pop_back();
     mTypeAssignment = type_assignment;
@@ -78,7 +78,7 @@ std::vector<std::shared_ptr<IProduction>> mNamedBit;
     LOG_START();
     auto named_number =
       ProductionFactory::Get(Production::NAMED_NUMBER);
-    if (named_number->Parse(asnData, asnDataIndex, endStop))
+    if (named_number->Parse(asnData, asnDataIndex, endStop, parsePath))
     {
       mNamedNumber.push_back(named_number);
       LOG_PASS();

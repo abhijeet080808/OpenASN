@@ -45,6 +45,9 @@ Sequence              ::= SEQUENCE {
   seqBool               BOOLEAN,
   seqBitStr1            BIT STRING { a(0), b(1), c(100) },
   seqBitStr2            BIT STRING,
+  seqBitStr3            BIT STRING DEFAULT '1010'B,
+  seqBitStr4            BIT STRING DEFAULT { abc, def },
+  seqBitStr5            BIT STRING DEFAULT CONTAINING '00FF'H,
   seqCharStr1           BMPString,
   seqCharStr2           GeneralString,
   seqCharStr3           GraphicString,
@@ -77,7 +80,12 @@ Sequence              ::= SEQUENCE {
   seqRelativeOid        RELATIVE-OID,
   seqSeqOf1             SEQUENCE OF INTEGER,
   seqSeqOf2             SEQUENCE OF INTEGER { w(-1), x(0), y(1), z(2) },
-  seqSeqOf3             SEQUENCE OF seqSeqOf3Int INTEGER { w(-1), x(0), y(1), z(2) }
+  seqSeqOf3             SEQUENCE OF seqSeqOf3Int INTEGER {
+                          w(-1),
+                          x(0),
+                          y(1),
+                          z(2)
+                        }
 }
 
 Sequence1             ::= SEQUENCE {
@@ -87,7 +95,12 @@ Sequence1             ::= SEQUENCE {
 
 SeqOf1                ::= SEQUENCE OF INTEGER
 SeqOf2                ::= SEQUENCE OF INTEGER { w(-1), x(0), y(1), z(2) }
-SeqOf3                ::= SEQUENCE OF seqOf3Int INTEGER { w(-1), x(0), y(1), z(2) }
+SeqOf3                ::= SEQUENCE OF seqOf3Int INTEGER {
+                            w(-1),
+                            x(0),
+                            y(1),
+                            z(2)
+                          }
 
 Set                   ::= SET {
   setBool               BOOLEAN,
@@ -96,12 +109,27 @@ Set                   ::= SET {
 
 SetOf1                ::= SET OF INTEGER
 SetOf2                ::= SET OF INTEGER { w(-1), x(0), y(1), z(2) }
-SetOf3                ::= SET OF prefSetOf3Int INTEGER { w(-1), x(0), y(1), z(2) }
+SetOf3                ::= SET OF prefSetOf3Int INTEGER {
+                            w(-1),
+                            x(0),
+                            y(1),
+                            z(2)
+                          }
 Prefixed1             ::= [TAG : APPLICATION 5] IMPLICIT INTEGER
 Prefixed2             ::= [PRIVATE 5] EXPLICIT INTEGER
 Prefixed3             ::= [5] INTEGER
-Prefixed4             ::= [PrefAbcModule.prefExtValueRef] INTEGER { w(-1), x(0), y(1), z(2) }
-Prefixed5             ::= [localValueRef] SET OF INTEGER { w(-1), x(0), y(1), z(2) }
+Prefixed4             ::= [PrefAbcModule.prefExtValueRef] INTEGER {
+                            w(-1),
+                            x(0),
+                            y(1),
+                            z(2)
+                          }
+Prefixed5             ::= [localValueRef] SET OF INTEGER {
+                            w(-1),
+                            x(0),
+                            y(1),
+                            z(2)
+                          }
 Prefixed6             ::= [TAG :] INTEGER
 Time                  ::= TIME
 TimeOfDay             ::= TIME-OF-DAY
@@ -128,6 +156,7 @@ SvConstrainedType9    ::= BOOLEAN (ALL EXCEPT TRUE)
 SvConstrainedType10   ::= BOOLEAN (TRUE , ... , ALL EXCEPT FALSE)
 SvConstrainedType11   ::= BOOLEAN (TRUE , ... , FALSE ! BOOLEAN : FALSE)
 SvConstrainedType12   ::= BOOLEAN (TRUE , ... , FALSE EXCEPT TRUE ! BOOLEAN : FALSE)
+SvConstrainedType13   ::= BIT STRING ('1100 0101'B | 'ABCD 1010'H)
 
 --ContainedSubtype
 CsConstrainedType1    ::= BOOLEAN (INCLUDES BOOLEAN)
@@ -162,15 +191,15 @@ ItcSeq1               ::= SEQUENCE {
 }
 
 ItcConstrainedType2   ::= ItcSeq1 (WITH COMPONENTS {
-  a (TRUE | FALSE),
-  b
-})
+                            a (TRUE | FALSE),
+                            b
+                          })
 -- Can only be applied to restrict set, sequence and choice types
 ItcConstrainedType3   ::= ItcSeq1 (WITH COMPONENTS {
-  ...,
-  a (TRUE | FALSE),
-  b ABSENT
-})
+                            ...,
+                            a (TRUE | FALSE),
+                            b ABSENT
+                          })
 
 --PatternConstraint
 PcConstrainedType1    ::= BOOLEAN (PATTERN TRUE)

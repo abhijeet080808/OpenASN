@@ -56,7 +56,7 @@ Parse(const std::vector<Word>& asnData,
       return false;
     }
 
-    // No 2 consequtive hyphens allowed
+    // No 2 consecutive hyphens allowed
     if (c == '-' && c == last_c)
     {
       return false;

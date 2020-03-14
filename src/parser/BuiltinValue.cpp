@@ -50,7 +50,23 @@ Parse(const std::vector<Word>& asnData,
 
   size_t starting_index = asnDataIndex;
 
-  auto obj = "BooleanValue";
+  auto obj = "BitStringValue";
+  LOG_START();
+  auto bit_string_value =
+    ProductionFactory::Get(Production::BIT_STRING_VALUE);
+  if (bit_string_value->Parse(asnData, asnDataIndex, endStop, parsePath))
+  {
+    mBitStringValue = bit_string_value;
+    LOG_PASS();
+    parsePath.pop_back();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
+
+  obj = "BooleanValue";
   LOG_START();
   auto boolean_value =
     ProductionFactory::Get(Production::BOOLEAN_VALUE);

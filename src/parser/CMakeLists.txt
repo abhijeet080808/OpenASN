@@ -9,9 +9,11 @@ set(SOURCES Absent.cpp
             Assignment.cpp
             AssignmentList.cpp
             BitStringType.cpp
+            BitStringValue.cpp
             BMPString.cpp
             BooleanType.cpp
             BooleanValue.cpp
+            Bstring.cpp
             BuiltinType.cpp
             BuiltinValue.cpp
             CharacterStringType.cpp
@@ -59,8 +61,10 @@ set(SOURCES Absent.cpp
             GeneralizedTime.cpp
             GeneralString.cpp
             GraphicString.cpp
+            Hstring.cpp
             IA5String.cpp
             Identifier.cpp
+            IdentifierList.cpp
             Implicit.cpp
             Includes.cpp
             InnerTypeConstraints.cpp

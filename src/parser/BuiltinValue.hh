@@ -18,7 +18,7 @@ namespace OpenASN
                  std::vector<std::string>& parsePath) override;
 
     public:
-      //std::shared_ptr<IProduction> mBitStringValue;
+      std::shared_ptr<IProduction> mBitStringValue;
       std::shared_ptr<IProduction> mBooleanValue;
       // std::shared_ptr<IProduction> mCharacterStringValue;
       // std::shared_ptr<IProduction> mChoiceValue;

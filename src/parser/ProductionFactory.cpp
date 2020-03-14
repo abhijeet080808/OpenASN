@@ -8,9 +8,11 @@
 #include "Assignment.hh"
 #include "AssignmentList.hh"
 #include "BitStringType.hh"
+#include "BitStringValue.hh"
 #include "BMPString.hh"
 #include "BooleanType.hh"
 #include "BooleanValue.hh"
+#include "Bstring.hh"
 #include "BuiltinType.hh"
 #include "BuiltinValue.hh"
 #include "CharacterStringType.hh"
@@ -58,8 +60,10 @@
 #include "GeneralizedTime.hh"
 #include "GeneralString.hh"
 #include "GraphicString.hh"
+#include "Hstring.hh"
 #include "IA5String.hh"
 #include "Identifier.hh"
+#include "IdentifierList.hh"
 #include "Implicit.hh"
 #include "Includes.hh"
 #include "InnerTypeConstraints.hh"
@@ -186,6 +190,9 @@ Get(Production production)
     case Production::BIT_STRING_TYPE:
       return std::make_shared<BitStringType>();
 
+    case Production::BIT_STRING_VALUE:
+      return std::make_shared<BitStringValue>();
+
     case Production::BMP_STRING:
       return std::make_shared<BMPString>();
 
@@ -194,6 +201,9 @@ Get(Production production)
 
     case Production::BOOLEAN_VALUE:
       return std::make_shared<BooleanValue>();
+
+    case Production::BSTRING:
+      return std::make_shared<Bstring>();
 
     case Production::BUILTIN_TYPE:
       return std::make_shared<BuiltinType>();
@@ -336,11 +346,17 @@ Get(Production production)
     case Production::GRAPHIC_STRING:
       return std::make_shared<GraphicString>();
 
+    case Production::HSTRING:
+      return std::make_shared<Hstring>();
+
     case Production::IA5_STRING:
       return std::make_shared<IA5String>();
 
     case Production::IDENTIFIER:
       return std::make_shared<Identifier>();
+
+    case Production::IDENTIFIER_LIST:
+      return std::make_shared<IdentifierList>();
 
     case Production::IMPLICIT:
       return std::make_shared<Implicit>();
