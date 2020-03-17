@@ -52,8 +52,8 @@ Parse(const std::vector<Word>& asnData,
     ProductionFactory::Get(Production::DEFINITIVE_OBJ_ID_COMPONENT_LIST);
   if (definitive_obj_id_component_list->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
-    mDefinitiveObjIdComponentList = definitive_obj_id_component_list;
     endStop.pop_back();
+    mDefinitiveObjIdComponentList = definitive_obj_id_component_list;
     LOG_PASS();
   }
   else

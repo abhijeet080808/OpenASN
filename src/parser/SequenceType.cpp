@@ -83,8 +83,8 @@ Parse(const std::vector<Word>& asnData,
     ProductionFactory::Get(Production::COMPONENT_TYPE_LISTS);
   if (component_type_lists->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
-    mComponentTypeLists = component_type_lists;
     endStop.pop_back();
+    mComponentTypeLists = component_type_lists;
     LOG_PASS();
   }
   else

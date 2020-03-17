@@ -16,7 +16,12 @@ set(SOURCES Absent.cpp
             Bstring.cpp
             BuiltinType.cpp
             BuiltinValue.cpp
+            Cell.cpp
+            CharsDefn.cpp
+            CharSyms.cpp
+            CharacterStringList.cpp
             CharacterStringType.cpp
+            CharacterStringValue.cpp
             ChoiceType.cpp
             Class.cpp
             ClassNumber.cpp
@@ -24,10 +29,12 @@ set(SOURCES Absent.cpp
             ComponentType.cpp
             ComponentTypeList.cpp
             ComponentTypeLists.cpp
+            ComponentValueList.cpp
             Constraint.cpp
             ConstraintList.cpp
             ConstraintSpec.cpp
             ContainedSubtype.cpp
+            Cstring.cpp
             DateType.cpp
             DateTimeType.cpp
             DefinedType.cpp
@@ -61,6 +68,7 @@ set(SOURCES Absent.cpp
             GeneralizedTime.cpp
             GeneralString.cpp
             GraphicString.cpp
+            Group.cpp
             Hstring.cpp
             IA5String.cpp
             Identifier.cpp
@@ -89,6 +97,7 @@ set(SOURCES Absent.cpp
             NamedNumber.cpp
             NamedNumberList.cpp
             NamedType.cpp
+            NamedValue.cpp
             NameForm.cpp
             NegativeNumber.cpp
             NullType.cpp
@@ -102,6 +111,7 @@ set(SOURCES Absent.cpp
             PartialSpecification.cpp
             PatternConstraint.cpp
             PermittedAlphabet.cpp
+            Plane.cpp
             PrefixedType.cpp
             PresenceConstraint.cpp
             Present.cpp
@@ -112,18 +122,22 @@ set(SOURCES Absent.cpp
             PropertyName.cpp
             PropertySettings.cpp
             PropertySettingsList.cpp
+            Quadruple.cpp
             RealType.cpp
             ReferencedType.cpp
             RelativeIRIType.cpp
             RelativeOIDType.cpp
+            RestrictedCharacterStringType.cpp
+            RestrictedCharacterStringValue.cpp
             RootAlternativeTypeList.cpp
             RootComponentTypeList.cpp
             RootElementSetSpec.cpp
             RootEnumeration.cpp
-            RestrictedCharacterStringType.cpp
+            Row.cpp
             SelectionType.cpp
-            SequenceType.cpp
             SequenceOfType.cpp
+            SequenceType.cpp
+            SequenceValue.cpp
             SettingName.cpp
             SetType.cpp
             SetOfType.cpp
@@ -133,21 +147,25 @@ set(SOURCES Absent.cpp
             SizeConstraint.cpp
             SubtypeConstraint.cpp
             SubtypeElements.cpp
+            TableColumn.cpp
+            TableRow.cpp
             Tag.cpp
             TaggedType.cpp
             T61String.cpp
             TeletexString.cpp
             TimeOfDayType.cpp
             TimeType.cpp
+            Tuple.cpp
+            Type.cpp
             TypeAssignment.cpp
             TypeConstraint.cpp
             TypeConstraints.cpp
-            Type.cpp
             TypeReference.cpp
             Unions.cpp
             Universal.cpp
             UniversalString.cpp
             UnrestrictedCharacterStringType.cpp
+            UnrestrictedCharacterStringValue.cpp
             UpperEndpoint.cpp
             UpperEndValue.cpp
             UsefulType.cpp

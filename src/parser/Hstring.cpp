@@ -20,7 +20,7 @@ Parse(const std::vector<Word>& asnData,
       std::vector<std::string>& endStop,
       std::vector<std::string>&)
 {
-  // Zero or more space separated number of A-F, 0, 1 characters
+  // Zero or more space separated number of A-F, 0-9 characters
   // enclosed within quotes and followed by H
   //
   // 'ABCD1100'H
@@ -67,7 +67,7 @@ Parse(const std::vector<Word>& asnData,
 
     for (const auto& c : std::get<1>(asnData.at(asnDataIndex)))
     {
-      // Only A-F, 0 and 1 allowed
+      // Only A-F, 0-9 allowed
       if (c != 'A' &&
           c != 'B' &&
           c != 'C' &&
@@ -75,7 +75,15 @@ Parse(const std::vector<Word>& asnData,
           c != 'E' &&
           c != 'F' &&
           c != '0' &&
-          c != '1')
+          c != '1' &&
+          c != '2' &&
+          c != '3' &&
+          c != '4' &&
+          c != '5' &&
+          c != '6' &&
+          c != '7' &&
+          c != '8' &&
+          c != '9')
       {
         asnDataIndex = starting_index;
         return false;

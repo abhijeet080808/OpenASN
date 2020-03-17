@@ -1,4 +1,4 @@
-#include "ChoiceType.hh"
+#include "CharacterStringList.hh"
 
 #include "LoggingMacros.hh"
 #include "ParseHelper.hh"
@@ -9,41 +9,26 @@
 using namespace OpenASN;
 
 Production
-ChoiceType::
+CharacterStringList::
 GetType() const
 {
-  return Production::CHOICE_TYPE;
+  return Production::CHARACTER_STRING_LIST;
 }
 
 bool
-ChoiceType::
+CharacterStringList::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
       std::vector<std::string>& endStop,
       std::vector<std::string>& parsePath)
 {
-  parsePath.push_back("ChoiceType");
+  parsePath.push_back("CharacterStringList");
 
-  // ChoiceType ::= CHOICE "{" AlternativeTypeLists "}"
+  // CharacterStringList ::= "{" CharSyms "}"
 
   size_t starting_index = asnDataIndex;
 
-  auto obj = "CHOICE";
-  LOG_START();
-  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
-  {
-    ++asnDataIndex;
-    LOG_PASS();
-  }
-  else
-  {
-    asnDataIndex = starting_index;
-    LOG_FAIL();
-    parsePath.pop_back();
-    return false;
-  }
-
-  obj = "{";
+  auto obj = "{";
   LOG_START();
   if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
@@ -60,14 +45,14 @@ Parse(const std::vector<Word>& asnData,
 
   endStop.push_back("}");
 
-  obj = "AlternativeTypeLists";
+  obj = "CharSyms";
   LOG_START();
-  auto alternative_type_lists =
-    ProductionFactory::Get(Production::ALTERNATIVE_TYPE_LISTS);
-  if (alternative_type_lists->Parse(asnData, asnDataIndex, endStop, parsePath))
+  auto char_syms =
+    ProductionFactory::Get(Production::CHAR_SYMS);
+  if (char_syms->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     endStop.pop_back();
-    mAlternativeTypeLists = alternative_type_lists;
+    mCharSyms = char_syms;
     LOG_PASS();
   }
   else

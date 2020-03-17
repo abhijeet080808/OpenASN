@@ -126,10 +126,12 @@ Parse(const std::string& asnFilePath)
   SPDLOG_INFO("{}", asn_file_data_ss.str());
 
   std::vector<char> asn_word;
+  int num_preceding_whitespaces = 0;
 
   PrecedingInfo preceding_info =
     PrecedingInfo::PRECEDED_BY_NEWLINE;
 
+  // parse each word
   for (const auto& c : asn_file_data)
   {
     if (asn_word.empty())
@@ -146,6 +148,7 @@ Parse(const std::string& asnFilePath)
         // let it remain so
         //
         // if it is already PRECEDED_BY_WHITESPACE, nothing to change
+        ++num_preceding_whitespaces;
         continue;
       }
       else
@@ -160,8 +163,10 @@ Parse(const std::string& asnFilePath)
         parsed_asn_data.push_back(std::make_tuple(
             preceding_info,
             std::string(asn_word.begin(), asn_word.end()),
-            SucceedingInfo::SUCCEEDED_BY_NEWLINE));
+            SucceedingInfo::SUCCEEDED_BY_NEWLINE,
+            num_preceding_whitespaces));
         asn_word.clear();
+        num_preceding_whitespaces = 0;
         preceding_info = PrecedingInfo::PRECEDED_BY_NEWLINE;
       }
       else if (ParseHelper::IsWhitespace(c))
@@ -169,8 +174,10 @@ Parse(const std::string& asnFilePath)
         parsed_asn_data.push_back(std::make_tuple(
             preceding_info,
             std::string(asn_word.begin(), asn_word.end()),
-            SucceedingInfo::SUCCEEDED_BY_WHITESPACE));
+            SucceedingInfo::SUCCEEDED_BY_WHITESPACE,
+            num_preceding_whitespaces));
         asn_word.clear();
+        num_preceding_whitespaces = 0;
         preceding_info = PrecedingInfo::PRECEDED_BY_WHITESPACE;
       }
       // split on all lexical items except dash
@@ -179,8 +186,10 @@ Parse(const std::string& asnFilePath)
         parsed_asn_data.push_back(std::make_tuple(
             preceding_info,
             std::string(asn_word.begin(), asn_word.end()),
-            SucceedingInfo::SUCCEEDED_BY_WHITESPACE));
+            SucceedingInfo::SUCCEEDED_BY_WHITESPACE,
+            num_preceding_whitespaces));
         asn_word.clear();
+        num_preceding_whitespaces = 0;
         preceding_info = PrecedingInfo::PRECEDED_BY_WHITESPACE;
 
         asn_word.push_back(c);
@@ -194,8 +203,10 @@ Parse(const std::string& asnFilePath)
           parsed_asn_data.push_back(std::make_tuple(
             preceding_info,
             std::string(1, asn_word.front()),
-            SucceedingInfo::SUCCEEDED_BY_WHITESPACE));
+            SucceedingInfo::SUCCEEDED_BY_WHITESPACE,
+            num_preceding_whitespaces));
           asn_word.clear();
+          num_preceding_whitespaces = 0;
           preceding_info = PrecedingInfo::PRECEDED_BY_WHITESPACE;
 
           asn_word.push_back(c);
@@ -213,8 +224,10 @@ Parse(const std::string& asnFilePath)
     parsed_asn_data.push_back(std::make_tuple(
           preceding_info,
           std::string(asn_word.begin(), asn_word.end()),
-          SucceedingInfo::SUCCEEDED_BY_NEWLINE));
+          SucceedingInfo::SUCCEEDED_BY_NEWLINE,
+          num_preceding_whitespaces));
     asn_word.clear();
+    num_preceding_whitespaces = 0;
     preceding_info = PrecedingInfo::PRECEDED_BY_NEWLINE;
   }
 
@@ -226,7 +239,8 @@ Parse(const std::string& asnFilePath)
     SPDLOG_DEBUG("{}{}{}",
         std::get<0>(parsed_asn_word) ==
           PrecedingInfo::PRECEDED_BY_WHITESPACE ?
-            "<SPC>" : "<CR/LF>",
+            "<"  + std::to_string(std::get<3>(parsed_asn_word)) + " SPC>" :
+            "<CR/LF>",
         std::get<1>(parsed_asn_word),
         std::get<2>(parsed_asn_word) ==
           SucceedingInfo::SUCCEEDED_BY_WHITESPACE ?

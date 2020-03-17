@@ -67,8 +67,8 @@ Parse(const std::vector<Word>& asnData,
     ProductionFactory::Get(Production::ENUMERATIONS);
   if (enumerations->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
-    mEnumerations = enumerations;
     endStop.pop_back();
+    mEnumerations = enumerations;
     LOG_PASS();
   }
   else

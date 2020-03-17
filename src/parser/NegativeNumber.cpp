@@ -74,7 +74,7 @@ Parse(const std::vector<Word>& asnData,
   mValue = std::get<1>(asnData.at(asnDataIndex));
   // Do not store the leading negative sign
   mValue.erase(0, 1);
-
   ++asnDataIndex;
+
   return true;
 }

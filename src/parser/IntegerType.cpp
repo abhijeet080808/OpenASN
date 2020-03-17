@@ -67,8 +67,8 @@ Parse(const std::vector<Word>& asnData,
     ProductionFactory::Get(Production::NAMED_NUMBER_LIST);
   if (named_number_list->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
-    mNamedNumberList = named_number_list;
     endStop.pop_back();
+    mNamedNumberList = named_number_list;
     LOG_PASS();
   }
   else

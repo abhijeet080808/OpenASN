@@ -60,7 +60,7 @@ Parse(const std::vector<Word>& asnData,
   }
 
   mValue = std::get<1>(asnData.at(asnDataIndex));
-
   ++asnDataIndex;
+
   return true;
 }

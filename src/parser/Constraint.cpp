@@ -69,8 +69,8 @@ Parse(const std::vector<Word>& asnData,
     ProductionFactory::Get(Production::EXCEPTION_SPEC);
   if (exception_spec->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
-    mExceptionSpec = exception_spec;
     endStop.pop_back();
+    mExceptionSpec = exception_spec;
     LOG_PASS();
   }
   else

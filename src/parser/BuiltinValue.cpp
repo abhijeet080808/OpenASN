@@ -82,6 +82,22 @@ Parse(const std::vector<Word>& asnData,
     LOG_FAIL();
   }
 
+  obj = "CharacterStringValue";
+  LOG_START();
+  auto character_string_value =
+    ProductionFactory::Get(Production::CHARACTER_STRING_VALUE);
+  if (character_string_value->Parse(asnData, asnDataIndex, endStop, parsePath))
+  {
+    mCharacterStringValue = character_string_value;
+    LOG_PASS();
+    parsePath.pop_back();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
+
   obj = "IntegerValue";
   LOG_START();
   auto integer_value =

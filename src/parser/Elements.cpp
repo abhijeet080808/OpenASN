@@ -88,8 +88,8 @@ Parse(const std::vector<Word>& asnData,
     ProductionFactory::Get(Production::ELEMENT_SET_SPEC);
   if (element_set_spec->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
-    mElementSetSpec = element_set_spec;
     endStop.pop_back();
+    mElementSetSpec = element_set_spec;
     LOG_PASS();
   }
   else

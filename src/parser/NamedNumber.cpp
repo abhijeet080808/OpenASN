@@ -70,8 +70,8 @@ Parse(const std::vector<Word>& asnData,
     ProductionFactory::Get(Production::SIGNED_NUMBER);
   if (signed_number->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
-    mSignedNumber = signed_number;
     endStop.pop_back();
+    mSignedNumber = signed_number;
     LOG_PASS();
   }
   else
@@ -87,8 +87,8 @@ Parse(const std::vector<Word>& asnData,
       ProductionFactory::Get(Production::DEFINED_VALUE);
     if (defined_value->Parse(asnData, asnDataIndex, endStop, parsePath))
     {
-      mDefinedValue = defined_value;
       endStop.pop_back();
+      mDefinedValue = defined_value;
       LOG_PASS();
     }
     else

@@ -1,4 +1,4 @@
-#include "ModuleDefinition.hh"
+#include "Quadruple.hh"
 
 #include "LoggingMacros.hh"
 #include "ParseHelper.hh"
@@ -9,57 +9,26 @@
 using namespace OpenASN;
 
 Production
-ModuleDefinition::
+Quadruple::
 GetType() const
 {
-  return Production::MODULE_DEFINITION;
+  return Production::QUADRUPLE;
 }
 
 bool
-ModuleDefinition::
+Quadruple::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
       std::vector<std::string>& endStop,
       std::vector<std::string>& parsePath)
 {
-  parsePath.push_back("ModuleDefinition");
+  parsePath.push_back("Quadruple");
 
-  // ModuleDefinition ::=
-  // ModuleIdentifier
-  // DEFINITIONS
-  // EncodingReferenceDefault
-  // TagDefault
-  // ExtensionDefault
-  // "::="
-  // BEGIN
-  // ModuleBody
-  // EncodingControlSections
-  // END
+  // Quadruple ::= "{" Group "," Plane "," Row "," Cell "}"
 
   size_t starting_index = asnDataIndex;
 
-  endStop.push_back("DEFINITIONS");
-
-  auto obj = "ModuleIdentifier";
-  LOG_START();
-  auto module_identifier =
-    ProductionFactory::Get(Production::MODULE_IDENTIFIER);
-  if (module_identifier->Parse(asnData, asnDataIndex, endStop, parsePath))
-  {
-    endStop.pop_back();
-    mModuleIdentifier = module_identifier;
-    LOG_PASS();
-  }
-  else
-  {
-    endStop.pop_back();
-    asnDataIndex = starting_index;
-    LOG_FAIL();
-    parsePath.pop_back();
-    return false;
-  }
-
-  obj = "DEFINITIONS";
+  auto obj = "{";
   LOG_START();
   if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
@@ -74,76 +43,15 @@ Parse(const std::vector<Word>& asnData,
     return false;
   }
 
-  obj = ":";
-  LOG_START();
-  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
-  {
-    ++asnDataIndex;
-    LOG_PASS();
-  }
-  else
-  {
-    asnDataIndex = starting_index;
-    LOG_FAIL();
-    parsePath.pop_back();
-    return false;
-  }
+  endStop.push_back("}");
 
-  obj = ":";
+  obj = "Group";
   LOG_START();
-  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
+  auto group =
+    ProductionFactory::Get(Production::GROUP);
+  if (group->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
-    ++asnDataIndex;
-    LOG_PASS();
-  }
-  else
-  {
-    asnDataIndex = starting_index;
-    LOG_FAIL();
-    parsePath.pop_back();
-    return false;
-  }
-
-  obj = "=";
-  LOG_START();
-  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
-  {
-    ++asnDataIndex;
-    LOG_PASS();
-  }
-  else
-  {
-    asnDataIndex = starting_index;
-    LOG_FAIL();
-    parsePath.pop_back();
-    return false;
-  }
-
-  obj = "BEGIN";
-  LOG_START();
-  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
-  {
-    ++asnDataIndex;
-    LOG_PASS();
-  }
-  else
-  {
-    asnDataIndex = starting_index;
-    LOG_FAIL();
-    parsePath.pop_back();
-    return false;
-  }
-
-  endStop.push_back("END");
-
-  obj = "ModuleBody";
-  LOG_START();
-  auto module_body =
-    ProductionFactory::Get(Production::MODULE_BODY);
-  if (module_body->Parse(asnData, asnDataIndex, endStop, parsePath))
-  {
-    endStop.pop_back();
-    mModuleBody = module_body;
+    mGroup = group;
     LOG_PASS();
   }
   else
@@ -155,7 +63,110 @@ Parse(const std::vector<Word>& asnData,
     return false;
   }
 
-  obj = "END";
+  obj = ",";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
+  {
+    ++asnDataIndex;
+    LOG_PASS();
+  }
+  else
+  {
+    endStop.pop_back();
+    asnDataIndex = starting_index;
+    LOG_FAIL();
+    parsePath.pop_back();
+    return false;
+  }
+
+  obj = "Plane";
+  LOG_START();
+  auto plane =
+    ProductionFactory::Get(Production::PLANE);
+  if (plane->Parse(asnData, asnDataIndex, endStop, parsePath))
+  {
+    mPlane = plane;
+    LOG_PASS();
+  }
+  else
+  {
+    endStop.pop_back();
+    asnDataIndex = starting_index;
+    LOG_FAIL();
+    parsePath.pop_back();
+    return false;
+  }
+
+  obj = ",";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
+  {
+    ++asnDataIndex;
+    LOG_PASS();
+  }
+  else
+  {
+    endStop.pop_back();
+    asnDataIndex = starting_index;
+    LOG_FAIL();
+    parsePath.pop_back();
+    return false;
+  }
+
+  obj = "Row";
+  LOG_START();
+  auto row =
+    ProductionFactory::Get(Production::ROW);
+  if (row->Parse(asnData, asnDataIndex, endStop, parsePath))
+  {
+    mRow = row;
+    LOG_PASS();
+  }
+  else
+  {
+    endStop.pop_back();
+    asnDataIndex = starting_index;
+    LOG_FAIL();
+    parsePath.pop_back();
+    return false;
+  }
+
+  obj = ",";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
+  {
+    ++asnDataIndex;
+    LOG_PASS();
+  }
+  else
+  {
+    endStop.pop_back();
+    asnDataIndex = starting_index;
+    LOG_FAIL();
+    parsePath.pop_back();
+    return false;
+  }
+
+  obj = "Cell";
+  LOG_START();
+  auto cell =
+    ProductionFactory::Get(Production::CELL);
+  if (cell->Parse(asnData, asnDataIndex, endStop, parsePath))
+  {
+    endStop.pop_back();
+    mCell = cell;
+    LOG_PASS();
+  }
+  else
+  {
+    endStop.pop_back();
+    asnDataIndex = starting_index;
+    LOG_FAIL();
+    parsePath.pop_back();
+    return false;
+  }
+
+  obj = "}";
   LOG_START();
   if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
@@ -172,4 +183,3 @@ Parse(const std::vector<Word>& asnData,
     return false;
   }
 }
-

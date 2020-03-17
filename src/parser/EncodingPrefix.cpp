@@ -51,8 +51,8 @@ Parse(const std::vector<Word>& asnData,
     ProductionFactory::Get(Production::ENCODING_REFERENCE);
   if (encoding_reference->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
-    mEncodingReference = encoding_reference;
     endStop.pop_back();
+    mEncodingReference = encoding_reference;
     LOG_PASS();
   }
   else
@@ -71,8 +71,8 @@ Parse(const std::vector<Word>& asnData,
     ProductionFactory::Get(Production::ENCODING_INSTRUCTION);
   if (encoding_instruction->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
-    mEncodingInstruction = encoding_instruction;
     endStop.pop_back();
+    mEncodingInstruction = encoding_instruction;
     LOG_PASS();
   }
   else

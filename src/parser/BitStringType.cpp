@@ -82,8 +82,8 @@ Parse(const std::vector<Word>& asnData,
     ProductionFactory::Get(Production::NAMED_BIT_LIST);
   if (named_bit_list->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
-    mNamedBitList = named_bit_list;
     endStop.pop_back();
+    mNamedBitList = named_bit_list;
     LOG_PASS();
   }
   else

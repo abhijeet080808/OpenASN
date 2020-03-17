@@ -52,16 +52,36 @@ Sequence              ::= SEQUENCE {
   seqCharStr2           GeneralString,
   seqCharStr3           GraphicString,
   seqCharStr4           IA5String,
+  -- RestrictedCharacterStringValue->Tuple
+  seqCharStr4Tuple      IA5String DEFAULT { 2, 3 },
   seqCharStr5           ISO646String,
   seqCharStr6           NumericString,
   seqCharStr7           PrintableString,
   seqCharStr8           TeletexString,
   seqCharStr9           T61String,
   seqCharStr10          UniversalString,
+  -- RestrictedCharacterStringValue->cstring
+  seqCharStr10Cstr      UniversalString DEFAULT "ABCD",
+  -- RestrictedCharacterStringValue->Quadruple
+  seqCharStr10Quad      UniversalString DEFAULT { 10, 11, 12, 13 },
+  -- RestrictedCharacterStringValue->CharacterStringList->cstring
+  seqCharStr10StrList   UniversalString DEFAULT { "ABCD", "DEFG" },
+  -- RestrictedCharacterStringValue->CharacterStringList->Quadruple
+  seqCharStr10StrList   UniversalString DEFAULT {
+                          { 10, 11, 12, 13 },
+                          { 14, 15, 16, 17 }
+                        },
+  -- RestrictedCharacterStringValue->CharacterStringList->DefinedValue
+  seqCharStr10StrList   UniversalString DEFAULT { abcd, defg },
   seqCharStr11          UTF8String,
   seqCharStr12          VideotexString,
   seqCharStr13          VisibleString,
   seqCharStr14          CHARACTER STRING,
+  -- TODO UnrestrictedCharacterStringValue, NamedValue
+  seqCharStr14StrVal    CHARACTER STRING DEFAULT {
+                          --identification presentation-context-id:5
+                          string-value '66'H
+                        },
   seqCh                 CHOICE { i INTEGER, b BOOLEAN },
   seqDate               DATE,
   seqDateTime           DATE-TIME,
@@ -145,6 +165,7 @@ SelectionType         ::= chInt < Choice
 -- TODO check precedence of EXCEPT ^ | 50.1 note 2
 --SingleValue
 SvConstrainedType1    ::= BOOLEAN (TRUE)
+-- Two constraints (recursive)
 SvConstrainedType2    ::= BOOLEAN (TRUE) (TRUE)
 SvConstrainedType3    ::= BOOLEAN (TRUE ^ FALSE EXCEPT TRUE)
 SvConstrainedType4    ::= BOOLEAN (TRUE | FALSE EXCEPT FALSE)

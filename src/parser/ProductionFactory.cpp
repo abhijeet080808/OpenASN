@@ -15,7 +15,12 @@
 #include "Bstring.hh"
 #include "BuiltinType.hh"
 #include "BuiltinValue.hh"
+#include "Cell.hh"
+#include "CharsDefn.hh"
+#include "CharSyms.hh"
+#include "CharacterStringList.hh"
 #include "CharacterStringType.hh"
+#include "CharacterStringValue.hh"
 #include "ChoiceType.hh"
 #include "Class.hh"
 #include "ClassNumber.hh"
@@ -23,10 +28,12 @@
 #include "ComponentType.hh"
 #include "ComponentTypeList.hh"
 #include "ComponentTypeLists.hh"
+#include "ComponentValueList.hh"
 #include "Constraint.hh"
 #include "ConstraintList.hh"
 #include "ConstraintSpec.hh"
 #include "ContainedSubtype.hh"
+#include "Cstring.hh"
 #include "DateType.hh"
 #include "DateTimeType.hh"
 #include "DefinedType.hh"
@@ -60,6 +67,7 @@
 #include "GeneralizedTime.hh"
 #include "GeneralString.hh"
 #include "GraphicString.hh"
+#include "Group.hh"
 #include "Hstring.hh"
 #include "IA5String.hh"
 #include "Identifier.hh"
@@ -89,6 +97,7 @@
 #include "NamedNumber.hh"
 #include "NamedNumberList.hh"
 #include "NamedType.hh"
+#include "NamedValue.hh"
 #include "NegativeNumber.hh"
 #include "NullType.hh"
 #include "Number.hh"
@@ -100,6 +109,7 @@
 #include "PartialSpecification.hh"
 #include "PatternConstraint.hh"
 #include "PermittedAlphabet.hh"
+#include "Plane.hh"
 #include "PrefixedType.hh"
 #include "PresenceConstraint.hh"
 #include "Present.hh"
@@ -109,18 +119,22 @@
 #include "PropertyName.hh"
 #include "PropertySettings.hh"
 #include "PropertySettingsList.hh"
+#include "Quadruple.hh"
 #include "RealType.hh"
 #include "ReferencedType.hh"
 #include "RelativeIRIType.hh"
 #include "RelativeOIDType.hh"
 #include "RestrictedCharacterStringType.hh"
+#include "RestrictedCharacterStringValue.hh"
 #include "RootAlternativeTypeList.hh"
 #include "RootComponentTypeList.hh"
 #include "RootElementSetSpec.hh"
 #include "RootEnumeration.hh"
+#include "Row.hh"
 #include "SelectionType.hh"
-#include "SequenceType.hh"
 #include "SequenceOfType.hh"
+#include "SequenceType.hh"
+#include "SequenceValue.hh"
 #include "SettingName.hh"
 #include "SetType.hh"
 #include "SetOfType.hh"
@@ -130,12 +144,15 @@
 #include "SizeConstraint.hh"
 #include "SubtypeConstraint.hh"
 #include "SubtypeElements.hh"
+#include "TableColumn.hh"
+#include "TableRow.hh"
 #include "Tag.hh"
 #include "TaggedType.hh"
 #include "T61String.hh"
 #include "TeletexString.hh"
 #include "TimeOfDayType.hh"
 #include "TimeType.hh"
+#include "Tuple.hh"
 #include "Type.hh"
 #include "TypeAssignment.hh"
 #include "TypeConstraint.hh"
@@ -145,6 +162,7 @@
 #include "Universal.hh"
 #include "UniversalString.hh"
 #include "UnrestrictedCharacterStringType.hh"
+#include "UnrestrictedCharacterStringValue.hh"
 #include "UpperEndpoint.hh"
 #include "UpperEndValue.hh"
 #include "UsefulType.hh"
@@ -211,8 +229,23 @@ Get(Production production)
     case Production::BUILTIN_VALUE:
       return std::make_shared<BuiltinValue>();
 
+    case Production::CELL:
+      return std::make_shared<Cell>();
+
+    case Production::CHARS_DEFN:
+      return std::make_shared<CharsDefn>();
+
+    case Production::CHAR_SYMS:
+      return std::make_shared<CharSyms>();
+
+    case Production::CHARACTER_STRING_LIST:
+      return std::make_shared<CharacterStringList>();
+
     case Production::CHARACTER_STRING_TYPE:
       return std::make_shared<CharacterStringType>();
+
+    case Production::CHARACTER_STRING_VALUE:
+      return std::make_shared<CharacterStringValue>();
 
     case Production::CHOICE_TYPE:
       return std::make_shared<ChoiceType>();
@@ -235,6 +268,9 @@ Get(Production production)
     case Production::COMPONENT_TYPE_LISTS:
       return std::make_shared<ComponentTypeLists>();
 
+    case Production::COMPONENT_VALUE_LIST:
+      return std::make_shared<ComponentValueList>();
+
     case Production::CONSTRAINT:
       return std::make_shared<Constraint>();
 
@@ -246,6 +282,9 @@ Get(Production production)
 
     case Production::CONTAINED_SUBTYPE:
       return std::make_shared<ContainedSubtype>();
+
+    case Production::CSTRING:
+      return std::make_shared<Cstring>();
 
     case Production::DATE_TYPE:
       return std::make_shared<DateType>();
@@ -346,6 +385,9 @@ Get(Production production)
     case Production::GRAPHIC_STRING:
       return std::make_shared<GraphicString>();
 
+    case Production::GROUP:
+      return std::make_shared<Group>();
+
     case Production::HSTRING:
       return std::make_shared<Hstring>();
 
@@ -436,6 +478,9 @@ Get(Production production)
     case Production::NAMED_TYPE:
       return std::make_shared<NamedType>();
 
+    case Production::NAMED_VALUE:
+      return std::make_shared<NamedValue>();
+
     case Production::NEGATIVE_NUMBER:
       return std::make_shared<NegativeNumber>();
 
@@ -469,6 +514,9 @@ Get(Production production)
     case Production::PERMITTED_ALPHABET:
       return std::make_shared<PermittedAlphabet>();
 
+    case Production::PLANE:
+      return std::make_shared<Plane>();
+
     case Production::PREFIXED_TYPE:
       return std::make_shared<PrefixedType>();
 
@@ -499,6 +547,9 @@ Get(Production production)
     case Production::PS_NAME:
       return std::make_shared<PsName>();
 
+    case Production::QUADRUPLE:
+      return std::make_shared<Quadruple>();
+
     case Production::REAL_TYPE:
       return std::make_shared<RealType>();
 
@@ -510,6 +561,12 @@ Get(Production production)
 
     case Production::RELATIVE_OID_TYPE:
       return std::make_shared<RelativeOIDType>();
+
+    case Production::RESTRICTED_CHARACTER_STRING_TYPE:
+      return std::make_shared<RestrictedCharacterStringType>();
+
+    case Production::RESTRICTED_CHARACTER_STRING_VALUE:
+      return std::make_shared<RestrictedCharacterStringValue>();
 
     case Production::ROOT_ALTERNATIVE_TYPE_LIST:
       return std::make_shared<RootAlternativeTypeList>();
@@ -523,17 +580,20 @@ Get(Production production)
     case Production::ROOT_ENUMERATION:
       return std::make_shared<RootEnumeration>();
 
-    case Production::RESTRICTED_CHARACTER_STRING_TYPE:
-      return std::make_shared<RestrictedCharacterStringType>();
+    case Production::ROW:
+      return std::make_shared<Row>();
 
     case Production::SELECTION_TYPE:
       return std::make_shared<SelectionType>();
 
+    case Production::SEQUENCE_OF_TYPE:
+      return std::make_shared<SequenceOfType>();
+
     case Production::SEQUENCE_TYPE:
       return std::make_shared<SequenceType>();
 
-    case Production::SEQUENCE_OF_TYPE:
-      return std::make_shared<SequenceOfType>();
+    case Production::SEQUENCE_VALUE:
+      return std::make_shared<SequenceValue>();
 
     case Production::SETTING_NAME:
       return std::make_shared<SettingName>();
@@ -562,6 +622,12 @@ Get(Production production)
     case Production::SUBTYPE_ELEMENTS:
       return std::make_shared<SubtypeElements>();
 
+    case Production::TABLE_COLUMN:
+      return std::make_shared<TableColumn>();
+
+    case Production::TABLE_ROW:
+      return std::make_shared<TableRow>();
+
     case Production::TAG:
       return std::make_shared<Tag>();
 
@@ -579,6 +645,9 @@ Get(Production production)
 
     case Production::TIME_TYPE:
       return std::make_shared<TimeType>();
+
+    case Production::TUPLE:
+      return std::make_shared<Tuple>();
 
     case Production::TYPE:
       return std::make_shared<Type>();
@@ -606,6 +675,9 @@ Get(Production production)
 
     case Production::UNRESTRICTED_CHARACTER_STRING_TYPE:
       return std::make_shared<UnrestrictedCharacterStringType>();
+
+    case Production::UNRESTRICTED_CHARACTER_STRING_VALUE:
+      return std::make_shared<UnrestrictedCharacterStringValue>();
 
     case Production::UPPER_ENDPOINT:
       return std::make_shared<UpperEndpoint>();

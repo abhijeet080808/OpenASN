@@ -1,4 +1,4 @@
-#include "ChoiceType.hh"
+#include "Tuple.hh"
 
 #include "LoggingMacros.hh"
 #include "ParseHelper.hh"
@@ -9,41 +9,26 @@
 using namespace OpenASN;
 
 Production
-ChoiceType::
+Tuple::
 GetType() const
 {
-  return Production::CHOICE_TYPE;
+  return Production::TUPLE;
 }
 
 bool
-ChoiceType::
+Tuple::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
       std::vector<std::string>& endStop,
       std::vector<std::string>& parsePath)
 {
-  parsePath.push_back("ChoiceType");
+  parsePath.push_back("Tuple");
 
-  // ChoiceType ::= CHOICE "{" AlternativeTypeLists "}"
+  // Tuple ::= "{" TableColumn "," TableRow "}"
 
   size_t starting_index = asnDataIndex;
 
-  auto obj = "CHOICE";
-  LOG_START();
-  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
-  {
-    ++asnDataIndex;
-    LOG_PASS();
-  }
-  else
-  {
-    asnDataIndex = starting_index;
-    LOG_FAIL();
-    parsePath.pop_back();
-    return false;
-  }
-
-  obj = "{";
+  auto obj = "{";
   LOG_START();
   if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
   {
@@ -60,14 +45,48 @@ Parse(const std::vector<Word>& asnData,
 
   endStop.push_back("}");
 
-  obj = "AlternativeTypeLists";
+  obj = "TableColumn";
   LOG_START();
-  auto alternative_type_lists =
-    ProductionFactory::Get(Production::ALTERNATIVE_TYPE_LISTS);
-  if (alternative_type_lists->Parse(asnData, asnDataIndex, endStop, parsePath))
+  auto table_column =
+    ProductionFactory::Get(Production::TABLE_COLUMN);
+  if (table_column->Parse(asnData, asnDataIndex, endStop, parsePath))
+  {
+    mTableColumn = table_column;
+    LOG_PASS();
+  }
+  else
   {
     endStop.pop_back();
-    mAlternativeTypeLists = alternative_type_lists;
+    asnDataIndex = starting_index;
+    LOG_FAIL();
+    parsePath.pop_back();
+    return false;
+  }
+
+  obj = ",";
+  LOG_START();
+  if (ParseHelper::IsObjectPresent(obj, asnData, asnDataIndex))
+  {
+    ++asnDataIndex;
+    LOG_PASS();
+  }
+  else
+  {
+    endStop.pop_back();
+    asnDataIndex = starting_index;
+    LOG_FAIL();
+    parsePath.pop_back();
+    return false;
+  }
+
+  obj = "TableRow";
+  LOG_START();
+  auto table_row =
+    ProductionFactory::Get(Production::TABLE_ROW);
+  if (table_row->Parse(asnData, asnDataIndex, endStop, parsePath))
+  {
+    endStop.pop_back();
+    mTableRow = table_row;
     LOG_PASS();
   }
   else

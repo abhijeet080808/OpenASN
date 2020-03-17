@@ -70,8 +70,8 @@ Parse(const std::vector<Word>& asnData,
     ProductionFactory::Get(Production::NUMBER);
   if (number->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
-    mNumber = number;
     endStop.pop_back();
+    mNumber = number;
     LOG_PASS();
   }
   else
