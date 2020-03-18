@@ -26,3 +26,4 @@ script:
   - cppcheck --error-exitcode=1 src/
   - cppcheck --error-exitcode=1 build/tests/
   - ./build/src/app/asn1c -a examples/TestModule.asn1 -p > /dev/null
+  - ./build/src/app/asn1c -a examples/CstringModule.asn1 -p > /dev/null

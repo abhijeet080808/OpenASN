@@ -1,0 +1,31 @@
+CstringModule DEFINITIONS ::=
+BEGIN
+
+Sequence              ::= SEQUENCE {
+  seqCharStrCstr1       UniversalString DEFAULT "ABCD",
+  seqCharStrCstr2       UniversalString DEFAULT "    ABCD",
+  seqCharStrCstr3       UniversalString DEFAULT "ABCD    ",
+  seqCharStrCstr4       UniversalString DEFAULT "ABCD """,
+  seqCharStrCstr5       UniversalString DEFAULT "ABCD""",
+  seqCharStrCstr6       UniversalString DEFAULT "ABCD
+                        """,
+  seqCharStrCstr7       UniversalString DEFAULT """ABCD""",
+  seqCharStrCstr8       UniversalString DEFAULT "    ""    ABCD    ""    ",
+  seqCharStrCstr9       UniversalString DEFAULT "ABCD EFGH",
+  seqCharStrCstr10      UniversalString DEFAULT "ABCD
+                        EFGH IJKL",
+  seqCharStrCstr11      UniversalString DEFAULT "ABCD EFGH
+                        """,
+  seqCharStrCstr12      UniversalString DEFAULT "ABCD EFGH
+                        "" IJKL",
+  seqCharStrCstr13      UniversalString DEFAULT """
+                        ABCD EFGH
+                        """,
+  seqCharStrCstr14      UniversalString DEFAULT """
+                        ABCD
+                        EFGH
+                        ""
+                        IJKL"
+}
+
+END

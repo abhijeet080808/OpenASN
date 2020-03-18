@@ -177,7 +177,7 @@ Parse(const std::string& asnFilePath)
             SucceedingInfo::SUCCEEDED_BY_WHITESPACE,
             num_preceding_whitespaces));
         asn_word.clear();
-        num_preceding_whitespaces = 0;
+        num_preceding_whitespaces = 1;
         preceding_info = PrecedingInfo::PRECEDED_BY_WHITESPACE;
       }
       // split on all lexical items except dash
@@ -234,15 +234,16 @@ Parse(const std::string& asnFilePath)
   SPDLOG_INFO("Parsed file split into {} asn words",
               parsed_asn_data.size());
 
-  for (const auto& parsed_asn_word : parsed_asn_data)
+  for (size_t i = 0; i < parsed_asn_data.size(); i++)
   {
-    SPDLOG_DEBUG("{}{}{}",
-        std::get<0>(parsed_asn_word) ==
+    SPDLOG_DEBUG("{} {}{}{}",
+        i,
+        std::get<0>(parsed_asn_data[i]) ==
           PrecedingInfo::PRECEDED_BY_WHITESPACE ?
-            "<"  + std::to_string(std::get<3>(parsed_asn_word)) + " SPC>" :
-            "<CR/LF>",
-        std::get<1>(parsed_asn_word),
-        std::get<2>(parsed_asn_word) ==
+            "<" + std::to_string(std::get<3>(parsed_asn_data[i])) + " SPC>" :
+            "<CR/LF " + std::to_string(std::get<3>(parsed_asn_data[i])) + " SPC>",
+        std::get<1>(parsed_asn_data[i]),
+        std::get<2>(parsed_asn_data[i]) ==
           SucceedingInfo::SUCCEEDED_BY_WHITESPACE ?
             "<SPC>" : "<CR/LF>");
   }

@@ -73,6 +73,11 @@ Parse(const std::vector<Word>& asnData,
 
     if (asn_word == "\"")
     {
+      if (prec_info == PrecedingInfo::PRECEDED_BY_WHITESPACE)
+      {
+        ss << std::string(num_prec_whitespaces, ' ');
+      }
+
       // check if next word is double quote too and it immediately follows
       // the first double quote
       if (asnData.size() > (asnDataIndex + 1) &&
@@ -81,32 +86,29 @@ Parse(const std::vector<Word>& asnData,
             PrecedingInfo::PRECEDED_BY_WHITESPACE &&
           std::get<3>(asnData.at(asnDataIndex + 1)) == 0)
       {
-        if (prec_info == PrecedingInfo::PRECEDED_BY_WHITESPACE)
-        {
-          ss << std::string(num_prec_whitespaces, ' ');
-        }
-        ss << asn_word;
-
+        ss << "\"";
         asnDataIndex = asnDataIndex + 2;
       }
       else // this is end of cstring
       {
         ++asnDataIndex;
-        return true;
+        break;
       }
     }
     else if (prec_info == PrecedingInfo::PRECEDED_BY_WHITESPACE)
     {
       ss << std::string(num_prec_whitespaces, ' ');
       ss << asn_word;
+
+      ++asnDataIndex;
     }
     else // prec_info == PrecedingInfo::PRECEDED_BY_NEWLINE
     {
       // all spaces after newline is consumed
       ss << asn_word;
-    }
 
-    ++asnDataIndex;
+      ++asnDataIndex;
+    }
   }
 
   mValue = ss.str();
