@@ -22,6 +22,7 @@
 #include "CharacterStringType.hh"
 #include "CharacterStringValue.hh"
 #include "ChoiceType.hh"
+#include "ChoiceValue.hh"
 #include "Class.hh"
 #include "ClassNumber.hh"
 #include "ComponentConstraint.hh"
@@ -249,6 +250,9 @@ Get(Production production)
 
     case Production::CHOICE_TYPE:
       return std::make_shared<ChoiceType>();
+
+    case Production::CHOICE_VALUE:
+      return std::make_shared<ChoiceValue>();
 
     case Production::CLASS:
       return std::make_shared<Class>();

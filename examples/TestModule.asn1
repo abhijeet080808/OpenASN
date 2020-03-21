@@ -82,7 +82,8 @@ Sequence              ::= SEQUENCE {
                           --identification presentation-context-id:5
                           string-value '66'H
                         },
-  seqCh                 CHOICE { i INTEGER, b BOOLEAN },
+  seqCh1                CHOICE { i INTEGER, b BOOLEAN },
+  seqCh2                CHOICE { i INTEGER, b BOOLEAN } DEFAULT b : TRUE,
   seqDate               DATE,
   seqDateTime           DATE-TIME,
   seqDuration           DURATION,

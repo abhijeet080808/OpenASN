@@ -98,6 +98,22 @@ Parse(const std::vector<Word>& asnData,
     LOG_FAIL();
   }
 
+  obj = "ChoiceValue";
+  LOG_START();
+  auto choice_value =
+    ProductionFactory::Get(Production::CHOICE_VALUE);
+  if (choice_value->Parse(asnData, asnDataIndex, endStop, parsePath))
+  {
+    mChoiceValue = choice_value;
+    LOG_PASS();
+    parsePath.pop_back();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
+
   obj = "IntegerValue";
   LOG_START();
   auto integer_value =

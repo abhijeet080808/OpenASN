@@ -23,6 +23,7 @@ set(SOURCES Absent.cpp
             CharacterStringType.cpp
             CharacterStringValue.cpp
             ChoiceType.cpp
+            ChoiceValue.cpp
             Class.cpp
             ClassNumber.cpp
             ComponentConstraint.cpp
