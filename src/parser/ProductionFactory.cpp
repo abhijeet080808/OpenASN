@@ -54,6 +54,7 @@
 #include "EncodingReference.hh"
 #include "EncodingReferencePrime.hh"
 #include "EnumeratedType.hh"
+#include "EnumeratedValue.hh"
 #include "Enumeration.hh"
 #include "EnumerationItem.hh"
 #include "Enumerations.hh"
@@ -346,6 +347,9 @@ Get(Production production)
 
     case Production::ENUMERATED_TYPE:
       return std::make_shared<EnumeratedType>();
+
+    case Production::ENUMERATED_VALUE:
+      return std::make_shared<EnumeratedValue>();
 
     case Production::ENUMERATION:
       return std::make_shared<Enumeration>();

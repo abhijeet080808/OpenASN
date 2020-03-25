@@ -22,7 +22,7 @@ namespace OpenASN
       std::shared_ptr<IProduction> mBooleanValue;
       std::shared_ptr<IProduction> mCharacterStringValue;
       std::shared_ptr<IProduction> mChoiceValue;
-      // std::shared_ptr<IProduction> mEnumeratedValue;
+      std::shared_ptr<IProduction> mEnumeratedValue;
       // std::shared_ptr<IProduction> mExternalValue;
       // std::shared_ptr<IProduction> mInstanceOfValue;
       std::shared_ptr<IProduction> mIntegerValue;

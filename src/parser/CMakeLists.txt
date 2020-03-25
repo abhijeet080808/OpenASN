@@ -55,6 +55,7 @@ set(SOURCES Absent.cpp
             EncodingReference.cpp
             EncodingReferencePrime.cpp
             EnumeratedType.cpp
+            EnumeratedValue.cpp
             Enumeration.cpp
             EnumerationItem.cpp
             Enumerations.cpp

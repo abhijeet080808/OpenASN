@@ -95,6 +95,7 @@ Sequence              ::= SEQUENCE {
                         },
   seqEnumerated1        ENUMERATED { a, b, c, d },
   seqEnumerated2        ENUMERATED { w(-1), x(0), y(1), z(2) },
+  seqEnumeratedVal      ENUMERATED { a, b, c, d } DEFAULT a,
   seqInt1               INTEGER,
   seqInt2               INTEGER { w(-1), x(0), y(1), z(2) },
   seqIri                OID-IRI,

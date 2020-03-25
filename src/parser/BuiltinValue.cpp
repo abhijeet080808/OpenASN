@@ -116,6 +116,22 @@ Parse(const std::vector<Word>& asnData,
     LOG_FAIL();
   }
 
+  obj = "EnumeratedValue";
+  LOG_START();
+  auto enumerated_value =
+    ProductionFactory::Get(Production::ENUMERATED_VALUE);
+  if (enumerated_value->Parse(asnData, asnDataIndex, endStop, parsePath))
+  {
+    mEnumeratedValue = enumerated_value;
+    LOG_PASS();
+    parsePath.pop_back();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
+
   obj = "IntegerValue";
   LOG_START();
   auto integer_value =
