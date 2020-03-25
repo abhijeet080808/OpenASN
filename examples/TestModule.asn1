@@ -79,7 +79,7 @@ Sequence              ::= SEQUENCE {
   seqCharStr14          CHARACTER STRING,
   -- TODO UnrestrictedCharacterStringValue, NamedValue
   seqCharStr14StrVal    CHARACTER STRING DEFAULT {
-                          --identification presentation-context-id:5
+                          --identification presentation-context-id:5,
                           string-value '66'H
                         },
   seqCh1                CHOICE { i INTEGER, b BOOLEAN },
@@ -88,6 +88,11 @@ Sequence              ::= SEQUENCE {
   seqDateTime           DATE-TIME,
   seqDuration           DURATION,
   seqEmbeddedPDV        EMBEDDED PDV,
+  -- TODO EmbeddedPDVValue
+  seqEmbeddedPDVVal     EMBEDDED PDV DEFAULT {
+                          --identification presentation-context-id:5,
+                          data-value '66'H
+                        },
   seqEnumerated1        ENUMERATED { a, b, c, d },
   seqEnumerated2        ENUMERATED { w(-1), x(0), y(1), z(2) },
   seqInt1               INTEGER,

@@ -82,6 +82,8 @@ Parse(const std::vector<Word>& asnData,
     LOG_FAIL();
   }
 
+  // CharacterStringValue->UnrestrictedCharacterStringValue is also
+  // equivalent to EmbeddedPDVValue
   obj = "CharacterStringValue";
   LOG_START();
   auto character_string_value =
