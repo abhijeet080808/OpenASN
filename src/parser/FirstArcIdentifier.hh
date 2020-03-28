@@ -2,10 +2,12 @@
 
 #include "IProduction.hh"
 
+#include <memory>
+
 namespace OpenASN
 {
   // X.680 08/2015 Annex L
-  class Identifier : public IProduction
+  class FirstArcIdentifier : public IProduction
   {
     public:
       Production GetType() const override;
@@ -16,11 +18,6 @@ namespace OpenASN
                  std::vector<std::string>& parsePath) override;
 
     public:
-      std::string mValue;
+      std::shared_ptr<IProduction> mArcIdentifier;
   };
-
-  using ValueReference = Identifier;
-  // TODO - This is only a subset of the actual non-integerUnicodeLabel
-  // Need to add support for exact non-integerUnicodeLabel
-  using NonIntegerUnicodeLabel = Identifier;
 }

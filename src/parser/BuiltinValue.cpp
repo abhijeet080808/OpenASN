@@ -83,7 +83,7 @@ Parse(const std::vector<Word>& asnData,
   }
 
   // CharacterStringValue->UnrestrictedCharacterStringValue is also
-  // equivalent to EmbeddedPDVValue
+  // equivalent to EmbeddedPDVValue and ExternalValue
   obj = "CharacterStringValue";
   LOG_START();
   auto character_string_value =
@@ -139,6 +139,22 @@ Parse(const std::vector<Word>& asnData,
   if (integer_value->Parse(asnData, asnDataIndex, endStop, parsePath))
   {
     mIntegerValue = integer_value;
+    LOG_PASS();
+    parsePath.pop_back();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
+
+  obj = "IRIValue";
+  LOG_START();
+  auto iri_value =
+    ProductionFactory::Get(Production::IRI_VALUE);
+  if (iri_value->Parse(asnData, asnDataIndex, endStop, parsePath))
+  {
+    mIRIValue = iri_value;
     LOG_PASS();
     parsePath.pop_back();
     return true;

@@ -5,6 +5,7 @@
 #include "AlternativeTypeList.hh"
 #include "AlternativeTypeLists.hh"
 #include "Application.hh"
+#include "ArcIdentifier.hh"
 #include "Assignment.hh"
 #include "AssignmentList.hh"
 #include "BitStringType.hh"
@@ -65,6 +66,7 @@
 #include "ExternalType.hh"
 #include "ExternalTypeReference.hh"
 #include "ExternalValueReference.hh"
+#include "FirstArcIdentifier.hh"
 #include "FullSpecification.hh"
 #include "GeneralizedTime.hh"
 #include "GeneralString.hh"
@@ -82,6 +84,7 @@
 #include "IntersectionElements.hh"
 #include "Intersections.hh"
 #include "IRIType.hh"
+#include "IRIValue.hh"
 #include "ISO646String.hh"
 #include "LessThan.hh"
 #include "LowerEndpoint.hh"
@@ -144,6 +147,7 @@
 #include "SingleTypeConstraint.hh"
 #include "SingleValue.hh"
 #include "SizeConstraint.hh"
+#include "SubsequentArcIdentifier.hh"
 #include "SubtypeConstraint.hh"
 #include "SubtypeElements.hh"
 #include "TableColumn.hh"
@@ -200,6 +204,9 @@ Get(Production production)
 
     case Production::APPLICATION:
       return std::make_shared<Application>();
+
+    case Production::ARC_IDENTIFIER:
+      return std::make_shared<ArcIdentifier>();
 
     case Production::ASSIGNMENT:
       return std::make_shared<Assignment>();
@@ -381,6 +388,9 @@ Get(Production production)
     case Production::EXTERNAL_VALUE_REFERENCE:
       return std::make_shared<ExternalValueReference>();
 
+    case Production::FIRST_ARC_IDENTIFIER:
+      return std::make_shared<FirstArcIdentifier>();
+
     case Production::FULL_SPECIFICATION:
       return std::make_shared<FullSpecification>();
 
@@ -420,6 +430,9 @@ Get(Production production)
     case Production::INTEGER_TYPE:
       return std::make_shared<IntegerType>();
 
+    case Production::INTEGER_UNICODE_LABEL:
+      return std::make_shared<Number>();
+
     case Production::INTEGER_VALUE:
       return std::make_shared<IntegerValue>();
 
@@ -431,6 +444,9 @@ Get(Production production)
 
     case Production::IRI_TYPE:
       return std::make_shared<IRIType>();
+
+    case Production::IRI_VALUE:
+      return std::make_shared<IRIValue>();
 
     case Production::ISO646_STRING:
       return std::make_shared<ISO646String>();
@@ -491,6 +507,9 @@ Get(Production production)
 
     case Production::NEGATIVE_NUMBER:
       return std::make_shared<NegativeNumber>();
+
+    case Production::NON_INTEGER_UNICODE_LABEL:
+      return std::make_shared<Identifier>();
 
     case Production::NULL_TYPE:
       return std::make_shared<NullType>();
@@ -623,6 +642,9 @@ Get(Production production)
 
     case Production::SIZE_CONSTRAINT:
       return std::make_shared<SizeConstraint>();
+
+    case Production::SUBSEQUENT_ARC_IDENTIFIER:
+      return std::make_shared<SubsequentArcIdentifier>();
 
     case Production::SUBTYPE_CONSTRAINT:
       return std::make_shared<SubtypeConstraint>();

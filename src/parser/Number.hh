@@ -18,4 +18,6 @@ namespace OpenASN
     public:
       std::string mValue;
   };
+
+  using IntegerUnicodeLabel = Number;
 }

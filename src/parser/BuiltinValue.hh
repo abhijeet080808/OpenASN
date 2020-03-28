@@ -23,10 +23,9 @@ namespace OpenASN
       std::shared_ptr<IProduction> mCharacterStringValue;
       std::shared_ptr<IProduction> mChoiceValue;
       std::shared_ptr<IProduction> mEnumeratedValue;
-      // std::shared_ptr<IProduction> mExternalValue;
       // std::shared_ptr<IProduction> mInstanceOfValue;
       std::shared_ptr<IProduction> mIntegerValue;
-      // std::shared_ptr<IProduction> mIRIValue;
+      std::shared_ptr<IProduction> mIRIValue;
       // std::shared_ptr<IProduction> mNullValue;
       // std::shared_ptr<IProduction> mObjectIdentifierValue;
       // std::shared_ptr<IProduction> mOctetStringValue;

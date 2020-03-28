@@ -70,22 +70,25 @@ std::vector<std::shared_ptr<IProduction>> mNamedBit;
 
 //////////////////////////////////////////////////////////////////////////////
 
+  // ComponentTypeList ::=
+  //   ComponentType
+  // | ComponentTypeList "," ComponentType
+
   size_t starting_index = asnDataIndex;
 
   while (1)
   {
-    auto obj = "NamedNumber";
+    auto obj = "ComponentType";
     LOG_START();
-    auto named_number =
-      ProductionFactory::Get(Production::NAMED_NUMBER);
-    if (named_number->Parse(asnData, asnDataIndex, endStop, parsePath))
+    auto component_type =
+      ProductionFactory::Get(Production::COMPONENT_TYPE);
+    if (component_type->Parse(asnData, asnDataIndex, endStop, parsePath))
     {
-      mNamedNumber.push_back(named_number);
+      mComponentType.push_back(component_type);
       LOG_PASS();
     }
     else
     {
-      endStop.pop_back();
       asnDataIndex = starting_index;
       LOG_FAIL();
       parsePath.pop_back();
@@ -106,16 +109,14 @@ std::vector<std::shared_ptr<IProduction>> mNamedBit;
     }
   }
 
-  if (mNamedNumber.empty())
+  if (mComponentType.empty())
   {
-    parsePath.pop_back();
     asnDataIndex = starting_index;
     parsePath.pop_back();
     return false;
   }
   else
   {
-    endStop.pop_back();
     parsePath.pop_back();
     return true;
   }

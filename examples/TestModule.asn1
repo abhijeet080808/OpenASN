@@ -99,6 +99,10 @@ Sequence              ::= SEQUENCE {
   seqInt1               INTEGER,
   seqInt2               INTEGER { w(-1), x(0), y(1), z(2) },
   seqIri                OID-IRI,
+  -- From http://oid-info.com/get/1.3.6.1.4.1.343
+  seqIriValue1          OID-IRI DEFAULT "/1/3/6/1/4/1/343",
+  seqIriValue2          OID-IRI DEFAULT
+                          "/ISO/Identified-Organization/6/1/4/1/343",
   seqNull               NULL,
   seqObjId              OBJECT IDENTIFIER,
   seqOctetStr           OCTET STRING,

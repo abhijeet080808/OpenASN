@@ -5,6 +5,7 @@ set(SOURCES Absent.cpp
             AlternativeTypeList.cpp
             AlternativeTypeLists.cpp
             Application.cpp
+            ArcIdentifier.cpp
             AsnParser.cpp
             Assignment.cpp
             AssignmentList.cpp
@@ -66,6 +67,7 @@ set(SOURCES Absent.cpp
             ExternalType.cpp
             ExternalTypeReference.cpp
             ExternalValueReference.cpp
+            FirstArcIdentifier.cpp
             FullSpecification.cpp
             GeneralizedTime.cpp
             GeneralString.cpp
@@ -83,6 +85,7 @@ set(SOURCES Absent.cpp
             IntersectionElements.cpp
             Intersections.cpp
             IRIType.cpp
+            IRIValue.cpp
             ISO646String.cpp
             LessThan.cpp
             LowerEndpoint.cpp
@@ -147,6 +150,7 @@ set(SOURCES Absent.cpp
             SingleTypeConstraint.cpp
             SingleValue.cpp
             SizeConstraint.cpp
+            SubsequentArcIdentifier.cpp
             SubtypeConstraint.cpp
             SubtypeElements.cpp
             TableColumn.cpp
