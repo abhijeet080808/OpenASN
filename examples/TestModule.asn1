@@ -104,6 +104,7 @@ Sequence              ::= SEQUENCE {
   seqIriValue2          OID-IRI DEFAULT
                           "/ISO/Identified-Organization/6/1/4/1/343",
   seqNull               NULL,
+  seqNullVal            NULL DEFAULT NULL,
   seqObjId              OBJECT IDENTIFIER,
   seqOctetStr           OCTET STRING,
   seqReal               REAL,

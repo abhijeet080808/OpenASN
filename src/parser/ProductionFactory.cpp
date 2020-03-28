@@ -105,6 +105,7 @@
 #include "NamedValue.hh"
 #include "NegativeNumber.hh"
 #include "NullType.hh"
+#include "NullValue.hh"
 #include "Number.hh"
 #include "NumericString.hh"
 #include "ObjectDescriptor.hh"
@@ -513,6 +514,9 @@ Get(Production production)
 
     case Production::NULL_TYPE:
       return std::make_shared<NullType>();
+
+    case Production::NULL_VALUE:
+      return std::make_shared<NullValue>();
 
     case Production::NUMBER:
       return std::make_shared<Number>();

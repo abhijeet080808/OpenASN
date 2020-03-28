@@ -164,6 +164,22 @@ Parse(const std::vector<Word>& asnData,
     LOG_FAIL();
   }
 
+  obj = "NullValue";
+  LOG_START();
+  auto null_value =
+    ProductionFactory::Get(Production::NULL_VALUE);
+  if (null_value->Parse(asnData, asnDataIndex, endStop, parsePath))
+  {
+    mNullValue = null_value;
+    LOG_PASS();
+    parsePath.pop_back();
+    return true;
+  }
+  else
+  {
+    LOG_FAIL();
+  }
+
   asnDataIndex = starting_index;
   parsePath.pop_back();
   return false;

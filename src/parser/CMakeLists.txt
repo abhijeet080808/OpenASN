@@ -106,6 +106,7 @@ set(SOURCES Absent.cpp
             NameForm.cpp
             NegativeNumber.cpp
             NullType.cpp
+            NullValue.cpp
             Number.cpp
             NumericString.cpp
             ObjectDescriptor.cpp
