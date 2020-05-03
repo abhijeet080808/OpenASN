@@ -1,0 +1,10 @@
+ModuleBody1 ::=
+    Exports Imports AssignmentList
+  | empty
+
+ModuleBody ::=
+    AssignmentList
+  | empty
+
+
+ValueRange ::= LowerEndpoint ".." UpperEndpoint
