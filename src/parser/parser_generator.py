@@ -63,10 +63,35 @@ def append_must_parse(fd, production, indentation):
     fd.write(ind + "}\n")
 
 
+def is_non_char_production(production):
+    return production[0] != "\"" and \
+           production[-1] != "\"" and \
+           len(production) > 0
+
+
 def is_char_production(production):
     return production[0] == "\"" and \
            production[-1] == "\"" and \
            len(production) > 2
+
+
+def is_reserved_production(production):
+    # following from ParseHelper::IsReserved
+
+    if is_char_production(production) is False:
+        return False
+
+    for char in production[1:-1]:
+        if char.isalpha() is False and \
+           char.isdigit() is False and \
+           char != "-":
+            return False
+
+    return True
+
+
+def get_reserved_production_name(production):
+    return production[1:-1].replace("-", "").capitalize()
 
 
 def append_char_must_parse(fd, production, indentation):
@@ -93,13 +118,11 @@ def get_parse_production_group_fn_name(production_group):
     # remove all literals like "..", "," from the function name
     fn_name = ""
     for production in production_group:
-        if production[0] != "\"" and \
-           production[-1] != "\"":
+        if is_non_char_production(production) == True:
             fn_name += production
-        elif production[0] == "\"" and \
-             production[-1] == "\"" and \
-             production[1:-1].isalpha():
-                 fn_name += production[1:-1].capitalize()
+        elif is_char_production(production) == True and \
+             is_reserved_production(production) == True:
+                 fn_name += get_reserved_production_name(production)
 
     return fn_name
 
@@ -135,19 +158,17 @@ def append_parse_production_group_defn(fd,
 
         is_non_char_prod_present = False
         for production in production_group:
-            if is_char_production(production):
-                if production[1:-1].isalpha():
+            if is_char_production(production) is True:
+                if is_reserved_production(production) is True:
                     append_char_must_parse(fd, production[1:-1], indentation + 2)
                 else:
-                    # this split is how lexical items are split in asnData
-                    # based on ParseHelper::IsLexicalItem in AsnParser.hh
                     for char in production[1:-1]:
                         append_char_must_parse(fd, char, indentation + 2)
             else:
                 append_must_parse(fd, production, indentation + 2)
                 is_non_char_prod_present = True
 
-        if not is_non_char_prod_present:
+        if is_non_char_prod_present is False:
             fd.write(ind + "  (void)(endStop);\n")
 
         fd.write(ind + "  return true;\n")
@@ -182,7 +203,7 @@ def generate_cpp_header(production, production_or_groups):
 
     member_variables = []
     for word in production[2:]:
-        if word not in excluded_words and word[0] != "\"" and word[-1] != "\"":
+        if word not in excluded_words and is_non_char_production(word) == True:
             member_variables.append(word)
 
     fd = open(production_name + ".hh", "w")
@@ -288,7 +309,7 @@ def generate_cpp_source(production, production_or_groups):
             fd.write("  parsePath.pop_back();\n");
             fd.write("  return true;\n")
 
-    if not empty_present:
+    if empty_present is False:
         fd.write("  parsePath.pop_back();\n");
         fd.write("  return false;\n")
 

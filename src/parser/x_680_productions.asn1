@@ -4,4 +4,6 @@ ModuleBody ::=
 
 Absent ::= "ABSENT"
 
+DateTimeType ::= "DATE-TIME"
+
 ValueRange ::= LowerEndpoint ".." UpperEndpoint
