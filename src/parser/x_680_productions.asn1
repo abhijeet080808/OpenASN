@@ -1,10 +1,7 @@
-ModuleBody1 ::=
-    Exports Imports AssignmentList
-  | empty
-
 ModuleBody ::=
     AssignmentList
   | empty
 
+Absent ::= "ABSENT"
 
 ValueRange ::= LowerEndpoint ".." UpperEndpoint

@@ -20,8 +20,10 @@ def append_may_parse(fd, production, indentation):
     fd.write(ind + "  auto obj = \"%s\";\n" % production)
     fd.write(ind + "  LOG_START();\n")
     fd.write(ind + "  auto %s = \n" % lc_production)
-    fd.write(ind + "    ProductionFactory::Get(Production::%s);\n" % uc_production)
-    fd.write(ind + "  if (%s->Parse(asnData, asnDataIndex, endStop, parsePath))\n" %
+    fd.write(ind + "    ProductionFactory::Get(Production::%s);\n" %
+             uc_production)
+    fd.write(ind + "  if (%s->Parse(" \
+             "asnData, asnDataIndex, endStop, parsePath))\n" %
              lc_production)
     fd.write(ind + "  {\n")
     fd.write(ind + "    m%s = %s;\n" % (production, lc_production))
@@ -44,8 +46,10 @@ def append_must_parse(fd, production, indentation):
     fd.write(ind + "  auto obj = \"%s\";\n" % production)
     fd.write(ind + "  LOG_START();\n")
     fd.write(ind + "  auto %s = \n" % lc_production)
-    fd.write(ind + "    ProductionFactory::Get(Production::%s);\n" % uc_production)
-    fd.write(ind + "  if (%s->Parse(asnData, asnDataIndex, endStop, parsePath))\n" %
+    fd.write(ind + "    ProductionFactory::Get(Production::%s);\n" %
+             uc_production)
+    fd.write(ind + "  if (%s->Parse(" \
+             "asnData, asnDataIndex, endStop, parsePath))\n" %
              lc_production)
     fd.write(ind + "  {\n")
     fd.write(ind + "    m%s = %s;\n" % (production, lc_production))
@@ -59,12 +63,53 @@ def append_must_parse(fd, production, indentation):
     fd.write(ind + "}\n")
 
 
+def is_char_production(production):
+    return production[0] == "\"" and \
+           production[-1] == "\"" and \
+           len(production) > 2
+
+
+def append_char_must_parse(fd, production, indentation):
+    ind = " " * indentation
+
+    fd.write(ind + "{ // MUST PARSE %s\n" % production)
+    fd.write(ind + "  auto obj = \"%s\";\n" % production)
+    fd.write(ind + "  LOG_START();\n")
+    fd.write(ind + "  if (ParseHelper::IsObjectPresent(" \
+             "obj, asnData, asnDataIndex))\n")
+    fd.write(ind + "  {\n")
+    fd.write(ind + "    ++asnDataIndex;\n")
+    fd.write(ind + "    LOG_PASS();\n")
+    fd.write(ind + "  }\n")
+    fd.write(ind + "  else\n")
+    fd.write(ind + "  {\n")
+    fd.write(ind + "    LOG_FAIL();\n")
+    fd.write(ind + "    return false;\n")
+    fd.write(ind + "  }\n")
+    fd.write(ind + "}\n")
+
+
+def get_parse_production_group_fn_name(production_group):
+    # remove all literals like "..", "," from the function name
+    fn_name = ""
+    for production in production_group:
+        if production[0] != "\"" and \
+           production[-1] != "\"":
+            fn_name += production
+        elif production[0] == "\"" and \
+             production[-1] == "\"" and \
+             production[1:-1].isalpha():
+                 fn_name += production[1:-1].capitalize()
+
+    return fn_name
+
+
 def append_parse_production_group_decl(fd, production_group, indentation):
     ind = " " * indentation
 
-    prod_grp = ''.join(production_group)
-    if prod_grp != "empty":
-        fd.write(ind + "bool Parse%s(\n" % prod_grp)
+    prod_grp_fn = get_parse_production_group_fn_name(production_group)
+    if prod_grp_fn != "empty":
+        fd.write(ind + "bool Parse%s(\n" % prod_grp_fn)
         fd.write(ind + "  const std::vector<Word>& asnData,\n")
         fd.write(ind + "  size_t& asnDataIndex,\n")
         fd.write(ind + "  std::vector<std::string>& endStop,\n")
@@ -77,19 +122,33 @@ def append_parse_production_group_defn(fd,
                                        indentation):
     ind = " " * indentation
 
-    prod_grp = ''.join(production_group)
-    if prod_grp != "empty":
+    prod_grp_fn = get_parse_production_group_fn_name(production_group)
+    if prod_grp_fn != "empty":
         fd.write(ind + "bool\n")
         fd.write(ind + "%s::\n" % production_name)
-        fd.write(ind + "Parse%s(\n" % prod_grp)
+        fd.write(ind + "Parse%s(\n" % prod_grp_fn)
         fd.write(ind + "  const std::vector<Word>& asnData,\n")
         fd.write(ind + "  size_t& asnDataIndex,\n")
         fd.write(ind + "  std::vector<std::string>& endStop,\n")
         fd.write(ind + "  std::vector<std::string>& parsePath)\n")
         fd.write(ind + "{\n")
 
+        is_non_char_prod_present = False
         for production in production_group:
-            append_must_parse(fd, production, indentation + 2)
+            if is_char_production(production):
+                if production[1:-1].isalpha():
+                    append_char_must_parse(fd, production[1:-1], indentation + 2)
+                else:
+                    # this split is how lexical items are split in asnData
+                    # based on ParseHelper::IsLexicalItem in AsnParser.hh
+                    for char in production[1:-1]:
+                        append_char_must_parse(fd, char, indentation + 2)
+            else:
+                append_must_parse(fd, production, indentation + 2)
+                is_non_char_prod_present = True
+
+        if not is_non_char_prod_present:
+            fd.write(ind + "  (void)(endStop);\n")
 
         fd.write(ind + "  return true;\n")
         fd.write(ind + "}\n")
@@ -119,11 +178,11 @@ def read_file():
 def generate_cpp_header(production, production_or_groups):
     production_name = production[0]
 
-    excluded_words = ["|", "\"..\"", "empty"]
+    excluded_words = ["|", "empty"]
 
     member_variables = []
     for word in production[2:]:
-        if word not in excluded_words:
+        if word not in excluded_words and word[0] != "\"" and word[-1] != "\"":
             member_variables.append(word)
 
     fd = open(production_name + ".hh", "w")
@@ -153,10 +212,12 @@ def generate_cpp_header(production, production_or_groups):
     for production_group in production_or_groups:
         append_parse_production_group_decl(fd, production_group, 6)
 
-    fd.write("\n")
-    fd.write("    public:\n")
-    for var in member_variables:
-        fd.write("      std::shared_ptr<IProduction> m%s;\n" % var)
+    if member_variables:
+        fd.write("\n")
+        fd.write("    public:\n")
+        for var in member_variables:
+            fd.write("      std::shared_ptr<IProduction> m%s;\n" % var)
+
     fd.write("  };\n")
     fd.write("}\n")
 
@@ -203,15 +264,14 @@ def generate_cpp_source(production, production_or_groups):
 
     fd.write("\n")
     fd.write("  parsePath.push_back(\"%s\");\n" % production_name)
-    fd.write("\n")
     fd.write("  size_t starting_index = asnDataIndex;\n")
 
     empty_present = False
     for production_group in production_or_groups:
-        prod_grp = ''.join(production_group)
-        if prod_grp != "empty":
+        prod_grp_fn = get_parse_production_group_fn_name(production_group)
+        if prod_grp_fn != "empty":
             fd.write("\n")
-            fd.write("  if (Parse%s(\n" % prod_grp)
+            fd.write("  if (Parse%s(\n" % prod_grp_fn)
             fd.write("        asnData, asnDataIndex, endStop, parsePath))\n")
             fd.write("  {\n")
             fd.write("    parsePath.pop_back();\n");
@@ -246,6 +306,9 @@ def generate_cpp_source(production, production_or_groups):
 
 
 def main():
+    # productions:
+    # [['ModuleBody', '::=', 'AssignmentList', '|', 'empty'],
+    #  ['ValueRange', '::=', 'LowerEndpoint', '".."', 'UpperEndpoint']]
     productions = read_file()
     for production in productions:
         production_or_groups = []
@@ -259,6 +322,10 @@ def main():
 
         if production_group:
             production_or_groups.append(production_group[:])
+
+        # production_or_groups:
+        # [['AssignmentList'], ['empty']]
+        # [['LowerEndpoint', '".."', 'UpperEndpoint']]
 
         generate_cpp_header(production,
                             production_or_groups)
