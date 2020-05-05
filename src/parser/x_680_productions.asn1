@@ -4,6 +4,16 @@ ModuleBody ::=
 
 Absent ::= "ABSENT"
 
+AdditionalElementSetSpec ::= ElementSetSpec
+
+-- Ordering is critical here and should be exactly as shown here.
+-- The longer production group with comma is to be tried first.
+-- Also within that production group NamedType is to be tried first to
+-- avoid going into a infinite recursion.
+AlternativeTypeList ::= NamedType "," AlternativeTypeList | NamedType
+
+AlternativeTypeLists ::= RootAlternativeTypeList
+
 DateTimeType ::= "DATE-TIME"
 
 ValueRange ::= LowerEndpoint ".." UpperEndpoint
