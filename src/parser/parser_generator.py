@@ -11,44 +11,22 @@ def camel_case_to_snake_case(string):
     return string.upper()
 
 
-def append_may_parse(fd, production, indentation):
-    uc_production = camel_case_to_snake_case(production)
-    lc_production = uc_production.lower()
-    ind = " " * indentation
-
-    fd.write(ind + "{ // MAY PARSE %s\n" % production)
-    fd.write(ind + "  auto obj = \"%s\";\n" % production)
-    fd.write(ind + "  LOG_START();\n")
-    fd.write(ind + "  auto %s = ProductionFactory::Get(\n" % lc_production)
-    fd.write(ind + "    Production::%s);\n" % uc_production)
-    fd.write(ind + "  if (%s->Parse(\n" % lc_production)
-    fd.write(ind + "        asnData, asnDataIndex, endStop, parsePath))\n")
-    fd.write(ind + "  {\n")
-    fd.write(ind + "    m%s = %s;\n" % (production, lc_production))
-    fd.write(ind + "    LOG_PASS();\n")
-    fd.write(ind + "  }\n")
-    fd.write(ind + "  else\n")
-    fd.write(ind + "  {\n")
-    fd.write(ind + "    asnDataIndex = starting_index;\n")
-    fd.write(ind + "    LOG_FAIL();\n")
-    fd.write(ind + "  }\n")
-    fd.write(ind + "}\n")
-
-
 def append_must_parse(fd, production, indentation):
-    uc_production = camel_case_to_snake_case(production)
-    lc_production = uc_production.lower()
     ind = " " * indentation
 
-    fd.write(ind + "{ // MUST PARSE %s\n" % production)
-    fd.write(ind + "  auto obj = \"%s\";\n" % production)
+    cpp_production = get_cpp_production_name(production)
+    uc_production = camel_case_to_snake_case(cpp_production)
+    lc_production = uc_production.lower()
+
+    fd.write(ind + "{ // MUST PARSE %s\n" % cpp_production)
+    fd.write(ind + "  auto obj = \"%s\";\n" % cpp_production)
     fd.write(ind + "  LOG_START();\n")
     fd.write(ind + "  auto %s = ProductionFactory::Get(\n" % lc_production)
     fd.write(ind + "    Production::%s);\n" % uc_production)
     fd.write(ind + "  if (%s->Parse(\n" % lc_production)
     fd.write(ind + "        asnData, asnDataIndex, endStop, parsePath))\n")
     fd.write(ind + "  {\n")
-    fd.write(ind + "    m%s = %s;\n" % (production, lc_production))
+    fd.write(ind + "    m%s = %s;\n" % (cpp_production, lc_production))
     fd.write(ind + "    LOG_PASS();\n")
     fd.write(ind + "  }\n")
     fd.write(ind + "  else\n")
@@ -57,15 +35,18 @@ def append_must_parse(fd, production, indentation):
     fd.write(ind + "    return false;\n")
     fd.write(ind + "  }\n")
     fd.write(ind + "}\n")
+    fd.write("\n")
 
 
 def is_non_char_production(production):
+    # true for non quoted production like ModuleBody etc
     return production[0] != "\"" and \
            production[-1] != "\"" and \
            len(production) > 0
 
 
 def is_char_production(production):
+    # true for quoted productions like "::=", "DATE-TIME" etc
     return production[0] == "\"" and \
            production[-1] == "\"" and \
            len(production) > 2
@@ -73,6 +54,8 @@ def is_char_production(production):
 
 def is_reserved_production(production):
     # following from ParseHelper::IsReserved
+    # true for quoted productions like "ABSENT", "DATE-TIME" etc
+    # false for quoted productions like "::=" "," etc
 
     if is_char_production(production) is False:
         return False
@@ -86,8 +69,16 @@ def is_reserved_production(production):
     return True
 
 
-def get_reserved_production_name(production):
-    return production[1:-1].replace("-", "").capitalize()
+def get_cpp_production_name(production):
+    # remove quotes if needed
+    if is_non_char_production(production) is False:
+        production = production[1:-1]
+
+    # remove hyphen if present and capitalise first word after hyphen
+    production = re.sub('(-)(.)', lambda m: m.group(2).upper(), production)
+
+    # capitalize first character
+    return production[0].upper() + production[1:]
 
 
 def append_char_must_parse(fd, production, indentation):
@@ -108,6 +99,7 @@ def append_char_must_parse(fd, production, indentation):
     fd.write(ind + "    return false;\n")
     fd.write(ind + "  }\n")
     fd.write(ind + "}\n")
+    fd.write("\n")
 
 
 def get_parse_production_group_fn_name(production_group):
@@ -115,10 +107,10 @@ def get_parse_production_group_fn_name(production_group):
     fn_name = ""
     for production in production_group:
         if is_non_char_production(production) == True:
-            fn_name += production
+            fn_name += get_cpp_production_name(production)
         elif is_char_production(production) == True and \
              is_reserved_production(production) == True:
-                 fn_name += get_reserved_production_name(production)
+                fn_name += get_cpp_production_name(production)
 
     return fn_name
 
@@ -127,12 +119,13 @@ def append_parse_production_group_decl(fd, production_group, indentation):
     ind = " " * indentation
 
     prod_grp_fn = get_parse_production_group_fn_name(production_group)
-    if prod_grp_fn != "empty":
+    if prod_grp_fn.lower() != "empty":
         fd.write(ind + "bool Parse%s(\n" % prod_grp_fn)
         fd.write(ind + "  const std::vector<Word>& asnData,\n")
         fd.write(ind + "  size_t& asnDataIndex,\n")
         fd.write(ind + "  std::vector<std::string>& endStop,\n")
         fd.write(ind + "  std::vector<std::string>& parsePath);\n")
+        fd.write("\n")
 
 
 def append_parse_production_group_defn(fd,
@@ -142,7 +135,7 @@ def append_parse_production_group_defn(fd,
     ind = " " * indentation
 
     prod_grp_fn = get_parse_production_group_fn_name(production_group)
-    if prod_grp_fn != "empty":
+    if prod_grp_fn.lower() != "empty":
         fd.write(ind + "bool\n")
         fd.write(ind + "%s::\n" % production_name)
         fd.write(ind + "Parse%s(\n" % prod_grp_fn)
@@ -206,7 +199,7 @@ def generate_cpp_header(production, production_or_groups):
     member_variables = []
     for word in production[2:]:
         if word not in excluded_words and is_non_char_production(word) == True:
-            member_variables.append(word)
+            member_variables.append(get_cpp_production_name(word))
     # remove duplicate productions that are part of more than 1 production group
     member_variables = list(dict.fromkeys(member_variables))
 
@@ -242,7 +235,6 @@ def generate_cpp_header(production, production_or_groups):
         append_parse_production_group_decl(fd, production_group, 6)
 
     if member_variables:
-        fd.write("\n")
         fd.write("    public:\n")
         for var in member_variables:
             fd.write("      std::shared_ptr<IProduction> m%s;\n" % var)
@@ -302,7 +294,7 @@ def generate_cpp_source(production, production_or_groups):
     empty_present = False
     for production_group in production_or_groups:
         prod_grp_fn = get_parse_production_group_fn_name(production_group)
-        if prod_grp_fn != "empty":
+        if prod_grp_fn.lower() != "empty":
             fd.write("\n")
             fd.write("  if (Parse%s(\n" % prod_grp_fn)
             fd.write("        asnData, asnDataIndex, endStop, parsePath))\n")
@@ -322,6 +314,7 @@ def generate_cpp_source(production, production_or_groups):
             fd.write("  return true;\n")
 
     if empty_present is False:
+        fd.write("\n")
         fd.write("  parsePath.pop_back();\n");
         fd.write("  return false;\n")
 

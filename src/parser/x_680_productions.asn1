@@ -14,6 +14,13 @@ AlternativeTypeList ::= NamedType "," AlternativeTypeList | NamedType
 
 AlternativeTypeLists ::= RootAlternativeTypeList
 
+Application ::= "APPLICATION"
+
+ArcIdentifier ::= integerUnicodeLabel | non-integerUnicodeLabel
+
+
+
+
 DateTimeType ::= "DATE-TIME"
 
 ValueRange ::= LowerEndpoint ".." UpperEndpoint
