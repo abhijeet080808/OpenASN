@@ -11,13 +11,19 @@ def camel_case_to_snake_case(string):
     return string.upper()
 
 
-def append_must_parse(fd, production, indentation):
+def append_must_parse(fd,
+                      production,
+                      indentation,
+                      end_stop_production):
     ind = " " * indentation
 
     cpp_production = get_cpp_production_name(production)
     uc_production = camel_case_to_snake_case(cpp_production)
     lc_production = uc_production.lower()
 
+    if (end_stop_production):
+        fd.write(ind + "endStop.push_back(\"%s\");\n" % end_stop_production)
+    fd.write("\n")
     fd.write(ind + "{ // MUST PARSE %s\n" % cpp_production)
     fd.write(ind + "  auto obj = \"%s\";\n" % cpp_production)
     fd.write(ind + "  LOG_START();\n")
@@ -26,11 +32,15 @@ def append_must_parse(fd, production, indentation):
     fd.write(ind + "  if (%s->Parse(\n" % lc_production)
     fd.write(ind + "        asnData, asnDataIndex, endStop, parsePath))\n")
     fd.write(ind + "  {\n")
+    if (end_stop_production):
+        fd.write(ind + "    endStop.pop_back();\n")
     fd.write(ind + "    m%s = %s;\n" % (cpp_production, lc_production))
     fd.write(ind + "    LOG_PASS();\n")
     fd.write(ind + "  }\n")
     fd.write(ind + "  else\n")
     fd.write(ind + "  {\n")
+    if (end_stop_production):
+        fd.write(ind + "    endStop.pop_back();\n")
     fd.write(ind + "    LOG_FAIL();\n")
     fd.write(ind + "    return false;\n")
     fd.write(ind + "  }\n")
@@ -146,15 +156,36 @@ def append_parse_production_group_defn(fd,
         fd.write(ind + "{\n")
 
         is_non_char_prod_present = False
-        for production in production_group:
+
+        for prod_index, production in enumerate(production_group):
+            # Fetch the next suitable production that is to be used as
+            # end stop for current production if it is a non char production
+            end_stop_production = None
+            for next_production in production_group[prod_index + 1:]:
+                if is_char_production(next_production) is True:
+                    if is_reserved_production(next_production) is True:
+                        end_stop_production = next_production[1:-1]
+                        break
+                    else:
+                        end_stop_production = next_production[1:2]
+                        break
+
+            # Add code for current production
             if is_char_production(production) is True:
                 if is_reserved_production(production) is True:
-                    append_char_must_parse(fd, production[1:-1], indentation + 2)
+                    append_char_must_parse(fd,
+                                           production[1:-1],
+                                           indentation + 2)
                 else:
                     for char in production[1:-1]:
-                        append_char_must_parse(fd, char, indentation + 2)
+                        append_char_must_parse(fd,
+                                               char,
+                                               indentation + 2)
             else:
-                append_must_parse(fd, production, indentation + 2)
+                append_must_parse(fd,
+                                  production,
+                                  indentation + 2,
+                                  end_stop_production)
                 is_non_char_prod_present = True
 
         if is_non_char_prod_present is False:
