@@ -21,6 +21,8 @@ bool
 AsnGenerator::
 Generate(const ModuleDefinition* pModuleDefinition)
 {
+  assert(pModuleDefinition != nullptr);
+
   auto p_module_identifier = dynamic_cast<ModuleIdentifier*>(
       pModuleDefinition->mModuleIdentifier.get());
   auto p_module_reference = dynamic_cast<ModuleReference*>(
@@ -32,14 +34,16 @@ Generate(const ModuleDefinition* pModuleDefinition)
       p_module_body->mAssignmentList.get());
 
   SPDLOG_INFO("Module: {}", p_module_reference->mValue);
-  SPDLOG_INFO("Assignments: {}", p_assignment_list->mAssignment.size());
 
-  for (const auto& assignment : p_assignment_list->mAssignment)
+  while (p_assignment_list)
   {
     auto p_assignment = dynamic_cast<Assignment*>(
-        assignment.get());
+        p_assignment_list->mAssignment.get());
 
     generateClass(p_assignment);
+
+    p_assignment_list = dynamic_cast<AssignmentList*>(
+        p_assignment_list->mAssignmentList.get());
   }
 
   return true;
@@ -49,6 +53,8 @@ bool
 AsnGenerator::
 generateClass(const Assignment* pAssignment)
 {
+  assert(pAssignment != nullptr);
+
   if (pAssignment->mTypeAssignment.get())
   {
     auto p_type_assignment = dynamic_cast<TypeAssignment*>(

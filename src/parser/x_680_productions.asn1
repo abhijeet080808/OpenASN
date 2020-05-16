@@ -1,25 +1,40 @@
-ModuleBody ::=
-    AssignmentList
-  | empty
 
 -- LOCAL ADDITION
 -- This production is not present in spec and is added locally to facilicate
--- parsing
-Absent ::= "ABSENT"
+-- parsing. Eg Absent, Application.
 
-AdditionalElementSetSpec ::= ElementSetSpec
+-- LOCAL MODIFICATION
+-- Converted ASN keywords like BIT and STRING to string data type to facilicate
+-- parsing.
 
 -- ORDERING CRITICAL
 -- Ordering is critical here and should be exactly as shown here.
 -- The longer production group with comma is to be tried first.
 -- Also within that production group NamedType is to be tried first to
--- avoid going into a infinite recursion.
+-- avoid going into a infinite recursion. Eg AlternativeTypeList.
+
+ModuleBody ::=
+    AssignmentList
+  | empty
+
+-- LOCAL ADDITION
+Absent ::= "ABSENT"
+
+AdditionalElementSetSpec ::= ElementSetSpec
+
+-- ORDERING CRITICAL
 AlternativeTypeList ::= NamedType "," AlternativeTypeList | NamedType
 
 AlternativeTypeLists ::= RootAlternativeTypeList
 
 -- LOCAL ADDITION
 Application ::= "APPLICATION"
+
+-- LOCAL ADDITION
+AsnTrue ::= "TRUE"
+
+-- LOCAL ADDITION
+AsnFalse ::= "FALSE"
 
 ArcIdentifier ::= integerUnicodeLabel | non-integerUnicodeLabel
 
@@ -30,9 +45,22 @@ AssignmentList ::= Assignment AssignmentList | Assignment
 
 -- ORDERING CRITICAL
 -- LOCAL MODIFICATION
--- Converted BIT and STRING to string data type
 BitStringType ::= "BIT" "STRING" "{" NamedBitList "}" | "BIT" "STRING"
 
+-- ORDERING CRITICAL
+-- LOCAL MODIFICATION
+BitStringValue ::= bstring |
+                   hstring |
+                   "{" IdentifierList "}" |
+                   "{" "}" |
+                   "CONTAINING" Value
+
+-- LOCAL ADDITION
+BMPString ::= "BMPString"
+
+BooleanType ::= "BOOLEAN"
+
+BooleanValue ::= AsnTrue | AsnFalse
 
 
 

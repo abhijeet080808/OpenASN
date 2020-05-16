@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import argparse
 import re
 
 def camel_case_to_snake_case(string):
@@ -118,9 +119,27 @@ def get_parse_production_group_fn_name(production_group):
     for production in production_group:
         if is_non_char_production(production) == True:
             fn_name += get_cpp_production_name(production)
-        elif is_char_production(production) == True and \
-             is_reserved_production(production) == True:
+        elif is_char_production(production) == True:
+            if is_reserved_production(production) == True:
                 fn_name += get_cpp_production_name(production)
+            elif production[1:-1] == "(":
+                fn_name += "RoundOpenBracket"
+            elif production[1:-1] == ")":
+                fn_name += "RoundCloseBracket"
+            elif production[1:-1] == "{":
+                fn_name += "CurlyOpenBracket"
+            elif production[1:-1] == "}":
+                fn_name += "CurlyCloseBracket"
+            elif production[1:-1] == "[":
+                fn_name += "SquareOpenBracket"
+            elif production[1:-1] == "]":
+                fn_name += "SquareCloseBracket"
+            elif production[1:-1] == ",":
+                fn_name += "Comma"
+            elif production[1:-1] == "..":
+                fn_name += "DoubleDot"
+            else:
+                raise ValueError("Unknown char production %s", production)
 
     return fn_name
 
@@ -195,10 +214,10 @@ def append_parse_production_group_defn(fd,
         fd.write(ind + "}\n")
 
 
-def read_file():
+def read_file(asn_file):
     words = []
 
-    with open("x_680_productions.asn1", "r") as fd:
+    with open(asn_file, "r") as fd:
         for line in fd:
             line = line.partition('--')[0]
             line = line.rstrip()
@@ -242,7 +261,7 @@ def generate_cpp_header(production, production_or_groups):
     fd.write("\n")
     fd.write("#pragma once\n")
     fd.write("\n")
-    fd.write("#include \"IProduction.hh\"\n")
+    fd.write("#include \"parser/IProduction.hh\"\n")
     fd.write("\n")
     fd.write("#include <memory>\n")
     fd.write("\n")
@@ -288,9 +307,9 @@ def generate_cpp_source(production, production_or_groups):
     fd.write("\n")
     fd.write("#include \"%s.hh\"\n" % production_name)
     fd.write("\n")
-    fd.write("#include \"LoggingMacros.hh\"\n")
-    fd.write("#include \"ParseHelper.hh\"\n")
-    fd.write("#include \"ProductionFactory.hh\"\n")
+    fd.write("#include \"parser/LoggingMacros.hh\"\n")
+    fd.write("#include \"parser/ParseHelper.hh\"\n")
+    fd.write("#include \"parser/ProductionFactory.hh\"\n")
     fd.write("\n")
     fd.write("#include \"spdlog/spdlog.h\"\n")
     fd.write("\n")
@@ -363,10 +382,15 @@ def generate_cpp_source(production, production_or_groups):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-a", "--asn-file", type=str, required=True,
+                        help="/path/to/asn_file")
+    args = parser.parse_args()
+
     # productions:
     # [['ModuleBody', '::=', 'AssignmentList', '|', 'empty'],
     #  ['ValueRange', '::=', 'LowerEndpoint', '".."', 'UpperEndpoint']]
-    productions = read_file()
+    productions = read_file(args.asn_file)
     for production in productions:
         production_or_groups = []
         production_group = []
