@@ -15,6 +15,27 @@ set(GEN_SOURCES Absent.cpp
                 BMPString.cpp
                 BooleanType.cpp
                 BooleanValue.cpp
+                BuiltinType.cpp
+                BuiltinValue.cpp
+                Cell.cpp
+                CharsDefn.cpp
+                CharSyms.cpp
+                CharacterStringList.cpp
+                CharacterStringType.cpp
+                CharacterStringValue.cpp
+                ChoiceType.cpp
+                ChoiceValue.cpp
+                Class.cpp
+                ClassNumber.cpp
+                ComponentConstraint.cpp
+                ComponentType.cpp
+                ComponentTypeList.cpp
+                ComponentTypeLists.cpp
+                ComponentValueList.cpp
+                Constraint.cpp
+                ConstraintList.cpp
+                ConstraintSpec.cpp
+                ContainedSubtype.cpp
                 DateTimeType.cpp
                 ModuleBody.cpp
                 ValueRange.cpp
@@ -22,27 +43,6 @@ set(GEN_SOURCES Absent.cpp
 
 set(SOURCES AsnParser.cpp
             Bstring.cpp
-            BuiltinType.cpp
-            BuiltinValue.cpp
-            Cell.cpp
-            CharsDefn.cpp
-            CharSyms.cpp
-            CharacterStringList.cpp
-            CharacterStringType.cpp
-            CharacterStringValue.cpp
-            ChoiceType.cpp
-            ChoiceValue.cpp
-            Class.cpp
-            ClassNumber.cpp
-            ComponentConstraint.cpp
-            ComponentType.cpp
-            ComponentTypeList.cpp
-            ComponentTypeLists.cpp
-            ComponentValueList.cpp
-            Constraint.cpp
-            ConstraintList.cpp
-            ConstraintSpec.cpp
-            ContainedSubtype.cpp
             Cstring.cpp
             DateType.cpp
             DefinedType.cpp

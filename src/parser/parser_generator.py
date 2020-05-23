@@ -28,14 +28,14 @@ def append_must_parse(fd,
     fd.write(ind + "{ // MUST PARSE %s\n" % cpp_production)
     fd.write(ind + "  auto obj = \"%s\";\n" % cpp_production)
     fd.write(ind + "  LOG_START();\n")
-    fd.write(ind + "  auto %s = ProductionFactory::Get(\n" % lc_production)
+    fd.write(ind + "  auto _%s = ProductionFactory::Get(\n" % lc_production)
     fd.write(ind + "    Production::%s);\n" % uc_production)
-    fd.write(ind + "  if (%s->Parse(\n" % lc_production)
+    fd.write(ind + "  if (_%s->Parse(\n" % lc_production)
     fd.write(ind + "        asnData, asnDataIndex, endStop, parsePath))\n")
     fd.write(ind + "  {\n")
     if (end_stop_production):
         fd.write(ind + "    endStop.pop_back();\n")
-    fd.write(ind + "    m%s = %s;\n" % (cpp_production, lc_production))
+    fd.write(ind + "    m%s = _%s;\n" % (cpp_production, lc_production))
     fd.write(ind + "    LOG_PASS();\n")
     fd.write(ind + "  }\n")
     fd.write(ind + "  else\n")
@@ -138,6 +138,8 @@ def get_parse_production_group_fn_name(production_group):
                 fn_name += "Comma"
             elif production[1:-1] == "..":
                 fn_name += "DoubleDot"
+            elif production[1:-1] == ":":
+                fn_name += "Colon"
             else:
                 raise ValueError("Unknown char production %s", production)
 

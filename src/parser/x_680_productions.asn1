@@ -23,7 +23,9 @@ Absent ::= "ABSENT"
 AdditionalElementSetSpec ::= ElementSetSpec
 
 -- ORDERING CRITICAL
-AlternativeTypeList ::= NamedType "," AlternativeTypeList | NamedType
+AlternativeTypeList ::=
+    NamedType "," AlternativeTypeList
+  | NamedType
 
 AlternativeTypeLists ::= RootAlternativeTypeList
 
@@ -36,31 +38,166 @@ AsnTrue ::= "TRUE"
 -- LOCAL ADDITION
 AsnFalse ::= "FALSE"
 
-ArcIdentifier ::= integerUnicodeLabel | non-integerUnicodeLabel
+ArcIdentifier ::=
+    integerUnicodeLabel
+  | non-integerUnicodeLabel
 
 Assignment ::= TypeAssignment
 
 -- ORDERING CRITICAL
-AssignmentList ::= Assignment AssignmentList | Assignment
+AssignmentList ::=
+    Assignment AssignmentList
+  | Assignment
 
 -- ORDERING CRITICAL
 -- LOCAL MODIFICATION
-BitStringType ::= "BIT" "STRING" "{" NamedBitList "}" | "BIT" "STRING"
+BitStringType ::=
+    "BIT" "STRING" "{" NamedBitList "}"
+  | "BIT" "STRING"
 
 -- ORDERING CRITICAL
 -- LOCAL MODIFICATION
-BitStringValue ::= bstring |
-                   hstring |
-                   "{" IdentifierList "}" |
-                   "{" "}" |
-                   "CONTAINING" Value
+BitStringValue ::=
+    bstring
+  | hstring
+  | "{" IdentifierList "}"
+  | "{" "}"
+  | "CONTAINING" Value
 
 -- LOCAL ADDITION
 BMPString ::= "BMPString"
 
 BooleanType ::= "BOOLEAN"
 
-BooleanValue ::= AsnTrue | AsnFalse
+BooleanValue ::=
+    AsnTrue
+  | AsnFalse
+
+BuiltinType ::=
+    BitStringType
+  | BooleanType
+  | CharacterStringType
+  | ChoiceType
+  | DateType
+  | DateTimeType
+  | DurationType
+  | EmbeddedPDVType
+  | EnumeratedType
+  | ExternalType
+  --| InstanceOfType
+  | IntegerType
+  | IRIType
+  | NullType
+  --| ObjectClassFieldType
+  | ObjectIdentifierType
+  | OctetStringType
+  | RealType
+  | RelativeIRIType
+  | RelativeOIDType
+  | SequenceType
+  | SequenceOfType
+  | SetType
+  | SetOfType
+  | PrefixedType
+  | TimeType
+  | TimeOfDayType
+
+BuiltinValue ::=
+    BitStringValue
+  | BooleanValue
+-- CharacterStringValue->UnrestrictedCharacterStringValue is also
+-- equivalent to EmbeddedPDVValue and ExternalValue
+  | CharacterStringValue
+  | ChoiceValue
+  --| EmbeddedPDVValue
+  | EnumeratedValue
+  --| ExternalValue
+  --| InstanceOfValue
+  | IntegerValue
+  | IRIValue
+  | NullValue
+  --| ObjectIdentifierValue
+  --| OctetStringValue
+  --| RealValue
+  --| RelativeIRIValue
+  --| RelativeOIDValue
+  --| SequenceValue
+  --| SequenceOfValue
+  --| SetValue
+  --| SetOfValue
+  --| PrefixedValue
+  --| TimeValue
+
+Cell ::= number
+
+CharsDefn ::=
+    cstring
+  | Quadruple
+  | Tuple
+  | DefinedValue
+
+-- ORDERING CRITICAL
+CharSyms ::=
+    CharsDefn "," CharSyms
+  | CharsDefn
+
+CharacterStringList ::= "{" CharSyms "}"
+
+CharacterStringType ::=
+    RestrictedCharacterStringType
+  | UnrestrictedCharacterStringType
+
+CharacterStringValue ::=
+    RestrictedCharacterStringValue
+  | UnrestrictedCharacterStringValue
+
+-- LOCAL MODIFICATION
+ChoiceType ::= "CHOICE" "{" AlternativeTypeLists "}"
+
+ChoiceValue ::= identifier ":" Value
+
+Class ::=
+    UNIVERSAL
+  | APPLICATION
+  | PRIVATE
+  | empty
+
+ClassNumber ::=
+    number
+  | DefinedValue
+
+ComponentConstraint ::= ValueConstraint PresenceConstraint
+
+-- LOCAL MODIFICATION
+-- ORDERING CRITICAL
+ComponentType ::=
+    NamedType "DEFAULT" Value
+  | NamedType OPTIONAL
+  | NamedType
+  | "COMPONENTS" "OF" Type
+
+-- ORDERING CRITICAL
+ComponentTypeList ::=
+    ComponentType "," ComponentTypeList
+  | ComponentType
+
+ComponentTypeLists ::= RootComponentTypeList
+
+-- ORDERING CRITICAL
+ComponentValueList ::=
+    NamedValue "," ComponentValueList
+  | NamedValue
+
+Constraint ::= "(" ConstraintSpec ExceptionSpec ")"
+
+-- ORDERING CRITICAL
+ConstraintList ::=
+    Constraint ConstraintList
+  | Constraint
+
+ConstraintSpec ::= SubtypeConstraint
+
+ContainedSubtype ::= Includes Type
 
 
 

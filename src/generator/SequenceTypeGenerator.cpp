@@ -37,10 +37,10 @@ SequenceTypeGenerator(const std::string& identifier,
   auto p_component_type_list = dynamic_cast<ComponentTypeList*>(
       p_root_component_type_list->mComponentTypeList.get());
 
-  for (const auto component_type : p_component_type_list->mComponentType)
+  while (p_component_type_list)
   {
     auto p_component_type = dynamic_cast<ComponentType*>(
-      component_type.get());
+      p_component_type_list->mComponentType.get());
 
     auto p_named_type = dynamic_cast<NamedType*>(
       p_component_type->mNamedType.get());
@@ -85,6 +85,9 @@ SequenceTypeGenerator(const std::string& identifier,
     {
       assert(false);
     }
+
+    p_component_type_list = dynamic_cast<ComponentTypeList*>(
+        p_component_type_list->mComponentTypeList.get());
   }
 }
 
@@ -104,7 +107,7 @@ Generate() const
   ss_hdr << "#pragma once\n"
          << "\n";
 
-  for (const auto type : mSubTypeGeneratorList)
+  for (const auto& type : mSubTypeGeneratorList)
   {
     ss_hdr << "#include \"" << type->GetIdentifier() << ".hh\"\n";
   }
@@ -137,7 +140,7 @@ Generate() const
   ss_hdr << ");\n"
          << "\n";
 
-  for (const auto type : mSubTypeGeneratorList)
+  for (const auto& type : mSubTypeGeneratorList)
   {
     ss_hdr << "      void Set" << type->GetIdentifier()
            << "(const " << type->GetIdentifier() << "& value);\n"
@@ -153,7 +156,7 @@ Generate() const
          << "\n"
          << "    private:\n";
 
-  for (const auto type : mSubTypeGeneratorList)
+  for (const auto& type : mSubTypeGeneratorList)
   {
     ss_hdr << "      " << type->GetIdentifier() << " m"
            << type->GetIdentifier() << ";\n";
@@ -246,7 +249,7 @@ Generate() const
          << "}\n"
          << "\n";
 
-  for (const auto type : mSubTypeGeneratorList)
+  for (const auto& type : mSubTypeGeneratorList)
   {
     ss_src << "void\n"
            << mIdentifier << "::\n"
@@ -278,7 +281,7 @@ Generate() const
          << "\n"
          << "  // Value\n";
 
-  for (const auto type : mSubTypeGeneratorList)
+  for (const auto& type : mSubTypeGeneratorList)
   {
     ss_src << "  if (!m" << type->GetIdentifier() << ".EncodeBER(buffer))\n"
            << "  {\n"
@@ -322,7 +325,7 @@ Generate() const
          << "  buffer.erase(buffer.begin());\n"
          << "\n";
 
-  for (const auto type : mSubTypeGeneratorList)
+  for (const auto& type : mSubTypeGeneratorList)
   {
     ss_src << "  if (!m" << type->GetIdentifier() << ".DecodeBER(buffer))\n"
            << "  {\n"
