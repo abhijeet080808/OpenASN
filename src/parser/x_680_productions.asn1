@@ -241,6 +241,8 @@ ElementSetSpecs ::=
   | RootElementSetSpec "," "..."
   | RootElementSetSpec
 
+Elems ::= Elements
+
 -- LOCAL ADDITION
 Ellipsis ::= "..."
 
@@ -292,6 +294,75 @@ ExternalTypeReference ::= moduleReference "." typeReference
 
 -- LOCAL MODIFICATION
 ExternalValueReference ::= moduleReference "." valueReference
+
+FirstArcIdentifier ::= "/" ArcIdentifier
+
+FullSpecification ::= "{" TypeConstraints "}"
+
+-- LOCAL ADDITION
+GeneralizedTime ::= "GeneralizedTime"
+
+-- LOCAL ADDITION
+GeneralString ::= "GeneralString"
+
+-- LOCAL ADDITION
+GraphicString ::= "GraphicString"
+
+Group ::= number
+
+-- LOCAL ADDITION
+IA5String ::= "IA5String"
+
+-- ORDERING CRITICAL
+IdentifierList ::=
+    identifier "," IdentifierList
+  | identifier
+
+IElems ::= Intersections
+
+-- LOCAL ADDITION
+Implicit ::= "IMPLICIT"
+
+-- LOCAL MODIFICATION
+Includes ::= "INCLUDES" | empty
+
+-- LOCAL MODIFICATION
+InnerTypeConstraints ::=
+    "WITH" "COMPONENT" SingleTypeConstraint
+  | "WITH" "COMPONENTS" MultipleTypeConstraints
+
+-- LOCAL MODIFICATION
+-- ORDERING CRITICAL
+IntegerType ::=
+    "INTEGER" "{" NamedNumberList "}"
+  | "INTEGER"
+
+-- ORDERING CRITICAL
+IntegerValue ::= SignedNumber | identifier
+
+-- ORDERING CRITICAL
+IntersectionElements ::=
+    Elems Exclusions
+  | Elements
+
+-- LOCAL MODIFICATION
+IntersectionMark ::= "^" | "INTERSECTION"
+
+--Intersections ::=
+--    IElems IntersectionMark IntersectionElements
+--  | IntersectionElements
+
+-- LOCAL MODIFICATION
+IRIType ::= "OID-IRI"
+
+IRIValue ::= """ FirstArcIdentifier SubsequentArcIdentifier """
+
+-- LOCAL MODIFICATION
+ISO646String ::= "ISO646String"
+
+
+
+
 
 
 

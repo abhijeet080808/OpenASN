@@ -18,6 +18,10 @@ def append_must_parse(fd,
                       end_stop_production):
     ind = " " * indentation
 
+    # Escape double quote for C++ code
+    if end_stop_production == "\"":
+        end_stop_production = "\\\""
+
     cpp_production = get_cpp_production_name(production)
     uc_production = camel_case_to_snake_case(cpp_production)
     lc_production = uc_production.lower()
@@ -95,6 +99,10 @@ def get_cpp_production_name(production):
 def append_char_must_parse(fd, production, indentation):
     ind = " " * indentation
 
+    # Escape double quote for C++ code
+    if production == "\"":
+        production = "\\\""
+
     fd.write(ind + "{ // MUST PARSE %s\n" % production)
     fd.write(ind + "  auto obj = \"%s\";\n" % production)
     fd.write(ind + "  LOG_START();\n")
@@ -146,6 +154,12 @@ def get_parse_production_group_fn_name(production_group):
                 fn_name += "Colon"
             elif production[1:-1] == "!":
                 fn_name += "Not"
+            elif production[1:-1] == "^":
+                fn_name += "Caret"
+            elif production[1:-1] == "\"":
+                fn_name += "DoubleQuote"
+            elif production[1:-1] == "/":
+                fn_name += "ForwardSlash"
             else:
                 raise ValueError("Unknown char production %s", production)
 

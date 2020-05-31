@@ -5,9 +5,8 @@ project(OpenASN VERSION 0.1
                 HOMEPAGE_URL "https://github.com/abhijeet080808/OpenASN"
                 LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-set(CMAKE_VERBOSE_MAKEFILE ON)
+message(STATUS "CMake version: ${CMAKE_VERSION}")
+message(STATUS "OpenASN version: ${CMAKE_PROJECT_VERSION}")
 
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
   message(STATUS "Build type is Debug (default)")
@@ -16,9 +15,12 @@ else()
   message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
 endif()
 
-add_compile_options(-Wall -Wextra -pedantic -Werror)
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_UNITY_BUILD_BATCH_SIZE 64)
 
-message(STATUS "Building OpenASN version: ${CMAKE_PROJECT_VERSION}")
+add_compile_options(-Wall -Wextra -pedantic -Werror)
 
 find_package(Threads REQUIRED)
 include(ExternalProject)

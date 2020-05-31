@@ -50,6 +50,7 @@
 #include "parser/Elements.hh"
 #include "parser/ElementSetSpec.hh"
 #include "parser/ElementSetSpecs.hh"
+#include "parser/Elems.hh"
 #include "parser/Ellipsis.hh"
 #include "parser/EmbeddedPDVType.hh"
 #include "parser/EncodingPrefix.hh"
@@ -76,6 +77,7 @@
 #include "parser/Group.hh"
 #include "parser/Hstring.hh"
 #include "parser/IA5String.hh"
+#include "parser/IElems.hh"
 #include "parser/Identifier.hh"
 #include "parser/IdentifierList.hh"
 #include "parser/Implicit.hh"
@@ -84,6 +86,7 @@
 #include "parser/IntegerType.hh"
 #include "parser/IntegerValue.hh"
 #include "parser/IntersectionElements.hh"
+#include "parser/IntersectionMark.hh"
 #include "parser/Intersections.hh"
 #include "parser/IRIType.hh"
 #include "parser/IRIValue.hh"
@@ -343,6 +346,9 @@ Get(Production production)
     case Production::ELEMENT_SET_SPECS:
       return std::make_shared<ElementSetSpecs>();
 
+    case Production::ELEMS:
+      return std::make_shared<Elems>();
+
     case Production::ELLIPSIS:
       return std::make_shared<Ellipsis>();
 
@@ -421,6 +427,9 @@ Get(Production production)
     case Production::IA5_STRING:
       return std::make_shared<IA5String>();
 
+    case Production::I_ELEMS:
+      return std::make_shared<IElems>();
+
     case Production::IDENTIFIER:
       return std::make_shared<Identifier>();
 
@@ -447,6 +456,9 @@ Get(Production production)
 
     case Production::INTERSECTION_ELEMENTS:
       return std::make_shared<IntersectionElements>();
+
+    case Production::INTERSECTION_MARK:
+      return std::make_shared<IntersectionMark>();
 
     case Production::INTERSECTIONS:
       return std::make_shared<Intersections>();

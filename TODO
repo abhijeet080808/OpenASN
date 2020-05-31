@@ -1,10 +1,25 @@
 -------------------------------------------------------------------------------
 
-Do not parse `RootElementSetSpec` repatedly when parsing once should do -
+Do not parse `RootElementSetSpec` repeatedly when parsing once should do -
 
 ElementSetSpecs ::=
     RootElementSetSpec "," "..." "," AdditionalElementSetSpec
   | RootElementSetSpec "," "..."
   | RootElementSetSpec
+
+Also do not parse `Elements` repeatedly where `Elems` is actually `Elements` -
+IntersectionElements ::=
+    Elems Exclusions
+  | Elements
+
+Use memoization to optimize this.
+
+-------------------------------------------------------------------------------
+
+Make this work -
+
+Intersections ::=
+    IElems IntersectionMark IntersectionElements
+  | IntersectionElements
 
 -------------------------------------------------------------------------------

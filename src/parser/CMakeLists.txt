@@ -48,6 +48,7 @@ set(GEN_SOURCES Absent.cpp
                 Elements.cpp
                 ElementSetSpec.cpp
                 ElementSetSpecs.cpp
+                Elems.cpp
                 Ellipsis.cpp
                 EmbeddedPDVType.cpp
                 EncodingPrefix.cpp
@@ -65,6 +66,25 @@ set(GEN_SOURCES Absent.cpp
                 ExternalType.cpp
                 ExternalTypeReference.cpp
                 ExternalValueReference.cpp
+                FirstArcIdentifier.cpp
+                FullSpecification.cpp
+                GeneralizedTime.cpp
+                GeneralString.cpp
+                GraphicString.cpp
+                Group.cpp
+                IA5String.cpp
+                IdentifierList.cpp
+                IElems.cpp
+                Implicit.cpp
+                Includes.cpp
+                InnerTypeConstraints.cpp
+                IntegerType.cpp
+                IntegerValue.cpp
+                IntersectionElements.cpp
+                IntersectionMark.cpp
+                IRIType.cpp
+                IRIValue.cpp
+                ISO646String.cpp
                 ModuleBody.cpp
                 ValueRange.cpp
 )
@@ -73,26 +93,9 @@ set(SOURCES AsnParser.cpp
             Bstring.cpp
             Cstring.cpp
             EncodingReferencePrime.cpp
-            FirstArcIdentifier.cpp
-            FullSpecification.cpp
-            GeneralizedTime.cpp
-            GeneralString.cpp
-            GraphicString.cpp
-            Group.cpp
             Hstring.cpp
-            IA5String.cpp
             Identifier.cpp
-            IdentifierList.cpp
-            Implicit.cpp
-            Includes.cpp
-            InnerTypeConstraints.cpp
-            IntegerType.cpp
-            IntegerValue.cpp
-            IntersectionElements.cpp
-            Intersections.cpp
-            IRIType.cpp
-            IRIValue.cpp
-            ISO646String.cpp
+            Intersections.cpp # TODO
             LessThan.cpp
             LowerEndpoint.cpp
             LowerEndValue.cpp
