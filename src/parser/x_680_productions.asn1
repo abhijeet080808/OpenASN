@@ -13,10 +13,6 @@
 -- Also within that production group NamedType is to be tried first to
 -- avoid going into a infinite recursion. Eg AlternativeTypeList.
 
-ModuleBody ::=
-    AssignmentList
-  | empty
-
 -- LOCAL ADDITION
 Absent ::= "ABSENT"
 
@@ -199,8 +195,112 @@ ConstraintSpec ::= SubtypeConstraint
 
 ContainedSubtype ::= Includes Type
 
-
-
+-- LOCAL MODIFICATION
 DateTimeType ::= "DATE-TIME"
+
+-- LOCAL MODIFICATION
+DateType ::= "DATE"
+
+-- LOCAL MODIFICATION
+DefinedType ::=
+    ExternalTypeReference
+  | TypeReference
+
+-- LOCAL MODIFICATION
+DefinedValue ::=
+    ExternalValueReference
+  | ValueReference
+
+DefinitiveIdentification ::=
+    DefinitiveOID
+  | empty
+
+DefinitiveObjIdComponent ::= NameForm
+
+DefinitiveObjIdComponentList ::=
+    DefinitiveObjIdComponent DefinitiveObjIdComponentList
+  | DefinitiveObjIdComponent
+
+DefinitiveOID ::= "{" DefinitiveObjIdComponentList "}"
+
+-- LOCAL MODIFICATION
+DurationType ::= "DURATION"
+
+Elements ::=
+    SubtypeElements
+  | "(" ElementSetSpec ")"
+
+-- LOCAL MODIFICATION
+ElementSetSpec ::=
+    Unions
+  | "ALL" Exclusions
+
+-- ORDERING CRITICAL
+ElementSetSpecs ::=
+    RootElementSetSpec "," "..." "," AdditionalElementSetSpec
+  | RootElementSetSpec "," "..."
+  | RootElementSetSpec
+
+-- LOCAL ADDITION
+Ellipsis ::= "..."
+
+-- LOCAL MODIFICATION
+EmbeddedPDVType ::= "EMBEDDED" "PDV"
+
+EncodingPrefix ::= "[" EncodingReference "]"
+
+EncodingPrefixedType ::= EncodingPrefix Type
+
+-- LOCAL MODIFICATION
+EncodingReference ::=
+    encodingReferencePrime ":"
+  | empty
+
+-- LOCAL MODIFICATION
+EnumeratedType ::= "ENUMERATED" "{" Enumerations "}"
+
+EnumeratedValue ::= identifier
+
+-- ORDERING CRITICAL
+Enumeration ::=
+    EnumerationItem "," Enumeration
+  | EnumerationItem
+
+-- ORDERING CRITICAL
+EnumerationItem ::= NamedNumber | identifier
+
+Enumerations ::= RootEnumeration
+
+ExceptionIdentification ::=
+    SignedNumber
+  | DefinedValue
+  | Type ":" Value
+
+ExceptionSpec ::= "!" ExceptionIdentification | empty
+
+-- LOCAL MODIFICATION
+Exclusions ::= "EXCEPT" Elements
+
+-- LOCAL ADDITION
+Explicit ::= "EXPLICIT"
+
+-- LOCAL MODIFICATION
+ExternalType ::= "EXTERNAL"
+
+-- LOCAL MODIFICATION
+ExternalTypeReference ::= moduleReference "." typeReference
+
+-- LOCAL MODIFICATION
+ExternalValueReference ::= moduleReference "." valueReference
+
+
+
+
+
+
+
+ModuleBody ::=
+    AssignmentList
+  | empty
 
 ValueRange ::= LowerEndpoint ".." UpperEndpoint

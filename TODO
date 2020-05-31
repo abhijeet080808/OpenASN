@@ -1,0 +1,10 @@
+-------------------------------------------------------------------------------
+
+Do not parse `RootElementSetSpec` repatedly when parsing once should do -
+
+ElementSetSpecs ::=
+    RootElementSetSpec "," "..." "," AdditionalElementSetSpec
+  | RootElementSetSpec "," "..."
+  | RootElementSetSpec
+
+-------------------------------------------------------------------------------

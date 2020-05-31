@@ -37,6 +37,34 @@ set(GEN_SOURCES Absent.cpp
                 ConstraintSpec.cpp
                 ContainedSubtype.cpp
                 DateTimeType.cpp
+                DateType.cpp
+                DefinedType.cpp
+                DefinedValue.cpp
+                DefinitiveIdentification.cpp
+                DefinitiveObjIdComponent.cpp
+                DefinitiveObjIdComponentList.cpp
+                DefinitiveOID.cpp
+                DurationType.cpp
+                Elements.cpp
+                ElementSetSpec.cpp
+                ElementSetSpecs.cpp
+                Ellipsis.cpp
+                EmbeddedPDVType.cpp
+                EncodingPrefix.cpp
+                EncodingPrefixedType.cpp
+                EncodingReference.cpp
+                EnumeratedType.cpp
+                EnumeratedValue.cpp
+                Enumeration.cpp
+                EnumerationItem.cpp
+                Enumerations.cpp
+                ExceptionIdentification.cpp
+                ExceptionSpec.cpp
+                Exclusions.cpp
+                Explicit.cpp
+                ExternalType.cpp
+                ExternalTypeReference.cpp
+                ExternalValueReference.cpp
                 ModuleBody.cpp
                 ValueRange.cpp
 )
@@ -44,35 +72,7 @@ set(GEN_SOURCES Absent.cpp
 set(SOURCES AsnParser.cpp
             Bstring.cpp
             Cstring.cpp
-            DateType.cpp
-            DefinedType.cpp
-            DefinedValue.cpp
-            DefinitiveIdentification.cpp
-            DefinitiveObjIdComponent.cpp
-            DefinitiveObjIdComponentList.cpp
-            DefinitiveOID.cpp
-            DurationType.cpp
-            Elements.cpp
-            ElementSetSpec.cpp
-            ElementSetSpecs.cpp
-            Ellipsis.cpp
-            EmbeddedPDVType.cpp
-            EncodingPrefix.cpp
-            EncodingPrefixedType.cpp
-            EncodingReference.cpp
             EncodingReferencePrime.cpp
-            EnumeratedType.cpp
-            EnumeratedValue.cpp
-            Enumeration.cpp
-            EnumerationItem.cpp
-            Enumerations.cpp
-            ExceptionIdentification.cpp
-            ExceptionSpec.cpp
-            Exclusions.cpp
-            Explicit.cpp
-            ExternalType.cpp
-            ExternalTypeReference.cpp
-            ExternalValueReference.cpp
             FirstArcIdentifier.cpp
             FullSpecification.cpp
             GeneralizedTime.cpp
@@ -222,3 +222,5 @@ target_link_libraries(${LIB_NAME}
     spdlog
     common
 )
+
+set_target_properties(${LIB_NAME} PROPERTIES UNITY_BUILD ON)

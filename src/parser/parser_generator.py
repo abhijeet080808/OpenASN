@@ -136,10 +136,16 @@ def get_parse_production_group_fn_name(production_group):
                 fn_name += "SquareCloseBracket"
             elif production[1:-1] == ",":
                 fn_name += "Comma"
+            elif production[1:-1] == ".":
+                fn_name += "SingleDot"
             elif production[1:-1] == "..":
                 fn_name += "DoubleDot"
+            elif production[1:-1] == "...":
+                fn_name += "TripleDot"
             elif production[1:-1] == ":":
                 fn_name += "Colon"
+            elif production[1:-1] == "!":
+                fn_name += "Not"
             else:
                 raise ValueError("Unknown char production %s", production)
 

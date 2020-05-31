@@ -21,3 +21,5 @@ target_link_libraries(${LIB_NAME}
     spdlog
     parser
 )
+
+set_target_properties(${LIB_NAME} PROPERTIES UNITY_BUILD ON)
