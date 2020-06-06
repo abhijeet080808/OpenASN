@@ -85,7 +85,30 @@ set(GEN_SOURCES Absent.cpp
                 IRIType.cpp
                 IRIValue.cpp
                 ISO646String.cpp
+                LessThan.cpp
+                LowerEndpoint.cpp
+                LowerEndValue.cpp
+                Max.cpp
+                Min.cpp
                 ModuleBody.cpp
+                ModuleDefinition.cpp
+                ModuleIdentifier.cpp
+                MultipleTypeConstraints.cpp
+                NamedBit.cpp
+                NamedBitList.cpp
+                NamedConstraint.cpp
+                NamedNumber.cpp
+                NamedNumberList.cpp
+                NamedType.cpp
+                NamedValue.cpp
+                NameForm.cpp
+                NullType.cpp
+                NullValue.cpp
+                NumericString.cpp
+                ObjectDescriptor.cpp
+                ObjectIdentifierType.cpp
+                OctetStringType.cpp
+                Optional.cpp
                 ValueRange.cpp
 )
 
@@ -96,31 +119,8 @@ set(SOURCES AsnParser.cpp
             Hstring.cpp
             Identifier.cpp
             Intersections.cpp # TODO
-            LessThan.cpp
-            LowerEndpoint.cpp
-            LowerEndValue.cpp
-            Max.cpp
-            Min.cpp
-            ModuleDefinition.cpp
-            ModuleIdentifier.cpp
-            MultipleTypeConstraints.cpp
-            NamedBit.cpp
-            NamedBitList.cpp
-            NamedConstraint.cpp
-            NamedNumber.cpp
-            NamedNumberList.cpp
-            NamedType.cpp
-            NamedValue.cpp
-            NameForm.cpp
             NegativeNumber.cpp
-            NullType.cpp
-            NullValue.cpp
             Number.cpp
-            NumericString.cpp
-            ObjectDescriptor.cpp
-            ObjectIdentifierType.cpp
-            OctetStringType.cpp
-            Optional.cpp
             ParseHelper.cpp
             PartialSpecification.cpp
             PatternConstraint.cpp

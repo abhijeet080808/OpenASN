@@ -360,18 +360,98 @@ IRIValue ::= """ FirstArcIdentifier SubsequentArcIdentifier """
 -- LOCAL MODIFICATION
 ISO646String ::= "ISO646String"
 
+-- LOCAL ADDITION
+LessThan ::= "<"
 
+-- LOCAL MODIFICATION
+LowerEndpoint ::= LowerEndValue | LowerEndValue LessThan
 
+-- LOCAL MODIFICATION
+LowerEndValue ::= Value | Min
 
+-- LOCAL ADDITION
+Max ::= "MAX"
 
-
-
-
-
-
+-- LOCAL ADDITION
+Min ::= "MIN"
 
 ModuleBody ::=
     AssignmentList
   | empty
+
+-- LOCAL MODIFICATION
+ModuleDefinition ::=
+  ModuleIdentifier
+  "DEFINITIONS"
+  --EncodingReferenceDefault
+  --TagDefault
+  --ExtensionDefault
+  "::="
+  "BEGIN"
+  ModuleBody
+  --EncodingControlSections
+  "END"
+
+ModuleIdentifier ::= ModuleReference DefinitiveIdentification
+
+MultipleTypeConstraints ::= FullSpecification | PartialSpecification
+
+NamedBit ::=
+    identifier "(" number ")"
+  | identifier "(" DefinedValue ")"
+
+-- ORDERING CRITICAL
+NamedBitList ::=
+    NamedBit "," NamedBitList
+  | NamedBit
+
+NamedConstraint ::= identifier ComponentConstraint
+
+NamedNumber ::=
+    identifier "(" SignedNumber ")"
+  | identifier "(" DefinedValue ")"
+
+-- ORDERING CRITICAL
+NamedNumberList ::=
+    NamedNumber "," NamedNumberList
+  | NamedNumber
+
+NamedType ::= identifier Type
+
+NamedValue ::= identifier Value
+
+NameForm ::= identifier
+
+-- LOCAL MODIFICATION
+NullType ::= "NULL"
+
+-- LOCAL MODIFICATION
+NullValue ::= "NULL"
+
+-- LOCAL ADDITION
+NumericString ::= "NumericString"
+
+-- LOCAL ADDITION
+ObjectDescriptor ::= "ObjectDescriptor"
+
+-- LOCAL MODIFICATION
+ObjectIdentifierType ::= "OBJECT" "IDENTIFIER"
+
+-- ORDERING CRITICAL
+AlternativeTypeList ::=
+    NamedType "," AlternativeTypeList
+  | NamedType
+
+-- LOCAL MODIFICATION
+OctetStringType ::= "OCTET" "STRING"
+
+-- LOCAL ADDITION
+Optional ::= "OPTIONAL"
+
+
+
+
+
+
 
 ValueRange ::= LowerEndpoint ".." UpperEndpoint

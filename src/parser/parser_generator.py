@@ -160,6 +160,10 @@ def get_parse_production_group_fn_name(production_group):
                 fn_name += "DoubleQuote"
             elif production[1:-1] == "/":
                 fn_name += "ForwardSlash"
+            elif production[1:-1] == "<":
+                fn_name += "LessThan"
+            elif production[1:-1] == "::=":
+                fn_name += "ColonColonEqual"
             else:
                 raise ValueError("Unknown char production %s", production)
 

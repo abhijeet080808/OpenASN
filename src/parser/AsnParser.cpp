@@ -1,12 +1,12 @@
 #include "AsnParser.hh"
 
 #include "LoggingMacros.hh"
-#include "ModuleDefinition.hh"
 #include "ParseDefs.hh"
 #include "ParseHelper.hh"
 #include "ProductionFactory.hh"
 
 #include "common/CommonDefs.hh"
+#include "parser/ModuleDefinition.hh"
 #include "spdlog/spdlog.h"
 
 #include <fstream>
