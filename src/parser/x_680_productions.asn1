@@ -365,8 +365,9 @@ ISO646String ::= "ISO646String"
 -- LOCAL ADDITION
 LessThan ::= "<"
 
+-- ORDERING CRITICAL
 -- LOCAL MODIFICATION
-LowerEndpoint ::= LowerEndValue | LowerEndValue LessThan
+LowerEndpoint ::= LowerEndValue LessThan | LowerEndValue
 
 -- LOCAL MODIFICATION
 LowerEndValue ::= Value | Min
@@ -628,22 +629,24 @@ TimeType ::= "TIME"
 
 Tuple ::= "{" TableColumn "," TableRow "}"
 
+-- ORDERING CRITICAL
+-- LOCAL MODIFICATION
+--
 -- Type ::= BuiltinType | ReferencedType | ConstrainedType
-
+--
 -- ConstrainedType ::=
 --   Type Constraint
 -- | TypeWithConstraint
-
+--
 -- If Type first parses for ConstrainedType, it leads to a circular dependency -
 -- TypeAssignment>Type>ConstrainedType>Type>ContrainedType>Type...
 --
 -- Eg. Val ::= BOOLEAN (FALSE) can lead to error if Type is not parsed as
 -- ConstrainedType first but as BuiltinType. The Constraint remains
 -- unparsed.
-
+--
 -- To avoid circular dependencies and let ConstrainedType work, we redefine as
 -- shown below.
-
 Type ::=
     BuiltinType ConstraintList
   | BuiltinType
@@ -661,10 +664,62 @@ TypeConstraints ::=
     NamedConstraint "," TypeConstraints
   | NamedConstraint
 
+-- ORDERING CRITICAL
+-- LOCAL MODIFICATION
+--
+-- Unions ::=
+--     Intersections
+--   | UElems UnionMark Intersections
+--
+-- UElems ::= Unions
+--
+-- Combining above two productions into a single production as shown below.
+--
+-- Unions ::=
+--     Unions UnionMark Intersections
+--   | Intersections
+--
 
+-- LOCAL ADDITION
+Universal ::= "UNIVERSAL"
 
+-- LOCAL ADDITION
+UniversalString ::= "UniversalString"
 
+-- LOCAL MODIFICATION
+UnrestrictedCharacterStringType ::= "CHARACTER" "STRING"
 
+UnrestrictedCharacterStringValue ::= SequenceValue
 
+-- ORDERING CRITICAL
+-- LOCAL MODIFICATION
+UpperEndpoint ::= LessThan UpperEndValue | UpperEndValue
+
+-- LOCAL MODIFICATION
+UpperEndValue ::= Value | Max
+
+UsefulType ::=
+    GeneralizedTime
+  | UTCTime
+  | ObjectDescriptor
+
+-- LOCAL ADDITION
+UTCTime ::= "UTCTime"
+
+-- LOCAL ADDITION
+UTF8String ::= "UTF8String"
+
+Value ::=
+    BuiltinValue
+  --| ReferencedValue
+  --| ObjectClassFieldValue
+
+ValueConstraint ::= Constraint | empty
 
 ValueRange ::= LowerEndpoint ".." UpperEndpoint
+
+-- LOCAL ADDITION
+VideotexString ::= "VideotexString"
+
+-- LOCAL ADDITION
+VisibleString ::= "VisibleString"

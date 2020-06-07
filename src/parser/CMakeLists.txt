@@ -160,7 +160,20 @@ set(GEN_SOURCES Absent.cpp
                 TypeAssignment.cpp
                 TypeConstraint.cpp
                 TypeConstraints.cpp
+                Universal.cpp
+                UniversalString.cpp
+                UnrestrictedCharacterStringType.cpp
+                UnrestrictedCharacterStringValue.cpp
+                UpperEndpoint.cpp
+                UpperEndValue.cpp
+                UsefulType.cpp
+                UTCTime.cpp
+                UTF8String.cpp
+                Value.cpp
+                ValueConstraint.cpp
                 ValueRange.cpp
+                VideotexString.cpp
+                VisibleString.cpp
 )
 
 set(SOURCES AsnParser.cpp
@@ -176,20 +189,7 @@ set(SOURCES AsnParser.cpp
             ProductionFactory.cpp
             SignedNumber.cpp
             TypeReference.cpp
-            Unions.cpp
-            Universal.cpp
-            UniversalString.cpp
-            UnrestrictedCharacterStringType.cpp
-            UnrestrictedCharacterStringValue.cpp
-            UpperEndpoint.cpp
-            UpperEndValue.cpp
-            UsefulType.cpp
-            UTCTime.cpp
-            UTF8String.cpp
-            Value.cpp
-            ValueConstraint.cpp
-            VideotexString.cpp
-            VisibleString.cpp
+            Unions.cpp # TODO
 )
 
 foreach(GEN_SOURCE ${GEN_SOURCES})
