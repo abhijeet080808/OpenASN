@@ -448,6 +448,108 @@ OctetStringType ::= "OCTET" "STRING"
 -- LOCAL ADDITION
 Optional ::= "OPTIONAL"
 
+PartialSpecification ::= "{" "..." "," TypeConstraints "}"
+
+-- LOCAL MODIFICATION
+PatternConstraint ::= "PATTERN" Value
+
+-- LOCAL MODIFICATION
+PermittedAlphabet ::= "FROM" Constraint
+
+Plane ::= number
+
+PrefixedType ::=
+    TaggedType
+  | EncodingPrefixedType
+
+-- LOCAL MODIFICATION
+PresenceConstraint ::= Present | Absent | Optional | empty
+
+-- LOCAL ADDITION
+Present ::= "PRESENT"
+
+-- LOCAL ADDITION
+PrintableString ::= "PrintableString"
+
+-- LOCAL ADDITION
+Private ::= "PRIVATE"
+
+PropertyAndSettingPair ::= PropertyName "=" SettingName
+
+-- LOCAL MODIFICATION
+PropertyName ::= PsName
+
+-- LOCAL MODIFICATION
+-- See 51.10.1
+PropertySettings ::= "SETTINGS" """ PropertySettingsList """
+
+-- ORDERING CRITICAL
+PropertySettingsList ::=
+    PropertyAndSettingPair PropertySettingsList
+  | PropertyAndSettingPair
+
+Quadruple ::= "{" Group "," Plane "," Row "," Cell "}"
+
+-- LOCAL MODIFICATION
+RealType ::= "REAL"
+
+ReferencedType ::=
+    DefinedType
+  | UsefulType
+  | SelectionType
+  --| TypeFromObject
+  --| ValueSetFromObjects
+
+-- LOCAL MODIFICATION
+RelativeIRIType ::= "RELATIVE-OID-IRI"
+
+-- LOCAL MODIFICATION
+RelativeOIDType ::= "RELATIVE-OID"
+
+RestrictedCharacterStringType ::=
+    BMPString
+  | GeneralString
+  | GraphicString
+  | IA5String
+  | ISO646String
+  | NumericString
+  | PrintableString
+  | TeletexString
+  | T61String
+  | UniversalString
+  | UTF8String
+  | VideotexString
+  | VisibleString
+
+RestrictedCharacterStringValue ::=
+    cstring
+  | CharacterStringList
+  | Quadruple
+  | Tuple
+
+RootAlternativeTypeList ::= AlternativeTypeList
+
+RootComponentTypeList ::= ComponentTypeList
+
+RootElementSetSpec ::= ElementSetSpec
+
+RootEnumeration ::= Enumeration
+
+Row ::= number
+
+SelectionType ::= identifier "<" Type
+
+SequenceOfType ::= "SEQUENCE" "OF" Type | "SEQUENCE" "OF" NamedType
+
+
+
+
+
+
+
+
+
+
 
 
 

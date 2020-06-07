@@ -109,6 +109,33 @@ set(GEN_SOURCES Absent.cpp
                 ObjectIdentifierType.cpp
                 OctetStringType.cpp
                 Optional.cpp
+                PartialSpecification.cpp
+                PatternConstraint.cpp
+                PermittedAlphabet.cpp
+                Plane.cpp
+                PrefixedType.cpp
+                PresenceConstraint.cpp
+                Present.cpp
+                Private.cpp
+                PrintableString.cpp
+                PropertyAndSettingPair.cpp
+                PropertyName.cpp
+                PropertySettings.cpp
+                PropertySettingsList.cpp
+                Quadruple.cpp
+                RealType.cpp
+                ReferencedType.cpp
+                RelativeIRIType.cpp
+                RelativeOIDType.cpp
+                RestrictedCharacterStringType.cpp
+                RestrictedCharacterStringValue.cpp
+                RootAlternativeTypeList.cpp
+                RootComponentTypeList.cpp
+                RootElementSetSpec.cpp
+                RootEnumeration.cpp
+                Row.cpp
+                SelectionType.cpp
+                SequenceOfType.cpp
                 ValueRange.cpp
 )
 
@@ -122,34 +149,7 @@ set(SOURCES AsnParser.cpp
             NegativeNumber.cpp
             Number.cpp
             ParseHelper.cpp
-            PartialSpecification.cpp
-            PatternConstraint.cpp
-            PermittedAlphabet.cpp
-            Plane.cpp
-            PrefixedType.cpp
-            PresenceConstraint.cpp
-            Present.cpp
-            Private.cpp
-            PrintableString.cpp
             ProductionFactory.cpp
-            PropertyAndSettingPair.cpp
-            PropertyName.cpp
-            PropertySettings.cpp
-            PropertySettingsList.cpp
-            Quadruple.cpp
-            RealType.cpp
-            ReferencedType.cpp
-            RelativeIRIType.cpp
-            RelativeOIDType.cpp
-            RestrictedCharacterStringType.cpp
-            RestrictedCharacterStringValue.cpp
-            RootAlternativeTypeList.cpp
-            RootComponentTypeList.cpp
-            RootElementSetSpec.cpp
-            RootEnumeration.cpp
-            Row.cpp
-            SelectionType.cpp
-            SequenceOfType.cpp
             SequenceType.cpp
             SequenceValue.cpp
             SettingName.cpp

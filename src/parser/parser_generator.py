@@ -164,6 +164,8 @@ def get_parse_production_group_fn_name(production_group):
                 fn_name += "LessThan"
             elif production[1:-1] == "::=":
                 fn_name += "ColonColonEqual"
+            elif production[1:-1] == "=":
+                fn_name += "Equal"
             else:
                 raise ValueError("Unknown char production %s", production)
 

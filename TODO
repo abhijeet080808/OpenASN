@@ -23,3 +23,8 @@ Intersections ::=
   | IntersectionElements
 
 -------------------------------------------------------------------------------
+
+Permitted Alphabet - From 51.7.3 - Only allow Constraints -
+SingleValue, ContainedSubtype, ValueRange, and SizeConstraint
+
+-------------------------------------------------------------------------------
