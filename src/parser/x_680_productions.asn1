@@ -440,11 +440,6 @@ ObjectDescriptor ::= "ObjectDescriptor"
 -- LOCAL MODIFICATION
 ObjectIdentifierType ::= "OBJECT" "IDENTIFIER"
 
--- ORDERING CRITICAL
-AlternativeTypeList ::=
-    NamedType "," AlternativeTypeList
-  | NamedType
-
 -- LOCAL MODIFICATION
 OctetStringType ::= "OCTET" "STRING"
 

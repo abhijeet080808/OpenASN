@@ -1,6 +1,7 @@
 set(LIB_NAME common)
 
-set(SOURCES StringManip.cpp
+set(SOURCES
+  StringManip.cpp
 )
 
 add_library(${LIB_NAME} ${SOURCES})

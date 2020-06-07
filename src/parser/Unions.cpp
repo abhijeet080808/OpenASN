@@ -2,8 +2,8 @@
 
 #include "LoggingMacros.hh"
 #include "ParseHelper.hh"
-#include "ProductionFactory.hh"
 
+#include "parser/ProductionFactory.hh"
 #include "spdlog/spdlog.h"
 
 using namespace OpenASN;

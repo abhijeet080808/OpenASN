@@ -18,7 +18,4 @@ namespace OpenASN
     public:
       std::string mValue;
   };
-
-  using ModuleReference = TypeReference;
-  using PsName = TypeReference;
 }

@@ -8,6 +8,7 @@
 #include "parser/BuiltinType.hh"
 #include "parser/ModuleBody.hh"
 #include "parser/ModuleIdentifier.hh"
+#include "parser/ModuleReference.hh"
 #include "parser/Type.hh"
 #include "parser/TypeAssignment.hh"
 #include "parser/TypeReference.hh"

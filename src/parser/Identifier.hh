@@ -18,9 +18,4 @@ namespace OpenASN
     public:
       std::string mValue;
   };
-
-  using ValueReference = Identifier;
-  // TODO - This is only a subset of the actual non-integerUnicodeLabel
-  // Need to add support for exact non-integerUnicodeLabel
-  using NonIntegerUnicodeLabel = Identifier;
 }
