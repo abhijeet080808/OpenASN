@@ -187,6 +187,8 @@ ComponentValueList ::=
 Constraint ::= "(" ConstraintSpec ExceptionSpec ")"
 
 -- ORDERING CRITICAL
+-- LOCAL ADDITION
+-- See Type below
 ConstraintList ::=
     Constraint ConstraintList
   | Constraint
@@ -539,16 +541,125 @@ Row ::= number
 
 SelectionType ::= identifier "<" Type
 
+-- ORDERING CRITICAL
+-- LOCAL MODIFICATION
 SequenceOfType ::= "SEQUENCE" "OF" Type | "SEQUENCE" "OF" NamedType
 
+-- LOCAL MODIFICATION
+SequenceType ::=
+    "SEQUENCE" "{" "}"
+  --| "SEQUENCE" "{" ExtensionAndException OptionalExtensionMarker "}"
+  | "SEQUENCE" "{" ComponentTypeLists "}"
 
+SequenceValue ::= "{" ComponentValueList "}"
 
+-- ORDERING CRITICAL
+-- LOCAL MODIFICATION
+SetOfType ::= "SET" "OF" Type | "SET" "OF" NamedType
 
+-- LOCAL MODIFICATION
+SettingName ::= PsName
 
+-- LOCAL MODIFICATION
+SetType ::=
+    "SET" "{" "}"
+  --| SET "{" ExtensionAndException OptionalExtensionMarker "}"
+  | "SET" "{" ComponentTypeLists "}"
 
+-- LOCAL MODIFICATION
+SignedNumber ::=
+    number
+  | NegativeNumber
 
+SingleTypeConstraint ::= Constraint
 
+SingleValue ::= Value
 
+-- LOCAL MODIFICATION
+SizeConstraint ::= "SIZE" Constraint
+
+SubsequentArcIdentifier ::=
+    "/" ArcIdentifier SubsequentArcIdentifier
+  | empty
+
+SubtypeConstraint ::= ElementSetSpecs
+
+-- ORDERING CRITICAL
+SubtypeElements ::=
+    ContainedSubtype
+  | ValueRange
+  -- This is added after ValueRange to prevent SingleValue from wrongly
+  -- consuming values meant for ValueRange
+  | SingleValue
+  | PermittedAlphabet
+  | SizeConstraint
+  -- Gets consumed via ContainedSubtype
+  --| TypeConstraint
+  | InnerTypeConstraints
+  | PatternConstraint
+  | PropertySettings
+  --| DurationRange
+  --| TimePointRange
+  --| RecurrenceRange
+
+-- LOCAL ADDITION
+T61String ::= "T61String"
+
+TableColumn ::= number
+
+TableRow ::= number
+
+Tag ::= "[" EncodingReference Class ClassNumber "]"
+
+-- ORDERING CRITICAL
+TaggedType ::=
+    Tag EXPLICIT Type
+  | Tag IMPLICIT Type
+  | Tag Type
+
+-- LOCAL ADDITION
+TeletexString ::= "TeletexString"
+
+-- LOCAL MODIFICATION
+TimeOfDayType ::= "TIME-OF-DAY"
+
+-- LOCAL MODIFICATION
+TimeType ::= "TIME"
+
+Tuple ::= "{" TableColumn "," TableRow "}"
+
+-- Type ::= BuiltinType | ReferencedType | ConstrainedType
+
+-- ConstrainedType ::=
+--   Type Constraint
+-- | TypeWithConstraint
+
+-- If Type first parses for ConstrainedType, it leads to a circular dependency -
+-- TypeAssignment>Type>ConstrainedType>Type>ContrainedType>Type...
+--
+-- Eg. Val ::= BOOLEAN (FALSE) can lead to error if Type is not parsed as
+-- ConstrainedType first but as BuiltinType. The Constraint remains
+-- unparsed.
+
+-- To avoid circular dependencies and let ConstrainedType work, we redefine as
+-- shown below.
+
+Type ::=
+    BuiltinType ConstraintList
+  | BuiltinType
+  | ReferencedType ConstraintList
+  | ReferencedType
+  --| TypeWithConstraint
+
+-- LOCAL MODIFICATION
+TypeAssignment ::= TypeReference "::=" Type
+
+TypeConstraint ::= Type
+
+-- ORDERING CRITICAL
+TypeConstraints ::=
+    NamedConstraint "," TypeConstraints
+  | NamedConstraint
 
 
 

@@ -28,3 +28,19 @@ Permitted Alphabet - From 51.7.3 - Only allow Constraints -
 SingleValue, ContainedSubtype, ValueRange, and SizeConstraint
 
 -------------------------------------------------------------------------------
+
+SizeConstraint - Apply below logic
+
+The "Constraint" specifies the permitted integer values for the length of
+the specified values, and takes the form of any constraint which can be
+applied to the following parent type: INTEGER (0 .. MAX)
+
+The "Constraint" shall use the "SubtypeConstraint" alternative of
+"ConstraintSpec".
+
+Applicable constraints for INTEGER -
+- SingleValue
+- ContainedSubtype
+- ValueRange
+
+-------------------------------------------------------------------------------

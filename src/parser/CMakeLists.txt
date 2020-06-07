@@ -136,6 +136,30 @@ set(GEN_SOURCES Absent.cpp
                 Row.cpp
                 SelectionType.cpp
                 SequenceOfType.cpp
+                SequenceType.cpp
+                SequenceValue.cpp
+                SettingName.cpp
+                SetType.cpp
+                SetOfType.cpp
+                SingleTypeConstraint.cpp
+                SingleValue.cpp
+                SizeConstraint.cpp
+                SubsequentArcIdentifier.cpp
+                SubtypeConstraint.cpp
+                SubtypeElements.cpp
+                TableColumn.cpp
+                TableRow.cpp
+                Tag.cpp
+                TaggedType.cpp
+                T61String.cpp
+                TeletexString.cpp
+                TimeOfDayType.cpp
+                TimeType.cpp
+                Tuple.cpp
+                Type.cpp
+                TypeAssignment.cpp
+                TypeConstraint.cpp
+                TypeConstraints.cpp
                 ValueRange.cpp
 )
 
@@ -150,31 +174,7 @@ set(SOURCES AsnParser.cpp
             Number.cpp
             ParseHelper.cpp
             ProductionFactory.cpp
-            SequenceType.cpp
-            SequenceValue.cpp
-            SettingName.cpp
-            SetType.cpp
-            SetOfType.cpp
             SignedNumber.cpp
-            SingleTypeConstraint.cpp
-            SingleValue.cpp
-            SizeConstraint.cpp
-            SubsequentArcIdentifier.cpp
-            SubtypeConstraint.cpp
-            SubtypeElements.cpp
-            TableColumn.cpp
-            TableRow.cpp
-            Tag.cpp
-            TaggedType.cpp
-            T61String.cpp
-            TeletexString.cpp
-            TimeOfDayType.cpp
-            TimeType.cpp
-            Tuple.cpp
-            Type.cpp
-            TypeAssignment.cpp
-            TypeConstraint.cpp
-            TypeConstraints.cpp
             TypeReference.cpp
             Unions.cpp
             Universal.cpp
