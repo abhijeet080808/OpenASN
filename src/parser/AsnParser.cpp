@@ -4,7 +4,6 @@
 #include "ParseDefs.hh"
 #include "ParseHelper.hh"
 
-#include "common/CommonDefs.hh"
 #include "parser/ModuleDefinition.hh"
 #include "parser/ProductionFactory.hh"
 #include "spdlog/spdlog.h"

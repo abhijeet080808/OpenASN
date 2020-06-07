@@ -1,7 +1,8 @@
 #pragma once
 
 #include "ParseDefs.hh"
-#include "common/CommonDefs.hh"
+
+#include "parser/ProductionDefs.hh"
 
 #include <cstdint>
 #include <vector>

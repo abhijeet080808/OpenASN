@@ -197,6 +197,7 @@ set(PARSER_SOURCES
 )
 
 set(GEN_SOURCES
+  ProductionDefs.hh
   ProductionFactory.cpp
 )
 
@@ -212,6 +213,8 @@ endforeach()
 
 foreach(GEN_SOURCE ${GEN_SOURCES})
   string(REPLACE ".cpp" "" CLASS_NAME ${GEN_SOURCE})
+  # The list also contains a few header only source files
+  string(REPLACE ".hh" "" CLASS_NAME ${CLASS_NAME})
   list(APPEND GEN_HEADERS ${CLASS_NAME}.hh)
 endforeach()
 
