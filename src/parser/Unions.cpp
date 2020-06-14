@@ -20,7 +20,8 @@ Unions::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
       std::vector<std::string>& endStop,
-      std::vector<std::string>& parsePath)
+      std::vector<std::string>& parsePath,
+      ProductionParseHistory& parseHistory)
 {
   parsePath.push_back("Unions");
 
@@ -38,11 +39,10 @@ Parse(const std::vector<Word>& asnData,
   {
     auto obj = "Intersections";
     LOG_START();
-    auto intersections =
-      ProductionFactory::Get(Production::INTERSECTIONS);
-    if (intersections->Parse(asnData, asnDataIndex, endStop, parsePath))
+    auto prod = ProductionFactory::Get(Production::INTERSECTIONS);
+    if (prod->Parse(asnData, asnDataIndex, endStop, parsePath, parseHistory))
     {
-      mIntersections.push_back(intersections);
+      mIntersections.push_back(prod);
       LOG_PASS();
     }
     else

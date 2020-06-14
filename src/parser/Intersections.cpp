@@ -20,7 +20,8 @@ Intersections::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
       std::vector<std::string>& endStop,
-      std::vector<std::string>& parsePath)
+      std::vector<std::string>& parsePath,
+      ProductionParseHistory& parseHistory)
 {
   parsePath.push_back("Intersections");
 
@@ -38,11 +39,10 @@ Parse(const std::vector<Word>& asnData,
   {
     auto obj = "IntersectionElements";
     LOG_START();
-    auto intersection_elements =
-      ProductionFactory::Get(Production::INTERSECTION_ELEMENTS);
-    if (intersection_elements->Parse(asnData, asnDataIndex, endStop, parsePath))
+    auto prod = ProductionFactory::Get(Production::INTERSECTION_ELEMENTS);
+    if (prod->Parse(asnData, asnDataIndex, endStop, parsePath, parseHistory))
     {
-      mIntersectionElements.push_back(intersection_elements);
+      mIntersectionElements.push_back(prod);
       LOG_PASS();
     }
     else

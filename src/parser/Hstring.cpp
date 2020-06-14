@@ -18,7 +18,8 @@ Hstring::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
       std::vector<std::string>& endStop,
-      std::vector<std::string>&)
+      std::vector<std::string>&,
+      ProductionParseHistory&)
 {
   // Zero or more space separated number of A-F, 0-9 characters
   // enclosed within quotes and followed by H

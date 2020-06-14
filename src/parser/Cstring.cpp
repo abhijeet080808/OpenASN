@@ -19,7 +19,8 @@ Cstring::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
       std::vector<std::string>& endStop,
-      std::vector<std::string>&)
+      std::vector<std::string>&,
+      ProductionParseHistory&)
 {
   // Zero or more characters enclosed within double quotes where -
   // - double quote itself is represented by 2 consecutive double quotes

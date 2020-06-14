@@ -18,7 +18,8 @@ Bstring::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
       std::vector<std::string>& endStop,
-      std::vector<std::string>&)
+      std::vector<std::string>&,
+      ProductionParseHistory&)
 {
   // Zero or more space separated number of 0, 1 characters
   // enclosed within quotes and followed by B

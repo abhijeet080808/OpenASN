@@ -24,28 +24,66 @@ def append_must_parse(fd,
 
     cpp_production = get_cpp_production_name(production)
     uc_production = camel_case_to_snake_case(cpp_production)
-    lc_production = uc_production.lower()
 
     if (end_stop_production):
         fd.write(ind + "endStop.push_back(\"%s\");\n" % end_stop_production)
-    fd.write("\n")
-    fd.write(ind + "{ // MUST PARSE %s\n" % cpp_production)
+        fd.write("\n")
+    fd.write(ind + "{ // Parsing %s\n" % cpp_production)
     fd.write(ind + "  auto obj = \"%s\";\n" % cpp_production)
     fd.write(ind + "  LOG_START();\n")
-    fd.write(ind + "  auto _%s = ProductionFactory::Get(\n" % lc_production)
+    fd.write("\n")
+    fd.write(ind + "  auto prod_index = std::make_pair(\n")
+    fd.write(ind + "    asnDataIndex,\n")
     fd.write(ind + "    Production::%s);\n" % uc_production)
-    fd.write(ind + "  if (_%s->Parse(\n" % lc_production)
-    fd.write(ind + "        asnData, asnDataIndex, endStop, parsePath))\n")
+    fd.write(ind + "  auto existing_prod_iter = " +
+        "parseHistory.find(prod_index);\n")
+    fd.write("\n")
+    fd.write(ind + "  auto prod = ProductionFactory::Get(\n")
+    fd.write(ind + "    Production::%s);\n" % uc_production)
+    fd.write("\n")
+    fd.write(ind + "  // If this production has already been parsed " +
+        "at this same asnDataIndex,\n")
+    fd.write(ind + "  // do not parse it again but re-use old production\n")
+    fd.write(ind + "  if (existing_prod_iter != parseHistory.end())\n")
+    fd.write(ind + "  {\n")
+    fd.write(ind + "    if (existing_prod_iter->second.first.get() " +
+        "!= nullptr)\n")
+    fd.write(ind + "    {\n")
+    if (end_stop_production):
+        fd.write(ind + "      endStop.pop_back();\n")
+    fd.write(ind + "      m%s = existing_prod_iter->second.first;\n"
+        % cpp_production)
+    fd.write(ind + "      asnDataIndex = existing_prod_iter->second.second;\n")
+    fd.write(ind + "      LOG_PASS();\n")
+    fd.write(ind + "    }\n")
+    fd.write(ind + "    else\n")
+    fd.write(ind + "    {\n")
+    if (end_stop_production):
+        fd.write(ind + "      endStop.pop_back();\n")
+    fd.write(ind + "      LOG_FAIL();\n")
+    fd.write(ind + "      return false;\n")
+    fd.write(ind + "    }\n")
+    fd.write(ind + "  }\n")
+    fd.write(ind + "  else if (prod->Parse(\n")
+    fd.write(ind + "    " +
+        "asnData, asnDataIndex, endStop, parsePath, parseHistory))\n")
     fd.write(ind + "  {\n")
     if (end_stop_production):
         fd.write(ind + "    endStop.pop_back();\n")
-    fd.write(ind + "    m%s = _%s;\n" % (cpp_production, lc_production))
+    fd.write(ind + "    m%s = prod;\n" % (cpp_production))
+    fd.write(ind + "    // Store the production and asnDataIndex after " +
+        "parse consumes one or more\n")
+    fd.write(ind + "    // words, for later use if necessary\n")
+    fd.write(ind + "    parseHistory[prod_index] = " +
+        "std::make_pair(prod, asnDataIndex);\n")
     fd.write(ind + "    LOG_PASS();\n")
     fd.write(ind + "  }\n")
     fd.write(ind + "  else\n")
     fd.write(ind + "  {\n")
     if (end_stop_production):
         fd.write(ind + "    endStop.pop_back();\n")
+    fd.write(ind + "    parseHistory[prod_index] = " +
+        "std::make_pair(nullptr, 0);\n")
     fd.write(ind + "    LOG_FAIL();\n")
     fd.write(ind + "    return false;\n")
     fd.write(ind + "  }\n")
@@ -103,7 +141,7 @@ def append_char_must_parse(fd, production, indentation):
     if production == "\"":
         production = "\\\""
 
-    fd.write(ind + "{ // MUST PARSE %s\n" % production)
+    fd.write(ind + "{ // Parsing \"%s\"\n" % production)
     fd.write(ind + "  auto obj = \"%s\";\n" % production)
     fd.write(ind + "  LOG_START();\n")
     fd.write(ind + "  if (ParseHelper::IsObjectPresent(" \
@@ -181,7 +219,8 @@ def append_parse_production_group_decl(fd, production_group, indentation):
         fd.write(ind + "  const std::vector<Word>& asnData,\n")
         fd.write(ind + "  size_t& asnDataIndex,\n")
         fd.write(ind + "  std::vector<std::string>& endStop,\n")
-        fd.write(ind + "  std::vector<std::string>& parsePath);\n")
+        fd.write(ind + "  std::vector<std::string>& parsePath,\n")
+        fd.write(ind + "  ProductionParseHistory& parseHistory);\n")
         fd.write("\n")
 
 
@@ -199,7 +238,8 @@ def append_parse_production_group_defn(fd,
         fd.write(ind + "  const std::vector<Word>& asnData,\n")
         fd.write(ind + "  size_t& asnDataIndex,\n")
         fd.write(ind + "  std::vector<std::string>& endStop,\n")
-        fd.write(ind + "  std::vector<std::string>& parsePath)\n")
+        fd.write(ind + "  std::vector<std::string>& parsePath,\n")
+        fd.write(ind + "  ProductionParseHistory& parseHistory)\n")
         fd.write(ind + "{\n")
 
         is_non_char_prod_present = False
@@ -236,6 +276,7 @@ def append_parse_production_group_defn(fd,
                 is_non_char_prod_present = True
 
         if is_non_char_prod_present is False:
+            fd.write(ind + "  (void)(parseHistory);\n")
             fd.write(ind + "  (void)(endStop);\n")
 
         fd.write(ind + "  return true;\n")
@@ -291,8 +332,6 @@ def generate_production_cpp_header(production, production_or_groups):
     fd.write("\n")
     fd.write("#include \"parser/IProduction.hh\"\n")
     fd.write("\n")
-    fd.write("#include <memory>\n")
-    fd.write("\n")
     fd.write("namespace OpenASN\n")
     fd.write("{\n")
     fd.write("  // X.680 08/2015 Annex L\n")
@@ -305,7 +344,8 @@ def generate_production_cpp_header(production, production_or_groups):
     fd.write("        const std::vector<Word>& asnData,\n")
     fd.write("        size_t& asnDataIndex,\n")
     fd.write("        std::vector<std::string>& endStop,\n")
-    fd.write("        std::vector<std::string>& parsePath) override;\n")
+    fd.write("        std::vector<std::string>& parsePath,\n")
+    fd.write("        ProductionParseHistory& parseHistory) override;\n")
     fd.write("\n")
     fd.write("    private:\n")
 
@@ -357,12 +397,15 @@ def generate_production_cpp_source(production, production_or_groups):
     fd.write("  const std::vector<Word>& asnData,\n")
     fd.write("  size_t& asnDataIndex,\n")
     fd.write("  std::vector<std::string>& endStop,\n")
-    fd.write("  std::vector<std::string>& parsePath)\n")
+    fd.write("  std::vector<std::string>& parsePath,\n")
+    fd.write("  ProductionParseHistory& parseHistory)\n")
     fd.write("{\n")
 
     fd.write("  //")
     for word in production:
         fd.write(" %s" % word)
+        if word == "::=" or word == "|":
+            fd.write("\n  //  ")
     fd.write("\n")
 
     fd.write("\n")
@@ -375,7 +418,9 @@ def generate_production_cpp_source(production, production_or_groups):
         if prod_grp_fn.lower() != "empty":
             fd.write("\n")
             fd.write("  if (Parse%s(\n" % prod_grp_fn)
-            fd.write("        asnData, asnDataIndex, endStop, parsePath))\n")
+            fd.write("        " +
+                "asnData, asnDataIndex, endStop, " +
+                "parsePath, parseHistory))\n")
             fd.write("  {\n")
             fd.write("    parsePath.pop_back();\n");
             fd.write("    return true;\n")
@@ -419,8 +464,6 @@ def generate_production_factory_cpp_header():
     fd.write("#pragma once\n")
     fd.write("\n")
     fd.write("#include \"parser/IProduction.hh\"\n")
-    fd.write("\n")
-    fd.write("#include <memory>\n")
     fd.write("\n")
     fd.write("namespace OpenASN\n")
     fd.write("{\n")

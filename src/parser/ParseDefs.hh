@@ -17,6 +17,6 @@ namespace OpenASN
     SUCCEEDED_BY_NEWLINE
   };
 
-  // int is number of whitespaces preceding this Word
+  // Int is the number of whitespaces preceding this Word
   using Word = std::tuple<PrecedingInfo, std::string, SucceedingInfo, int>;
 }

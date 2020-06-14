@@ -250,6 +250,7 @@ Parse(const std::string& asnFilePath)
   size_t asn_data_index = 0;
   std::vector<std::string> end_stop;
   std::vector<std::string> parse_path;
+  ProductionParseHistory parse_history;
   LOG_START_GEN("ModuleDefinition",
                 parsed_asn_data,
                 asn_data_index,
@@ -259,7 +260,8 @@ Parse(const std::string& asnFilePath)
   if (module_definition->Parse(parsed_asn_data,
                                asn_data_index,
                                end_stop,
-                               parse_path))
+                               parse_path,
+                               parse_history))
   {
     LOG_PASS_GEN("ModuleDefinition",
                  parsed_asn_data,

@@ -2,8 +2,6 @@
 
 #include "IProduction.hh"
 
-#include <memory>
-
 namespace OpenASN
 {
   class AsnParser
