@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Set C++ compiler to gcc or clang by running -
+# $ sudo update-alternatives --config c++
+
 start_ts=`date +%s`
 
 if ! cmake ..; then
