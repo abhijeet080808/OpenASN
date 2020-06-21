@@ -4,37 +4,24 @@
 
 namespace OpenASN
 {
-  #define LOG_START_GEN(OBJ, ASN_DATA, ASN_DATA_INDEX, PARSE_PATH)             \
+  #define LOG_GEN(ACTION, OBJ, ASN_DATA, ASN_DATA_IDX, PARSE_PATH)             \
   {                                                                            \
-    SPDLOG_INFO("At \"{}\"({}) - STARTED parse \"{}\" [{}]",                   \
-                (ASN_DATA).size() > (ASN_DATA_INDEX) ?                         \
-                  std::get<1>((ASN_DATA).at((ASN_DATA_INDEX))) : "<EOF>",      \
-                ASN_DATA_INDEX,                                                \
+    SPDLOG_INFO("{}: {} parse \"{}\" [{}]",                                    \
+                (ASN_DATA).size() > (ASN_DATA_IDX) ?                           \
+                  "["                                                        + \
+                  std::to_string(std::get<4>((ASN_DATA).at((ASN_DATA_IDX)))) + \
+                  ":"                                                        + \
+                  std::to_string(std::get<5>((ASN_DATA).at((ASN_DATA_IDX)))) + \
+                  "] \""                                                     + \
+                  std::get<1>((ASN_DATA).at((ASN_DATA_IDX)))                 + \
+                  "\"" :                                                       \
+                  "[-:-] \"<EOF>\"",                                           \
+                (ACTION),                                                      \
                 (OBJ),                                                         \
                 StringManip::Flatten((PARSE_PATH), ">"));                      \
   }
 
-  #define LOG_PASS_GEN(OBJ, ASN_DATA, ASN_DATA_INDEX, PARSE_PATH)              \
-  {                                                                            \
-    SPDLOG_INFO("At \"{}\"({}) - PASSED parse \"{}\" [{}]",                    \
-                (ASN_DATA).size() > (ASN_DATA_INDEX) ?                         \
-                  std::get<1>((ASN_DATA).at((ASN_DATA_INDEX))) : "<EOF>",      \
-                ASN_DATA_INDEX,                                                \
-                (OBJ),                                                         \
-                StringManip::Flatten((PARSE_PATH), ">"));                      \
-  }
-
-  #define LOG_FAIL_GEN(OBJ, ASN_DATA, ASN_DATA_INDEX, PARSE_PATH)              \
-  {                                                                            \
-    SPDLOG_INFO("At \"{}\"({}) - FAILED parse \"{}\" [{}]",                    \
-                (ASN_DATA).size() > (ASN_DATA_INDEX) ?                         \
-                  std::get<1>((ASN_DATA).at((ASN_DATA_INDEX))) : "<EOF>",      \
-                ASN_DATA_INDEX,                                                \
-                (OBJ),                                                         \
-                StringManip::Flatten((PARSE_PATH), ">"));                      \
-  }
-
-  #define LOG_START() LOG_START_GEN(obj, asnData, asnDataIndex, parsePath)
-  #define LOG_PASS()  LOG_PASS_GEN(obj, asnData, asnDataIndex, parsePath)
-  #define LOG_FAIL()  LOG_FAIL_GEN(obj, asnData, asnDataIndex, parsePath)
+  #define LOG_START() LOG_GEN("STARTED", obj, asnData, asnDataIndex, parsePath)
+  #define LOG_PASS() LOG_GEN("PASSED", obj, asnData, asnDataIndex, parsePath)
+  #define LOG_FAIL() LOG_GEN("FAILED", obj, asnData, asnDataIndex, parsePath)
 }

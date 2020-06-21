@@ -17,6 +17,11 @@ namespace OpenASN
     SUCCEEDED_BY_NEWLINE
   };
 
-  // Int is the number of whitespaces preceding this Word
-  using Word = std::tuple<PrecedingInfo, std::string, SucceedingInfo, int>;
+  using Word = std::tuple<
+    PrecedingInfo,
+    std::string,    // the actual ASN word
+    SucceedingInfo,
+    size_t,         // number of whitespaces preceding this word
+    size_t,         // line index of this word in ASN1 defination
+    size_t>;        // char index of this word in ASN1 defination
 }

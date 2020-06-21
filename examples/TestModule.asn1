@@ -106,9 +106,25 @@ Sequence              ::= SEQUENCE {
   seqNull               NULL,
   seqNullVal            NULL DEFAULT NULL,
   seqObjId              OBJECT IDENTIFIER,
+  seqObjIdVal1          OBJECT IDENTIFIER DEFAULT { Abc.abc 1 },
+  seqObjIdVal2          OBJECT IDENTIFIER DEFAULT { 1 3 },
+  seqObjIdVal3          OBJECT IDENTIFIER DEFAULT {
+                          iso
+                          identified-organization
+                        },
+  seqObjIdVal4          OBJECT IDENTIFIER DEFAULT {
+                          iso(1)
+                          identified-organization(3)
+                        },
   seqOctetStr           OCTET STRING,
+  seqOctetStrVal1       OCTET STRING DEFAULT '01101100'B,
+  seqOctetStrVal2       OCTET STRING DEFAULT 'ABCD1100'H,
+  seqOctetStrVal3       OCTET STRING DEFAULT CONTAINING 'ABCD1100'H,
   seqReal               REAL,
   seqRelativeIri        RELATIVE-OID-IRI,
+  seqRelativeIriValue1  RELATIVE-OID-IRI DEFAULT "3/6/1/4/1/343",
+  seqRelativeIriValue2  RELATIVE-OID-IRI DEFAULT
+                          "Identified-Organization/6/1/4/1/343",
   seqRelativeOid        RELATIVE-OID,
   seqSeqOf1             SEQUENCE OF INTEGER,
   seqSeqOf2             SEQUENCE OF INTEGER { w(-1), x(0), y(1), z(2) },

@@ -330,9 +330,14 @@ Value ::=
 --    XMLBuiltinValue
 --  | XMLObjectClassFieldValue
 
+-- ORDERING CRITICAL
 BuiltinValue ::=
     BitStringValue
   | BooleanValue
+-- This has to be placed before CharacterStringValue
+  | RelativeIRIValue
+-- This has to be placed before CharacterStringValue
+  | IRIValue
 -- CharacterStringValue->UnrestrictedCharacterStringValue is also
 -- equivalent to EmbeddedPDVValue and ExternalValue
   | CharacterStringValue
@@ -342,12 +347,11 @@ BuiltinValue ::=
 --  | ExternalValue
 --  | InstanceOfValue
   | IntegerValue
-  | IRIValue
   | NullValue
---  | ObjectIdentifierValue
+  | ObjectIdentifierValue
+-- OctetStringValue is covered by BitStringValue
 --  | OctetStringValue
 --  | RealValue
---  | RelativeIRIValue
 --  | RelativeOIDValue
 --  | SequenceValue
 --  | SequenceOfValue
@@ -797,7 +801,7 @@ ObjIdComponents ::=
     NameAndNumberForm
   | NameForm
   | NumberForm
-  | DefinedValue
+--  | DefinedValue
 
 NameForm ::= identifier
 
