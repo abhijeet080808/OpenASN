@@ -1,4 +1,4 @@
-#include "EncodingReferencePrime.hh"
+#include "Encodingreference.hh"
 
 #include "ParseHelper.hh"
 
@@ -7,14 +7,14 @@
 using namespace OpenASN;
 
 Production
-EncodingReferencePrime::
+Encodingreference::
 GetType() const
 {
-  return Production::ENCODING_REFERENCE_PRIME;
+  return Production::ENCODINGREFERENCE;
 }
 
 bool
-EncodingReferencePrime::
+Encodingreference::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
       std::vector<std::string>& endStop,

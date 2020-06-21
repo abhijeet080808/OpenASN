@@ -1,11 +1,15 @@
+--------------------------------
+-- Rec. ITU-T X.680 (08/2015) --
+--------------------------------
 
+-- Productions may be annotated with the below tags as required -
+--
 -- LOCAL ADDITION
 -- This production is not present in spec and is added locally to facilicate
--- parsing. Eg Absent, Application.
+-- parsing. Eg DEFINITIONS, BEGIN, END, ConstraintList.
 
 -- LOCAL MODIFICATION
--- Converted ASN keywords like BIT and STRING to string data type to facilicate
--- parsing.
+-- Modified production to facilicate parsing. Eg NullType, LowerEndpoint.
 
 -- ORDERING CRITICAL
 -- Ordering is critical here and should be exactly as shown here.
@@ -14,615 +18,238 @@
 -- avoid going into a infinite recursion. Eg AlternativeTypeList.
 
 -- LOCAL ADDITION
-Absent ::= "ABSENT"
+DEFINITIONS             ::= "DEFINITIONS"
+BEGIN                   ::= "BEGIN"
+END                     ::= "END"
+EXPLICIT                ::= "EXPLICIT"
+IMPLICIT                ::= "IMPLICIT"
+AUTOMATIC               ::= "AUTOMATIC"
+INSTRUCTIONS            ::= "INSTRUCTIONS"
+TAGS                    ::= "TAGS"
+EXTENSIBILITY           ::= "EXTENSIBILITY"
+IMPLIED                 ::= "IMPLIED"
+EXPORTS                 ::= "EXPORTS"
+ALL                     ::= "ALL"
+IMPORTS                 ::= "IMPORTS"
+FROM                    ::= "FROM"
+BOOLEAN                 ::= "BOOLEAN"
+TRUE                    ::= "TRUE"
+FALSE                   ::= "FALSE"
+INTEGER                 ::= "INTEGER"
+ENUMERATED              ::= "ENUMERATED"
+REAL                    ::= "REAL"
+BIT                     ::= "BIT"
+STRING                  ::= "STRING"
+CONTAINING              ::= "CONTAINING"
+OCTET                   ::= "OCTET"
+ASN_NULL                ::= "NULL"
+SEQUENCE                ::= "SEQUENCE"
+DEFAULT                 ::= "DEFAULT"
+OPTIONAL                ::= "OPTIONAL"
+COMPONENTS              ::= "COMPONENTS"
+OF                      ::= "OF"
+SET                     ::= "SET"
+CHOICE                  ::= "CHOICE"
+UNIVERSAL               ::= "UNIVERSAL"
+APPLICATION             ::= "APPLICATION"
+PRIVATE                 ::= "PRIVATE"
+OBJECT                  ::= "OBJECT"
+ASN_IDENTIFIER          ::= "IDENTIFIER"
+RELATIVE_OID            ::= "RELATIVE-OID"
+OID_IRI                 ::= "OID-IRI"
+RELATIVE_OID_IRI        ::= "RELATIVE-OID-IRI"
+EMBEDDED                ::= "EMBEDDED"
+PDV                     ::= "PDV"
+EXTERNAL                ::= "EXTERNAL"
+TIME                    ::= "TIME"
+DATE                    ::= "DATE"
+TIME_OF_DAY             ::= "TIME-OF-DAY"
+DATE_TIME               ::= "DATE-TIME"
+DURATION                ::= "DURATION"
+BMPString               ::= "BMPString"
+GeneralString           ::= "GeneralString"
+GraphicString           ::= "GraphicString"
+IA5String               ::= "IA5String"
+ISO646String            ::= "ISO646String"
+NumericString           ::= "NumericString"
+PrintableString         ::= "PrintableString"
+TeletexString           ::= "TeletexString"
+T61String               ::= "T61String"
+UniversalString         ::= "UniversalString"
+UTF8String              ::= "UTF8String"
+VideotexString          ::= "VideotexString"
+VisibleString           ::= "VisibleString"
+CHARACTER               ::= "CHARACTER"
+EXCEPT                  ::= "EXCEPT"
+UNION                   ::= "UNION"
+INTERSECTION            ::= "INTERSECTION"
+ASN_INCLUDES            ::= "INCLUDES"
+MIN                     ::= "MIN"
+MAX                     ::= "MAX"
+SIZE                    ::= "SIZE"
+WITH                    ::= "WITH"
+COMPONENT               ::= "COMPONENT"
+PRESENT                 ::= "PRESENT"
+ABSENT                  ::= "ABSENT"
+PATTERN                 ::= "PATTERN"
+SETTINGS                ::= "SETTINGS"
 
-AdditionalElementSetSpec ::= ElementSetSpec
+-- LOCAL MODIFICATION
+ModuleDefinition ::=
+  ModuleIdentifier
+  DEFINITIONS
+  --EncodingReferenceDefault
+  --TagDefault
+  --ExtensionDefault
+  "::="
+  BEGIN
+  ModuleBody
+  --EncodingControlSections
+  END
+
+ModuleIdentifier ::= modulereference DefinitiveIdentification
+
+DefinitiveIdentification ::=
+    DefinitiveOID
+  --| DefinitiveOIDandIRI
+  | empty
+
+DefinitiveOID ::= "{" DefinitiveObjIdComponentList "}"
+
+--DefinitiveOIDandIRI ::= DefinitiveOID IRIValue
+
+DefinitiveObjIdComponentList ::=
+    DefinitiveObjIdComponent DefinitiveObjIdComponentList
+  | DefinitiveObjIdComponent
+
+DefinitiveObjIdComponent ::=
+    NameForm
+  --| DefinitiveNumberForm
+  --| DefinitiveNameAndNumberForm
+
+--DefinitiveNumberForm ::= number
+
+--DefinitiveNameAndNumberForm ::= identifier "(" DefinitiveNumberForm ")"
+
+--EncodingReferenceDefault ::= encodingreference INSTRUCTIONS | empty
+
+--TagDefault ::=
+--    EXPLICIT TAGS
+--  | IMPLICIT TAGS
+--  | AUTOMATIC TAGS
+--  | empty
+
+--ExtensionDefault ::=
+--    Extensibility IMPLIED
+--  | empty
+
+ModuleBody ::=
+--    Exports Imports
+    AssignmentList
+  | empty
+
+--Exports ::=
+--    EXPORTS SymbolsExported ";"
+--  | EXPORTS ALL ";"
+--  | empty
+
+--SymbolsExported ::= SymbolList | empty
+
+--Imports ::=
+--    IMPORTS SymbolsImported ";"
+--  | empty
+
+--SymbolsImported ::= SymbolsFromModuleList | empty
 
 -- ORDERING CRITICAL
-AlternativeTypeList ::=
-    NamedType "," AlternativeTypeList
-  | NamedType
+--SymbolsFromModuleList ::=
+--    SymbolsFromModule SymbolsFromModuleList
+--  | SymbolsFromModule
 
-AlternativeTypeLists ::= RootAlternativeTypeList
+--SymbolsFromModule ::= SymbolList FROM GlobalModuleReference
 
--- LOCAL ADDITION
-Application ::= "APPLICATION"
+-- ORDERING CRITICAL
+--SymbolList ::=
+--    Symbol "," SymbolList
+--  | Symbol
 
--- LOCAL ADDITION
-AsnTrue ::= "TRUE"
+--Symbol ::=
+--    Reference
+--  | ParameterizedReference
 
--- LOCAL ADDITION
-AsnFalse ::= "FALSE"
-
-ArcIdentifier ::=
-    integerUnicodeLabel
-  | non-integerUnicodeLabel
-
-Assignment ::= TypeAssignment
+--Reference ::=
+--    typereference
+--  | valuereference
+--  | objectclassreference
+--  | objectreference
+--  | objectsetreference
 
 -- ORDERING CRITICAL
 AssignmentList ::=
     Assignment AssignmentList
   | Assignment
 
--- ORDERING CRITICAL
--- LOCAL MODIFICATION
-BitStringType ::=
-    "BIT" "STRING" "{" NamedBitList "}"
-  | "BIT" "STRING"
+Assignment ::=
+    TypeAssignment
+--  | ValueAssignment
+--  | XMLValueAssignment
+--  | ValueSetTypeAssignment
+--  | ObjectClassAssignment
+--  | ObjectAssignment
+--  | ObjectSetAssignment
+--  | ParameterizedAssignment
 
--- ORDERING CRITICAL
--- LOCAL MODIFICATION
-BitStringValue ::=
-    bstring
-  | hstring
-  | "{" IdentifierList "}"
-  | "{" "}"
-  | "CONTAINING" Value
-
--- LOCAL ADDITION
-BMPString ::= "BMPString"
-
-BooleanType ::= "BOOLEAN"
-
-BooleanValue ::=
-    AsnTrue
-  | AsnFalse
-
-BuiltinType ::=
-    BitStringType
-  | BooleanType
-  | CharacterStringType
-  | ChoiceType
-  | DateType
-  | DateTimeType
-  | DurationType
-  | EmbeddedPDVType
-  | EnumeratedType
-  | ExternalType
-  --| InstanceOfType
-  | IntegerType
-  | IRIType
-  | NullType
-  --| ObjectClassFieldType
-  | ObjectIdentifierType
-  | OctetStringType
-  | RealType
-  | RelativeIRIType
-  | RelativeOIDType
-  | SequenceType
-  | SequenceOfType
-  | SetType
-  | SetOfType
-  | PrefixedType
-  | TimeType
-  | TimeOfDayType
-
-BuiltinValue ::=
-    BitStringValue
-  | BooleanValue
--- CharacterStringValue->UnrestrictedCharacterStringValue is also
--- equivalent to EmbeddedPDVValue and ExternalValue
-  | CharacterStringValue
-  | ChoiceValue
-  --| EmbeddedPDVValue
-  | EnumeratedValue
-  --| ExternalValue
-  --| InstanceOfValue
-  | IntegerValue
-  | IRIValue
-  | NullValue
-  --| ObjectIdentifierValue
-  --| OctetStringValue
-  --| RealValue
-  --| RelativeIRIValue
-  --| RelativeOIDValue
-  --| SequenceValue
-  --| SequenceOfValue
-  --| SetValue
-  --| SetOfValue
-  --| PrefixedValue
-  --| TimeValue
-
-Cell ::= number
-
-CharsDefn ::=
-    cstring
-  | Quadruple
-  | Tuple
-  | DefinedValue
-
--- ORDERING CRITICAL
-CharSyms ::=
-    CharsDefn "," CharSyms
-  | CharsDefn
-
-CharacterStringList ::= "{" CharSyms "}"
-
-CharacterStringType ::=
-    RestrictedCharacterStringType
-  | UnrestrictedCharacterStringType
-
-CharacterStringValue ::=
-    RestrictedCharacterStringValue
-  | UnrestrictedCharacterStringValue
-
--- LOCAL MODIFICATION
-ChoiceType ::= "CHOICE" "{" AlternativeTypeLists "}"
-
-ChoiceValue ::= identifier ":" Value
-
-Class ::=
-    UNIVERSAL
-  | APPLICATION
-  | PRIVATE
-  | empty
-
-ClassNumber ::=
-    number
-  | DefinedValue
-
-ComponentConstraint ::= ValueConstraint PresenceConstraint
-
--- LOCAL MODIFICATION
--- ORDERING CRITICAL
-ComponentType ::=
-    NamedType "DEFAULT" Value
-  | NamedType OPTIONAL
-  | NamedType
-  | "COMPONENTS" "OF" Type
-
--- ORDERING CRITICAL
-ComponentTypeList ::=
-    ComponentType "," ComponentTypeList
-  | ComponentType
-
-ComponentTypeLists ::= RootComponentTypeList
-
--- ORDERING CRITICAL
-ComponentValueList ::=
-    NamedValue "," ComponentValueList
-  | NamedValue
-
-Constraint ::= "(" ConstraintSpec ExceptionSpec ")"
-
--- ORDERING CRITICAL
--- LOCAL ADDITION
--- See Type below
-ConstraintList ::=
-    Constraint ConstraintList
-  | Constraint
-
-ConstraintSpec ::= SubtypeConstraint
-
-ContainedSubtype ::= Includes Type
-
--- LOCAL MODIFICATION
-DateTimeType ::= "DATE-TIME"
-
--- LOCAL MODIFICATION
-DateType ::= "DATE"
-
--- LOCAL MODIFICATION
 DefinedType ::=
     ExternalTypeReference
-  | TypeReference
+  | typereference
+--  | ParameterizedType
+--  | ParameterizedValueSetType
 
--- LOCAL MODIFICATION
 DefinedValue ::=
     ExternalValueReference
-  | ValueReference
+  | valuereference
 
-DefinitiveIdentification ::=
-    DefinitiveOID
-  | empty
+--NonParameterizedTypeName ::=
+--    ExternalTypeReference
+--  | typereference
+--  | xmlasn1typename
 
-DefinitiveObjIdComponent ::= NameForm
+ExternalTypeReference ::= modulereference "." typereference
 
-DefinitiveObjIdComponentList ::=
-    DefinitiveObjIdComponent DefinitiveObjIdComponentList
-  | DefinitiveObjIdComponent
+ExternalValueReference ::= modulereference "." valuereference
 
-DefinitiveOID ::= "{" DefinitiveObjIdComponentList "}"
-
--- LOCAL MODIFICATION
-DurationType ::= "DURATION"
-
-Elements ::=
-    SubtypeElements
-  | "(" ElementSetSpec ")"
+--AbsoluteReference ::= "@" ModuleIdentifier "." ItemSpec
 
 -- LOCAL MODIFICATION
-ElementSetSpec ::=
-    Unions
-  | "ALL" Exclusions
-
--- ORDERING CRITICAL
-ElementSetSpecs ::=
-    RootElementSetSpec "," "..." "," AdditionalElementSetSpec
-  | RootElementSetSpec "," "..."
-  | RootElementSetSpec
-
-Elems ::= Elements
-
--- LOCAL ADDITION
-Ellipsis ::= "..."
-
--- LOCAL MODIFICATION
-EmbeddedPDVType ::= "EMBEDDED" "PDV"
-
-EncodingPrefix ::= "[" EncodingReference "]"
-
-EncodingPrefixedType ::= EncodingPrefix Type
-
--- LOCAL MODIFICATION
-EncodingReference ::=
-    encodingReferencePrime ":"
-  | empty
-
--- LOCAL MODIFICATION
-EnumeratedType ::= "ENUMERATED" "{" Enumerations "}"
-
-EnumeratedValue ::= identifier
-
--- ORDERING CRITICAL
-Enumeration ::=
-    EnumerationItem "," Enumeration
-  | EnumerationItem
-
--- ORDERING CRITICAL
-EnumerationItem ::= NamedNumber | identifier
-
-Enumerations ::= RootEnumeration
-
-ExceptionIdentification ::=
-    SignedNumber
-  | DefinedValue
-  | Type ":" Value
-
-ExceptionSpec ::= "!" ExceptionIdentification | empty
-
--- LOCAL MODIFICATION
-Exclusions ::= "EXCEPT" Elements
-
--- LOCAL ADDITION
-Explicit ::= "EXPLICIT"
-
--- LOCAL MODIFICATION
-ExternalType ::= "EXTERNAL"
-
--- LOCAL MODIFICATION
-ExternalTypeReference ::= moduleReference "." typeReference
-
--- LOCAL MODIFICATION
-ExternalValueReference ::= moduleReference "." valueReference
-
-FirstArcIdentifier ::= "/" ArcIdentifier
-
-FullSpecification ::= "{" TypeConstraints "}"
-
--- LOCAL ADDITION
-GeneralizedTime ::= "GeneralizedTime"
-
--- LOCAL ADDITION
-GeneralString ::= "GeneralString"
-
--- LOCAL ADDITION
-GraphicString ::= "GraphicString"
-
-Group ::= number
-
--- LOCAL ADDITION
-IA5String ::= "IA5String"
-
--- ORDERING CRITICAL
-IdentifierList ::=
-    identifier "," IdentifierList
-  | identifier
-
-IElems ::= Intersections
-
--- LOCAL ADDITION
-Implicit ::= "IMPLICIT"
-
--- LOCAL MODIFICATION
-Includes ::= "INCLUDES" | empty
-
--- LOCAL MODIFICATION
-InnerTypeConstraints ::=
-    "WITH" "COMPONENT" SingleTypeConstraint
-  | "WITH" "COMPONENTS" MultipleTypeConstraints
-
--- LOCAL MODIFICATION
--- ORDERING CRITICAL
-IntegerType ::=
-    "INTEGER" "{" NamedNumberList "}"
-  | "INTEGER"
-
--- ORDERING CRITICAL
-IntegerValue ::= SignedNumber | identifier
-
--- ORDERING CRITICAL
-IntersectionElements ::=
-    Elems Exclusions
-  | Elements
-
--- LOCAL MODIFICATION
-IntersectionMark ::= "^" | "INTERSECTION"
-
---Intersections ::=
---    IElems IntersectionMark IntersectionElements
---  | IntersectionElements
-
--- LOCAL MODIFICATION
-IRIType ::= "OID-IRI"
-
-IRIValue ::= """ FirstArcIdentifier SubsequentArcIdentifier """
-
--- LOCAL MODIFICATION
-ISO646String ::= "ISO646String"
-
--- LOCAL ADDITION
-LessThan ::= "<"
-
--- ORDERING CRITICAL
--- LOCAL MODIFICATION
-LowerEndpoint ::= LowerEndValue LessThan | LowerEndValue
-
--- LOCAL MODIFICATION
-LowerEndValue ::= Value | Min
-
--- LOCAL ADDITION
-Max ::= "MAX"
-
--- LOCAL ADDITION
-Min ::= "MIN"
-
-ModuleBody ::=
-    AssignmentList
-  | empty
-
--- LOCAL MODIFICATION
-ModuleDefinition ::=
-  ModuleIdentifier
-  "DEFINITIONS"
-  --EncodingReferenceDefault
-  --TagDefault
-  --ExtensionDefault
-  "::="
-  "BEGIN"
-  ModuleBody
-  --EncodingControlSections
-  "END"
-
-ModuleIdentifier ::= ModuleReference DefinitiveIdentification
-
-MultipleTypeConstraints ::= FullSpecification | PartialSpecification
-
-NamedBit ::=
-    identifier "(" number ")"
-  | identifier "(" DefinedValue ")"
-
--- ORDERING CRITICAL
-NamedBitList ::=
-    NamedBit "," NamedBitList
-  | NamedBit
-
-NamedConstraint ::= identifier ComponentConstraint
-
-NamedNumber ::=
-    identifier "(" SignedNumber ")"
-  | identifier "(" DefinedValue ")"
-
--- ORDERING CRITICAL
-NamedNumberList ::=
-    NamedNumber "," NamedNumberList
-  | NamedNumber
-
-NamedType ::= identifier Type
-
-NamedValue ::= identifier Value
-
-NameForm ::= identifier
-
--- LOCAL MODIFICATION
-NullType ::= "NULL"
-
--- LOCAL MODIFICATION
-NullValue ::= "NULL"
-
--- LOCAL ADDITION
-NumericString ::= "NumericString"
-
--- LOCAL ADDITION
-ObjectDescriptor ::= "ObjectDescriptor"
-
--- LOCAL MODIFICATION
-ObjectIdentifierType ::= "OBJECT" "IDENTIFIER"
-
--- LOCAL MODIFICATION
-OctetStringType ::= "OCTET" "STRING"
-
--- LOCAL ADDITION
-Optional ::= "OPTIONAL"
-
-PartialSpecification ::= "{" "..." "," TypeConstraints "}"
-
--- LOCAL MODIFICATION
-PatternConstraint ::= "PATTERN" Value
-
--- LOCAL MODIFICATION
-PermittedAlphabet ::= "FROM" Constraint
-
-Plane ::= number
-
-PrefixedType ::=
-    TaggedType
-  | EncodingPrefixedType
-
--- LOCAL MODIFICATION
-PresenceConstraint ::= Present | Absent | Optional | empty
-
--- LOCAL ADDITION
-Present ::= "PRESENT"
-
--- LOCAL ADDITION
-PrintableString ::= "PrintableString"
-
--- LOCAL ADDITION
-Private ::= "PRIVATE"
-
-PropertyAndSettingPair ::= PropertyName "=" SettingName
-
--- LOCAL MODIFICATION
-PropertyName ::= PsName
-
--- LOCAL MODIFICATION
--- See 51.10.1
-PropertySettings ::= "SETTINGS" """ PropertySettingsList """
-
--- ORDERING CRITICAL
-PropertySettingsList ::=
-    PropertyAndSettingPair PropertySettingsList
-  | PropertyAndSettingPair
-
-Quadruple ::= "{" Group "," Plane "," Row "," Cell "}"
-
--- LOCAL MODIFICATION
-RealType ::= "REAL"
-
-ReferencedType ::=
-    DefinedType
-  | UsefulType
-  | SelectionType
-  --| TypeFromObject
-  --| ValueSetFromObjects
-
--- LOCAL MODIFICATION
-RelativeIRIType ::= "RELATIVE-OID-IRI"
-
--- LOCAL MODIFICATION
-RelativeOIDType ::= "RELATIVE-OID"
-
-RestrictedCharacterStringType ::=
-    BMPString
-  | GeneralString
-  | GraphicString
-  | IA5String
-  | ISO646String
-  | NumericString
-  | PrintableString
-  | TeletexString
-  | T61String
-  | UniversalString
-  | UTF8String
-  | VideotexString
-  | VisibleString
-
-RestrictedCharacterStringValue ::=
-    cstring
-  | CharacterStringList
-  | Quadruple
-  | Tuple
-
-RootAlternativeTypeList ::= AlternativeTypeList
-
-RootComponentTypeList ::= ComponentTypeList
-
-RootElementSetSpec ::= ElementSetSpec
-
-RootEnumeration ::= Enumeration
-
-Row ::= number
-
-SelectionType ::= identifier "<" Type
-
--- ORDERING CRITICAL
--- LOCAL MODIFICATION
-SequenceOfType ::= "SEQUENCE" "OF" Type | "SEQUENCE" "OF" NamedType
-
--- LOCAL MODIFICATION
-SequenceType ::=
-    "SEQUENCE" "{" "}"
-  --| "SEQUENCE" "{" ExtensionAndException OptionalExtensionMarker "}"
-  | "SEQUENCE" "{" ComponentTypeLists "}"
-
-SequenceValue ::= "{" ComponentValueList "}"
-
--- ORDERING CRITICAL
--- LOCAL MODIFICATION
-SetOfType ::= "SET" "OF" Type | "SET" "OF" NamedType
-
--- LOCAL MODIFICATION
-SettingName ::= PsName
-
--- LOCAL MODIFICATION
-SetType ::=
-    "SET" "{" "}"
-  --| SET "{" ExtensionAndException OptionalExtensionMarker "}"
-  | "SET" "{" ComponentTypeLists "}"
-
--- LOCAL MODIFICATION
-SignedNumber ::=
-    number
-  | NegativeNumber
-
-SingleTypeConstraint ::= Constraint
-
-SingleValue ::= Value
-
--- LOCAL MODIFICATION
-SizeConstraint ::= "SIZE" Constraint
-
-SubsequentArcIdentifier ::=
-    "/" ArcIdentifier SubsequentArcIdentifier
-  | empty
-
-SubtypeConstraint ::= ElementSetSpecs
-
--- ORDERING CRITICAL
-SubtypeElements ::=
-    ContainedSubtype
-  | ValueRange
-  -- This is added after ValueRange to prevent SingleValue from wrongly
-  -- consuming values meant for ValueRange
-  | SingleValue
-  | PermittedAlphabet
-  | SizeConstraint
-  -- Gets consumed via ContainedSubtype
-  --| TypeConstraint
-  | InnerTypeConstraints
-  | PatternConstraint
-  | PropertySettings
-  --| DurationRange
-  --| TimePointRange
-  --| RecurrenceRange
-
--- LOCAL ADDITION
-T61String ::= "T61String"
-
-TableColumn ::= number
-
-TableRow ::= number
-
-Tag ::= "[" EncodingReference Class ClassNumber "]"
-
--- ORDERING CRITICAL
-TaggedType ::=
-    Tag EXPLICIT Type
-  | Tag IMPLICIT Type
-  | Tag Type
-
--- LOCAL ADDITION
-TeletexString ::= "TeletexString"
-
--- LOCAL MODIFICATION
-TimeOfDayType ::= "TIME-OF-DAY"
-
--- LOCAL MODIFICATION
-TimeType ::= "TIME"
-
-Tuple ::= "{" TableColumn "," TableRow "}"
+-- ItemSpec ::=
+--    typereference
+--  | ItemId "." ComponentId
+--
+-- ItemId ::= ItemSpec
+--
+-- Both are redefined as shown below.
+--ItemSpec ::=
+--    typereference
+--  | ComponentId "." ItemSpec
+
+ComponentId ::=
+    identifier
+  | number
+  | "*"
+
+TypeAssignment ::= typereference "::=" Type
+
+ValueAssignment ::= valuereference Type "::=" Value
+
+--XMLValueAssignment ::= valuereference "::=" XMLTypedValue
+
+--XMLTypedValue ::=
+--    "<" & NonParameterizedTypeName ">" XMLValue "</" & NonParameterizedTypeName ">"
+--  | "<" & NonParameterizedTypeName "/>"
+
+--ValueSetTypeAssignment ::= typereference Type "::=" ValueSet
+
+--ValueSet ::= "{" ElementSetSpecs "}"
 
 -- ORDERING CRITICAL
 -- LOCAL MODIFICATION
@@ -647,20 +274,750 @@ Type ::=
   | BuiltinType
   | ReferencedType ConstraintList
   | ReferencedType
-  --| TypeWithConstraint
-
--- LOCAL MODIFICATION
-TypeAssignment ::= TypeReference "::=" Type
-
-TypeConstraint ::= Type
+--  | TypeWithConstraint
 
 -- ORDERING CRITICAL
-TypeConstraints ::=
-    NamedConstraint "," TypeConstraints
-  | NamedConstraint
+-- LOCAL ADDITION
+-- See Type above
+ConstraintList ::=
+    Constraint ConstraintList
+  | Constraint
+
+BuiltinType ::=
+    BitStringType
+  | BooleanType
+  | CharacterStringType
+  | ChoiceType
+  | DateType
+  | DateTimeType
+  | DurationType
+  | EmbeddedPDVType
+  | EnumeratedType
+  | ExternalType
+--  | InstanceOfType
+  | IntegerType
+  | IRIType
+  | NullType
+--  | ObjectClassFieldType
+  | ObjectIdentifierType
+  | OctetStringType
+  | RealType
+  | RelativeIRIType
+  | RelativeOIDType
+  | SequenceType
+  | SequenceOfType
+  | SetType
+  | SetOfType
+  | PrefixedType
+  | TimeType
+  | TimeOfDayType
+
+ReferencedType ::=
+    DefinedType
+  | UsefulType
+  | SelectionType
+--  | TypeFromObject
+--  | ValueSetFromObjects
+
+NamedType ::= identifier Type
+
+Value ::=
+    BuiltinValue
+--  | ReferencedValue
+--  | ObjectClassFieldValue
+
+--XMLValue ::=
+--    XMLBuiltinValue
+--  | XMLObjectClassFieldValue
+
+BuiltinValue ::=
+    BitStringValue
+  | BooleanValue
+-- CharacterStringValue->UnrestrictedCharacterStringValue is also
+-- equivalent to EmbeddedPDVValue and ExternalValue
+  | CharacterStringValue
+  | ChoiceValue
+--  | EmbeddedPDVValue
+  | EnumeratedValue
+--  | ExternalValue
+--  | InstanceOfValue
+  | IntegerValue
+  | IRIValue
+  | NullValue
+--  | ObjectIdentifierValue
+--  | OctetStringValue
+--  | RealValue
+--  | RelativeIRIValue
+--  | RelativeOIDValue
+--  | SequenceValue
+--  | SequenceOfValue
+--  | SetValue
+--  | SetOfValue
+--  | PrefixedValue
+--  | TimeValue
+
+--XMLBuiltinValue ::=
+--    XMLBitStringValue
+--  | XMLBooleanValue
+--  | XMLCharacterStringValue
+--  | XMLChoiceValue
+--  | XMLEmbeddedPDVValue
+--  | XMLEnumeratedValue
+--  | XMLExternalValue
+--  | XMLInstanceOfValue
+--  | XMLIntegerValue
+--  | XMLIRIValue
+--  | XMLNullValue
+--  | XMLObjectIdentifierValue
+--  | XMLOctetStringValue
+--  | XMLRealValue
+--  | XMLRelativeIRIValue
+--  | XMLRelativeOIDValue
+--  | XMLSequenceValue
+--  | XMLSequenceOfValue
+--  | XMLSetValue
+--  | XMLSetOfValue
+--  | XMLPrefixedValue
+--  | XMLTimeValue
+
+--ReferencedValue ::=
+--    DefinedValue
+--  | ValueFromObject
+
+NamedValue ::= identifier Value
+
+--XMLNamedValue ::= "<" & identifier ">" XMLValue "</" & identifier ">"
+
+BooleanType ::= BOOLEAN
+
+BooleanValue ::= TRUE | FALSE
+
+--XMLBooleanValue ::=
+--    EmptyElementBoolean
+--  | TextBoolean
+
+--EmptyElementBoolean ::=
+--    "<" & "true" "/>"
+--  | "<" & "false" "/>"
+
+--TextBoolean ::=
+--    extended-true
+--  | extended-false
 
 -- ORDERING CRITICAL
+IntegerType ::=
+    INTEGER "{" NamedNumberList "}"
+  | INTEGER
+
+-- ORDERING CRITICAL
+NamedNumberList ::=
+    NamedNumber "," NamedNumberList
+  | NamedNumber
+
+NamedNumber ::=
+    identifier "(" SignedNumber ")"
+  | identifier "(" DefinedValue ")"
+
 -- LOCAL MODIFICATION
+SignedNumber ::=
+    number
+  | NegativeNumber
+
+-- ORDERING CRITICAL
+IntegerValue ::= SignedNumber | identifier
+
+--XMLIntegerValue ::=
+--    XMLSignedNumber
+--  | EmptyElementInteger
+--  | TextInteger
+
+--XMLSignedNumber ::=
+--    number
+--  |"-" & number
+
+--EmptyElementInteger ::= "<" & identifier "/>"
+
+--TextInteger ::= identifier
+
+EnumeratedType ::= ENUMERATED "{" Enumerations "}"
+
+-- ORDERING CRITICAL
+Enumerations ::=
+--    RootEnumeration "," "..." ExceptionSpec "," AdditionalEnumeration
+--  | RootEnumeration "," "..." ExceptionSpec
+  RootEnumeration
+
+RootEnumeration ::= Enumeration
+
+AdditionalEnumeration ::= Enumeration
+
+-- ORDERING CRITICAL
+Enumeration ::=
+    EnumerationItem "," Enumeration
+  | EnumerationItem
+
+-- ORDERING CRITICAL
+EnumerationItem ::= NamedNumber | identifier
+
+EnumeratedValue ::= identifier
+
+--XMLEnumeratedValue ::=
+--    EmptyElementEnumerated
+--  | TextEnumerated
+
+--EmptyElementEnumerated ::= "<" & identifier "/>"
+
+--TextEnumerated ::= identifier
+
+RealType ::= REAL
+
+--RealValue ::=
+--    NumericRealValue
+--  | SpecialRealValue
+
+--NumericRealValue ::=
+--    realnumber
+--  | "-" realnumber
+--  | SequenceValue
+
+--SpecialRealValue ::=
+--    PLUS-INFINITY
+--  | MINUS-INFINITY
+--  | NOT-A-NUMBER
+
+--XMLRealValue ::= XMLNumericRealValue | XMLSpecialRealValue
+
+--XMLNumericRealValue ::=
+--    realnumber
+--  | "-" & realnumber
+
+--XMLSpecialRealValue ::=
+--    EmptyElementReal
+--  | TextReal
+
+--EmptyElementReal ::=
+--    "<" & PLUS-INFINITY "/>"
+--  | "<" & MINUS-INFINITY "/>"
+--  | "<" & NOT-A-NUMBER "/>"
+
+--TextReal ::=
+--    "INF"
+--  | "-" & "INF"
+--  | "NaN"
+
+-- ORDERING CRITICAL
+BitStringType ::=
+    BIT STRING "{" NamedBitList "}"
+  | BIT STRING
+
+-- ORDERING CRITICAL
+NamedBitList ::=
+    NamedBit "," NamedBitList
+  | NamedBit
+
+NamedBit ::=
+    identifier "(" number ")"
+  | identifier "(" DefinedValue ")"
+
+-- ORDERING CRITICAL
+BitStringValue ::=
+    bstring
+  | hstring
+  | "{" IdentifierList "}"
+  | "{" "}"
+  | CONTAINING Value
+
+-- ORDERING CRITICAL
+IdentifierList ::=
+    identifier "," IdentifierList
+  | identifier
+
+--XMLBitStringValue ::=
+--    XMLTypedValue
+--  | xmlbstring
+--  | XMLIdentifierList
+--  | empty
+
+--XMLIdentifierList ::=
+--    EmptyElementList
+--  | TextList
+
+--EmptyElementList ::=
+--    "<" & identifier "/>"
+--  | EmptyElementList "<" & identifier "/>"
+
+-- ORDERING CRITICAL
+--TextList ::=
+--    identifier TextList
+--  | identifier
+
+OctetStringType ::= OCTET STRING
+
+--OctetStringValue ::=
+--    bstring
+--  | hstring
+--  | CONTAINING Value
+
+--XMLOctetStringValue ::=
+--    XMLTypedValue
+--  | xmlhstring
+
+-- LOCAL MODIFICATION
+NullType ::= ASN_NULL
+
+-- LOCAL MODIFICATION
+NullValue ::= ASN_NULL
+
+--XMLNullValue ::= empty
+
+SequenceType ::=
+    SEQUENCE "{" "}"
+--  | SEQUENCE "{" ExtensionAndException OptionalExtensionMarker "}"
+  | SEQUENCE "{" ComponentTypeLists "}"
+
+-- ORDERING CRITICAL
+--ExtensionAndException ::= "..." ExceptionSpec | "..."
+
+-- LOCAL MODIFICATION
+--OptionalExtensionMarker ::= "," Ellipsis | empty
+
+Ellipsis ::= "..."
+
+ComponentTypeLists ::=
+    RootComponentTypeList
+--  | RootComponentTypeList "," ExtensionAndException ExtensionAdditions OptionalExtensionMarker
+--  | RootComponentTypeList "," ExtensionAndException ExtensionAdditions ExtensionEndMarker "," RootComponentTypeList
+--  | ExtensionAndException ExtensionAdditions ExensionEndMarker "," RootComponentTypeList
+--  | ExtensionAndException ExtensionAdditions OptionalExtensionMarker
+
+RootComponentTypeList ::= ComponentTypeList
+
+ExtensionEndMarker ::= "," "..."
+
+--ExtensionAdditions ::=
+--    "," ExtensionAdditionList
+--  | empty
+
+--ExtensionAdditionList ::=
+--    ExtensionAddition "," ExtensionAdditionList
+--  | ExtensionAddition
+
+--ExtensionAddition ::=
+--    ComponentType
+--  | ExtensionAdditionGroup
+
+--ExtensionAdditionGroup ::= "[[" VersionNumber ComponentTypeList "]]"
+
+-- ORDERING CRITICAL
+--VersionNumber ::= number ":" | empty
+
+-- ORDERING CRITICAL
+ComponentTypeList ::=
+    ComponentType "," ComponentTypeList
+  | ComponentType
+
+-- ORDERING CRITICAL
+ComponentType ::=
+    NamedType DEFAULT Value
+  | NamedType OPTIONAL
+  | NamedType
+  | COMPONENTS OF Type
+
+SequenceValue ::=
+    "{" ComponentValueList "}"
+  | "{" "}"
+
+-- ORDERING CRITICAL
+ComponentValueList ::=
+    NamedValue "," ComponentValueList
+  | NamedValue
+
+--XMLSequenceValue ::=
+--    XMLComponentValueList
+--  | empty
+
+-- ORDERING CRITICAL
+--XMLComponentValueList ::=
+--    XMLNamedValue XMLComponentValueList
+--  | XMLNamedValue
+
+-- ORDERING CRITICAL
+SequenceOfType ::= SEQUENCE OF Type | SEQUENCE OF NamedType
+
+SequenceOfValue ::=
+    "{" ValueList "}"
+  | "{" NamedValueList "}"
+  | "{" "}"
+
+-- ORDERING CRITICAL
+ValueList ::=
+    Value "," ValueList
+  | Value
+
+-- ORDERING CRITICAL
+NamedValueList ::=
+    NamedValue "," NamedValueList
+  | NamedValue
+
+--XMLSequenceOfValue ::=
+--    XMLValueList
+--  | XMLDelimitedItemList
+--  | empty
+
+-- ORDERING CRITICAL
+--XMLValueList ::=
+--    XMLValueOrEmpty XMLValueList
+--  | XMLValueOrEmpty
+
+--XMLValueOrEmpty ::=
+--    XMLValue
+--  | "<" & NonParameterizedTypeName "/>"
+
+-- ORDERING CRITICAL
+--XMLDelimitedItemList ::=
+--    XMLDelimitedItem XMLDelimitedItemList
+--  | XMLDelimitedItem
+
+--XMLDelimitedItem ::=
+--    "<" & NonParameterizedTypeName ">" XMLValue "</" & NonParameterizedTypeName ">"
+--  | "<" & identifier ">" XMLValue "</" & identifier ">"
+
+SetType ::=
+    SET "{" "}"
+--  | SET "{" ExtensionAndException OptionalExtensionMarker "}"
+  | SET "{" ComponentTypeLists "}"
+
+SetValue ::=
+    "{" ComponentValueList "}"
+  | "{" "}"
+
+--XMLSetValue ::=
+--    XMLComponentValueList
+--  | empty
+
+SetOfType ::= SET OF Type | SET OF NamedType
+
+SetOfValue ::=
+    "{" ValueList "}"
+  | "{" NamedValueList "}"
+  | "{" "}"
+
+--XMLSetOfValue ::=
+--    XMLValueList
+--  | XMLDelimitedItemList
+--  | empty
+
+ChoiceType ::= CHOICE "{" AlternativeTypeLists "}"
+
+AlternativeTypeLists ::=
+    RootAlternativeTypeList
+--  | RootAlternativeTypeList "," ExtensionAndException ExtensionAdditionAlternatives OptionalExtensionMarker
+
+RootAlternativeTypeList ::= AlternativeTypeList
+
+--ExtensionAdditionAlternatives ::=
+--    "," ExtensionAdditionAlternativesList
+--  | empty
+
+-- ORDERING CRITICAL
+--ExtensionAdditionAlternativesList ::=
+--    ExtensionAdditionAlternative "," ExtensionAdditionAlternativesList
+--  | ExtensionAdditionAlternative
+
+--ExtensionAdditionAlternative ::=
+--    ExtensionAdditionAlternativesGroup
+--  | NamedType
+
+--ExtensionAdditionAlternativesGroup ::= "[[" VersionNumber AlternativeTypeList "]]"
+
+-- ORDERING CRITICAL
+AlternativeTypeList ::=
+    NamedType "," AlternativeTypeList
+  | NamedType
+
+ChoiceValue ::= identifier ":" Value
+
+--XMLChoiceValue ::= "<" & identifier ">" XMLValue "</" & identifier ">"
+
+SelectionType ::= identifier "<" Type
+
+PrefixedType ::=
+    TaggedType
+  | EncodingPrefixedType
+
+PrefixedValue ::= Value
+
+--XMLPrefixedValue ::= XMLValue
+
+EncodingPrefixedType ::= EncodingPrefix Type
+
+EncodingPrefix ::=
+  "[" EncodingReference
+--      EncodingInstruction
+  "]"
+
+-- ORDERING CRITICAL
+TaggedType ::=
+    Tag EXPLICIT Type
+  | Tag IMPLICIT Type
+  | Tag Type
+
+Tag ::= "[" EncodingReference Class ClassNumber "]"
+
+EncodingReference ::=
+    encodingreference ":"
+  | empty
+
+ClassNumber ::=
+    number
+  | DefinedValue
+
+Class ::=
+    UNIVERSAL
+  | APPLICATION
+  | PRIVATE
+  | empty
+
+-- LOCAL MODIFICATION
+ObjectIdentifierType ::= OBJECT ASN_IDENTIFIER
+
+-- ORDERING CRITICAL
+ObjectIdentifierValue ::=
+    "{" DefinedValue ObjIdComponentsList "}"
+  | "{" ObjIdComponentsList "}"
+
+-- ORDERING CRITICAL
+ObjIdComponentsList ::=
+    ObjIdComponents ObjIdComponentsList
+  | ObjIdComponents
+
+-- ORDERING CRITICAL
+-- DefinedValue is covered inside NumberForm
+ObjIdComponents ::=
+    NameAndNumberForm
+  | NameForm
+  | NumberForm
+  | DefinedValue
+
+NameForm ::= identifier
+
+NumberForm ::= number | DefinedValue
+
+NameAndNumberForm ::= identifier "(" NumberForm ")"
+
+--XMLObjectIdentifierValue ::= XMLObjIdComponentList
+
+--XMLObjIdComponentList ::=
+--    XMLObjIdComponent & "." & XMLObjIdComponentList
+--  | XMLObjIdComponent
+
+-- ORDERING CRITICAL
+--XMLObjIdComponent ::=
+--    NameForm
+--  | XMLNameAndNumberForm
+--  | XMLNumberForm
+
+--XMLNumberForm ::= number
+
+--XMLNameAndNumberForm ::= identifier & "(" & XMLNumberForm & ")"
+
+-- LOCAL MODIFICATION
+RelativeOIDType ::= RELATIVE_OID
+
+RelativeOIDValue ::= "{" RelativeOIDComponentsList "}"
+
+-- ORDERING CRITICAL
+RelativeOIDComponentsList ::=
+    RelativeOIDComponents RelativeOIDComponentsList
+  | RelativeOIDComponents
+
+-- ORDERING CRITICAL
+-- DefinedValue is covered inside NumberForm
+RelativeOIDComponents ::=
+    NameAndNumberForm
+  | NumberForm
+--  | DefinedValue
+
+--XMLRelativeOIDValue ::= XMLRelativeOIDComponentList
+
+-- ORDERING CRITICAL
+--XMLRelativeOIDComponentList ::=
+--    XMLRelativeOIDComponent & "." & XMLRelativeOIDComponentList
+--  | XMLRelativeOIDComponent
+
+-- ORDERING CRITICAL
+--XMLRelativeOIDComponent ::=
+--    XMLNameAndNumberForm
+--  | XMLNumberForm
+
+-- LOCAL MODIFICATION
+IRIType ::= OID_IRI
+
+IRIValue ::= """ FirstArcIdentifier SubsequentArcIdentifier """
+
+FirstArcIdentifier ::= "/" ArcIdentifier
+
+SubsequentArcIdentifier ::=
+    "/" ArcIdentifier SubsequentArcIdentifier
+  | empty
+
+ArcIdentifier ::=
+    integerUnicodeLabel
+  | non-integerUnicodeLabel
+
+--XMLIRIValue ::= FirstArcIdentifier SubsequentArcIdentifier
+
+-- LOCAL MODIFICATION
+RelativeIRIType ::= RELATIVE_OID_IRI
+
+RelativeIRIValue ::= """ FirstRelativeArcIdentifier SubsequentArcIdentifier """
+
+FirstRelativeArcIdentifier ::= ArcIdentifier
+
+--XMLRelativeIRIValue ::= FirstRelativeArcIdentifier SubsequentArcIdentifier
+
+EmbeddedPDVType ::= EMBEDDED PDV
+
+EmbeddedPDVValue ::= SequenceValue
+
+--XMLEmbeddedPDVValue ::= XMLSequenceValue
+
+ExternalType ::= EXTERNAL
+
+ExternalValue ::= SequenceValue
+
+--XMLExternalValue ::= XMLSequenceValue
+
+TimeType ::= TIME
+
+--TimeValue ::= tstring
+
+--XMLTimeValue ::= xmltstring
+
+DateType ::= DATE
+
+-- LOCAL MODIFICATION
+TimeOfDayType ::= TIME_OF_DAY
+
+-- LOCAL MODIFICATION
+DateTimeType ::= DATE_TIME
+
+DurationType ::= DURATION
+
+CharacterStringType ::=
+    RestrictedCharacterStringType
+  | UnrestrictedCharacterStringType
+
+CharacterStringValue ::=
+    RestrictedCharacterStringValue
+  | UnrestrictedCharacterStringValue
+
+--XMLCharacterStringValue ::=
+--    XMLRestrictedCharacterStringValue
+--  | XMLUnrestrictedCharacterStringValue
+
+RestrictedCharacterStringType ::=
+    BMPString
+  | GeneralString
+  | GraphicString
+  | IA5String
+  | ISO646String
+  | NumericString
+  | PrintableString
+  | TeletexString
+  | T61String
+  | UniversalString
+  | UTF8String
+  | VideotexString
+  | VisibleString
+
+RestrictedCharacterStringValue ::=
+    cstring
+  | CharacterStringList
+  | Quadruple
+  | Tuple
+
+CharacterStringList ::= "{" CharSyms "}"
+
+-- ORDERING CRITICAL
+CharSyms ::=
+    CharsDefn "," CharSyms
+  | CharsDefn
+
+CharsDefn ::=
+    cstring
+  | Quadruple
+  | Tuple
+  | DefinedValue
+
+Quadruple ::= "{" Group "," Plane "," Row "," Cell "}"
+
+Group ::= number
+
+Plane ::= number
+
+Row ::= number
+
+Cell ::= number
+
+Tuple ::= "{" TableColumn "," TableRow "}"
+
+TableColumn ::= number
+
+TableRow ::= number
+
+--XMLRestrictedCharacterStringValue ::= xmlcstring
+
+UnrestrictedCharacterStringType ::= CHARACTER STRING
+
+UnrestrictedCharacterStringValue ::= SequenceValue
+
+--XMLUnrestrictedCharacterStringValue ::= XMLSequenceValue
+
+UsefulType ::=
+    GeneralizedTime
+  | UTCTime
+  | ObjectDescriptor
+
+GeneralizedTime ::= "GeneralizedTime"
+
+UTCTime ::= "UTCTime"
+
+ObjectDescriptor ::= "ObjectDescriptor"
+
+TypeWithConstraint ::=
+    SET Constraint OF Type
+  | SET SizeConstraint OF Type
+  | SEQUENCE Constraint OF Type
+  | SEQUENCE SizeConstraint OF Type
+  | SET Constraint OF NamedType
+  | SET SizeConstraint OF NamedType
+  | SEQUENCE Constraint OF NamedType
+  | SEQUENCE SizeConstraint OF NamedType
+
+Constraint ::= "(" ConstraintSpec ExceptionSpec ")"
+
+ConstraintSpec ::=
+    SubtypeConstraint
+--  | GeneralConstraint
+
+SubtypeConstraint ::= ElementSetSpecs
+
+-- ORDERING CRITICAL
+ElementSetSpecs ::=
+    RootElementSetSpec "," "..." "," AdditionalElementSetSpec
+  | RootElementSetSpec "," Ellipsis
+  | RootElementSetSpec
+
+RootElementSetSpec ::= ElementSetSpec
+
+AdditionalElementSetSpec ::= ElementSetSpec
+
+ElementSetSpec ::=
+    Unions
+  | ALL Exclusions
+
+-- This is manually generated for now
 --
 -- Unions ::=
 --     Intersections
@@ -673,48 +1030,141 @@ TypeConstraints ::=
 -- Unions ::=
 --     Unions UnionMark Intersections
 --   | Intersections
+
+-- This is manually generated for now
 --
+--Intersections ::=
+--    IElems IntersectionMark IntersectionElements
+--  | IntersectionElements
+--
+-- IElems ::= Intersections
+--
+-- Combining above two productions into a single production as shown below.
+--
+-- Intersections ::=
+--    Intersections IntersectionMark IntersectionElements
+--  | IntersectionElements
 
--- LOCAL ADDITION
-Universal ::= "UNIVERSAL"
+-- ORDERING CRITICAL
+IntersectionElements ::=
+    Elems Exclusions
+  | Elements
 
--- LOCAL ADDITION
-UniversalString ::= "UniversalString"
+Elems ::= Elements
 
+Exclusions ::= EXCEPT Elements
+
+UnionMark ::= "|" | UNION
+
+IntersectionMark ::= "^" | INTERSECTION
+
+Elements ::=
+    SubtypeElements
+--  | ObjectSetElements
+  | "(" ElementSetSpec ")"
+
+-- ORDERING CRITICAL
+SubtypeElements ::=
+    ContainedSubtype
+  | ValueRange
+-- This is added after ValueRange to prevent SingleValue from wrongly
+-- consuming values meant for ValueRange
+  | SingleValue
+  | PermittedAlphabet
+  | SizeConstraint
+-- Gets consumed via ContainedSubtype
+--  | TypeConstraint
+  | InnerTypeConstraints
+  | PatternConstraint
+  | PropertySettings
+-- These are same as ValueRange
+--  | DurationRange
+--  | TimePointRange
+--  | RecurrenceRange
+
+SingleValue ::= Value
+
+ContainedSubtype ::= Includes Type
+
+Includes ::= ASN_INCLUDES | empty
+
+ValueRange ::= LowerEndpoint ".." UpperEndpoint
+
+-- ORDERING CRITICAL
 -- LOCAL MODIFICATION
-UnrestrictedCharacterStringType ::= "CHARACTER" "STRING"
-
-UnrestrictedCharacterStringValue ::= SequenceValue
+LowerEndpoint ::= LowerEndValue LessThan | LowerEndValue
 
 -- ORDERING CRITICAL
 -- LOCAL MODIFICATION
 UpperEndpoint ::= LessThan UpperEndValue | UpperEndValue
 
--- LOCAL MODIFICATION
-UpperEndValue ::= Value | Max
-
-UsefulType ::=
-    GeneralizedTime
-  | UTCTime
-  | ObjectDescriptor
-
 -- LOCAL ADDITION
-UTCTime ::= "UTCTime"
+LessThan ::= "<"
 
--- LOCAL ADDITION
-UTF8String ::= "UTF8String"
+LowerEndValue ::= Value | MIN
 
-Value ::=
-    BuiltinValue
-  --| ReferencedValue
-  --| ObjectClassFieldValue
+UpperEndValue ::= Value | MAX
+
+SizeConstraint ::= SIZE Constraint
+
+TypeConstraint ::= Type
+
+PermittedAlphabet ::= FROM Constraint
+
+InnerTypeConstraints ::=
+    WITH COMPONENT SingleTypeConstraint
+  | WITH COMPONENTS MultipleTypeConstraints
+
+SingleTypeConstraint ::= Constraint
+
+MultipleTypeConstraints ::=
+    FullSpecification
+  | PartialSpecification
+
+FullSpecification ::= "{" TypeConstraints "}"
+
+PartialSpecification ::= "{" "..." "," TypeConstraints "}"
+
+-- ORDERING CRITICAL
+TypeConstraints ::=
+    NamedConstraint "," TypeConstraints
+  | NamedConstraint
+
+NamedConstraint ::= identifier ComponentConstraint
+
+ComponentConstraint ::= ValueConstraint PresenceConstraint
 
 ValueConstraint ::= Constraint | empty
 
-ValueRange ::= LowerEndpoint ".." UpperEndpoint
+PresenceConstraint ::= PRESENT | ABSENT | OPTIONAL | empty
 
--- LOCAL ADDITION
-VideotexString ::= "VideotexString"
+PatternConstraint ::= PATTERN Value
 
--- LOCAL ADDITION
-VisibleString ::= "VisibleString"
+-- LOCAL MODIFICATION
+-- See 51.10.1
+PropertySettings ::= SETTINGS """ PropertySettingsList """
+
+-- ORDERING CRITICAL
+PropertySettingsList ::=
+    PropertyAndSettingPair PropertySettingsList
+  | PropertyAndSettingPair
+
+PropertyAndSettingPair ::= PropertyName "=" SettingName
+
+PropertyName ::= psname
+
+SettingName ::= psname
+
+--DurationRange ::= ValueRange
+
+--TimePointRange ::= ValueRange
+
+--RecurrenceRange ::= ValueRange
+
+ExceptionSpec ::= "!" ExceptionIdentification | empty
+
+ExceptionIdentification ::=
+    SignedNumber
+  | DefinedValue
+  | Type ":" Value
+

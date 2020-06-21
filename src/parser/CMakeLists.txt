@@ -1,73 +1,104 @@
 set(LIB_NAME parser)
 
 set(GEN_PARSER_SOURCES
-  Absent.cpp
+  ABSENT.cpp
   AdditionalElementSetSpec.cpp
+  AdditionalEnumeration.cpp
+  ALL.cpp
   AlternativeTypeList.cpp
   AlternativeTypeLists.cpp
-  Application.cpp
+  APPLICATION.cpp
   ArcIdentifier.cpp
-  AsnFalse.cpp
-  AsnTrue.cpp
+  ASN_INCLUDES.cpp
+  ASN_IDENTIFIER.cpp
+  ASN_NULL.cpp
   Assignment.cpp
   AssignmentList.cpp
+  AUTOMATIC.cpp
+  BEGIN.cpp
+  BIT.cpp
   BitStringType.cpp
   BitStringValue.cpp
   BMPString.cpp
+  BOOLEAN.cpp
   BooleanType.cpp
   BooleanValue.cpp
   BuiltinType.cpp
   BuiltinValue.cpp
   Cell.cpp
-  CharsDefn.cpp
-  CharSyms.cpp
+  CHARACTER.cpp
   CharacterStringList.cpp
   CharacterStringType.cpp
   CharacterStringValue.cpp
+  CharsDefn.cpp
+  CharSyms.cpp
+  CHOICE.cpp
   ChoiceType.cpp
   ChoiceValue.cpp
   Class.cpp
   ClassNumber.cpp
+  COMPONENT.cpp
   ComponentConstraint.cpp
+  ComponentId.cpp
+  COMPONENTS.cpp
   ComponentType.cpp
   ComponentTypeList.cpp
   ComponentTypeLists.cpp
   ComponentValueList.cpp
+  CONTAINING.cpp
   Constraint.cpp
   ConstraintList.cpp
   ConstraintSpec.cpp
   ContainedSubtype.cpp
+  DATE.cpp
+  DATE_TIME.cpp
   DateTimeType.cpp
   DateType.cpp
+  DEFAULT.cpp
   DefinedType.cpp
   DefinedValue.cpp
+  DEFINITIONS.cpp
   DefinitiveIdentification.cpp
   DefinitiveObjIdComponent.cpp
   DefinitiveObjIdComponentList.cpp
   DefinitiveOID.cpp
+  DURATION.cpp
   DurationType.cpp
   Elements.cpp
   ElementSetSpec.cpp
   ElementSetSpecs.cpp
   Elems.cpp
   Ellipsis.cpp
+  EMBEDDED.cpp
   EmbeddedPDVType.cpp
+  EmbeddedPDVValue.cpp
   EncodingPrefix.cpp
   EncodingPrefixedType.cpp
   EncodingReference.cpp
+  END.cpp
+  ENUMERATED.cpp
   EnumeratedType.cpp
   EnumeratedValue.cpp
   Enumeration.cpp
   EnumerationItem.cpp
   Enumerations.cpp
+  EXCEPT.cpp
   ExceptionIdentification.cpp
   ExceptionSpec.cpp
   Exclusions.cpp
-  Explicit.cpp
+  EXPLICIT.cpp
+  EXPORTS.cpp
+  EXTENSIBILITY.cpp
+  ExtensionEndMarker.cpp
+  EXTERNAL.cpp
   ExternalType.cpp
+  ExternalValue.cpp
   ExternalTypeReference.cpp
   ExternalValueReference.cpp
+  FALSE.cpp
   FirstArcIdentifier.cpp
+  FirstRelativeArcIdentifier.cpp
+  FROM.cpp
   FullSpecification.cpp
   GeneralizedTime.cpp
   GeneralString.cpp
@@ -75,12 +106,16 @@ set(GEN_PARSER_SOURCES
   Group.cpp
   IA5String.cpp
   IdentifierList.cpp
-  IElems.cpp
-  Implicit.cpp
+  IMPLICIT.cpp
+  IMPLIED.cpp
+  IMPORTS.cpp
   Includes.cpp
   InnerTypeConstraints.cpp
+  INSTRUCTIONS.cpp
+  INTEGER.cpp
   IntegerType.cpp
   IntegerValue.cpp
+  INTERSECTION.cpp
   IntersectionElements.cpp
   IntersectionMark.cpp
   IRIType.cpp
@@ -89,12 +124,13 @@ set(GEN_PARSER_SOURCES
   LessThan.cpp
   LowerEndpoint.cpp
   LowerEndValue.cpp
-  Max.cpp
-  Min.cpp
+  MAX.cpp
+  MIN.cpp
   ModuleBody.cpp
   ModuleDefinition.cpp
   ModuleIdentifier.cpp
   MultipleTypeConstraints.cpp
+  NameAndNumberForm.cpp
   NamedBit.cpp
   NamedBitList.cpp
   NamedConstraint.cpp
@@ -102,32 +138,52 @@ set(GEN_PARSER_SOURCES
   NamedNumberList.cpp
   NamedType.cpp
   NamedValue.cpp
+  NamedValueList.cpp
   NameForm.cpp
   NullType.cpp
   NullValue.cpp
+  NumberForm.cpp
   NumericString.cpp
+  OBJECT.cpp
   ObjectDescriptor.cpp
   ObjectIdentifierType.cpp
+  ObjectIdentifierValue.cpp
+  ObjIdComponents.cpp
+  ObjIdComponentsList.cpp
+  OCTET.cpp
   OctetStringType.cpp
-  Optional.cpp
+  OF.cpp
+  OID_IRI.cpp
+  OPTIONAL.cpp
   PartialSpecification.cpp
+  PATTERN.cpp
   PatternConstraint.cpp
+  PDV.cpp
   PermittedAlphabet.cpp
   Plane.cpp
   PrefixedType.cpp
+  PrefixedValue.cpp
   PresenceConstraint.cpp
-  Present.cpp
-  Private.cpp
+  PRESENT.cpp
   PrintableString.cpp
+  PRIVATE.cpp
+  ProductionFactory.cpp
   PropertyAndSettingPair.cpp
   PropertyName.cpp
   PropertySettings.cpp
   PropertySettingsList.cpp
   Quadruple.cpp
+  REAL.cpp
   RealType.cpp
   ReferencedType.cpp
+  RELATIVE_OID.cpp
+  RELATIVE_OID_IRI.cpp
   RelativeIRIType.cpp
+  RelativeIRIValue.cpp
+  RelativeOIDComponents.cpp
+  RelativeOIDComponentsList.cpp
   RelativeOIDType.cpp
+  RelativeOIDValue.cpp
   RestrictedCharacterStringType.cpp
   RestrictedCharacterStringValue.cpp
   RootAlternativeTypeList.cpp
@@ -136,33 +192,48 @@ set(GEN_PARSER_SOURCES
   RootEnumeration.cpp
   Row.cpp
   SelectionType.cpp
+  SEQUENCE.cpp
   SequenceOfType.cpp
+  SequenceOfValue.cpp
   SequenceType.cpp
   SequenceValue.cpp
-  SettingName.cpp
-  SetType.cpp
+  SET.cpp
   SetOfType.cpp
+  SetOfValue.cpp
+  SettingName.cpp
+  SETTINGS.cpp
+  SetType.cpp
+  SetValue.cpp
   SignedNumber.cpp
   SingleTypeConstraint.cpp
   SingleValue.cpp
+  SIZE.cpp
   SizeConstraint.cpp
+  STRING.cpp
   SubsequentArcIdentifier.cpp
   SubtypeConstraint.cpp
   SubtypeElements.cpp
+  T61String.cpp
   TableColumn.cpp
   TableRow.cpp
   Tag.cpp
   TaggedType.cpp
-  T61String.cpp
+  TAGS.cpp
   TeletexString.cpp
+  TIME.cpp
+  TIME_OF_DAY.cpp
   TimeOfDayType.cpp
   TimeType.cpp
+  TRUE.cpp
   Tuple.cpp
   Type.cpp
   TypeAssignment.cpp
   TypeConstraint.cpp
   TypeConstraints.cpp
-  Universal.cpp
+  TypeWithConstraint.cpp
+  UNION.cpp
+  UnionMark.cpp
+  UNIVERSAL.cpp
   UniversalString.cpp
   UnrestrictedCharacterStringType.cpp
   UnrestrictedCharacterStringValue.cpp
@@ -172,28 +243,31 @@ set(GEN_PARSER_SOURCES
   UTCTime.cpp
   UTF8String.cpp
   Value.cpp
+  ValueAssignment.cpp
   ValueConstraint.cpp
+  ValueList.cpp
   ValueRange.cpp
   VideotexString.cpp
   VisibleString.cpp
+  WITH.cpp
 )
 
 set(PARSER_SOURCES
   Bstring.cpp
   Cstring.cpp
-  EncodingReferencePrime.cpp
+  Encodingreference.cpp
   Hstring.cpp
   Identifier.cpp
   IntegerUnicodeLabel.hh
   Intersections.cpp # TODO
-  ModuleReference.hh
+  Modulereference.hh
   NegativeNumber.cpp
   NonIntegerUnicodeLabel.hh
   Number.cpp
-  PsName.hh
-  TypeReference.cpp
+  Psname.hh
+  Typereference.cpp
   Unions.cpp # TODO
-  ValueReference.hh
+  Valuereference.hh
 )
 
 set(GEN_SOURCES

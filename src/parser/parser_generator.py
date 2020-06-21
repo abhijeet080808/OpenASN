@@ -113,6 +113,9 @@ def is_reserved_production(production):
     if is_char_production(production) is False:
         return False
 
+    if production[1:-1] == "-":
+        return False
+
     for char in production[1:-1]:
         if char.isalpha() is False and \
            char.isdigit() is False and \
@@ -198,12 +201,18 @@ def get_parse_production_group_fn_name(production_group):
                 fn_name += "DoubleQuote"
             elif production[1:-1] == "/":
                 fn_name += "ForwardSlash"
+            elif production[1:-1] == "|":
+                fn_name += "VerticalSlash"
             elif production[1:-1] == "<":
                 fn_name += "LessThan"
             elif production[1:-1] == "::=":
                 fn_name += "ColonColonEqual"
             elif production[1:-1] == "=":
                 fn_name += "Equal"
+            elif production[1:-1] == "-":
+                fn_name += "Hyphen"
+            elif production[1:-1] == "*":
+                fn_name += "Asterisk"
             else:
                 raise ValueError("Unknown char production %s", production)
 
@@ -542,7 +551,7 @@ def generate_production_defs_cpp_header(production_names):
         fd.write("    %s,\n" % uc_production)
 
     fd.write("\n")
-    fd.write("    END\n")
+    fd.write("    ENUM_END\n")
     fd.write("  };\n")
     fd.write("}\n")
 

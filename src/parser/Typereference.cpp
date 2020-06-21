@@ -1,4 +1,4 @@
-#include "TypeReference.hh"
+#include "Typereference.hh"
 
 #include "ParseHelper.hh"
 
@@ -7,14 +7,14 @@
 using namespace OpenASN;
 
 Production
-TypeReference::
+Typereference::
 GetType() const
 {
-  return Production::TYPE_REFERENCE;
+  return Production::TYPEREFERENCE;
 }
 
 bool
-TypeReference::
+Typereference::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
       std::vector<std::string>& endStop,

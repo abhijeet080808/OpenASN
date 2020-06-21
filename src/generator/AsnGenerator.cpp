@@ -8,10 +8,10 @@
 #include "parser/BuiltinType.hh"
 #include "parser/ModuleBody.hh"
 #include "parser/ModuleIdentifier.hh"
-#include "parser/ModuleReference.hh"
+#include "parser/Modulereference.hh"
 #include "parser/Type.hh"
 #include "parser/TypeAssignment.hh"
-#include "parser/TypeReference.hh"
+#include "parser/Typereference.hh"
 #include "spdlog/spdlog.h"
 
 #include <cassert>
@@ -26,8 +26,8 @@ Generate(const ModuleDefinition* pModuleDefinition)
 
   auto p_module_identifier = dynamic_cast<ModuleIdentifier*>(
       pModuleDefinition->mModuleIdentifier.get());
-  auto p_module_reference = dynamic_cast<ModuleReference*>(
-      p_module_identifier->mModuleReference.get());
+  auto p_module_reference = dynamic_cast<Modulereference*>(
+      p_module_identifier->mModulereference.get());
 
   auto p_module_body = dynamic_cast<ModuleBody*>(
       pModuleDefinition->mModuleBody.get());
@@ -61,8 +61,8 @@ generateClass(const Assignment* pAssignment)
     auto p_type_assignment = dynamic_cast<TypeAssignment*>(
       pAssignment->mTypeAssignment.get());
 
-    auto p_type_reference = dynamic_cast<TypeReference*>(
-      p_type_assignment->mTypeReference.get());
+    auto p_type_reference = dynamic_cast<Typereference*>(
+      p_type_assignment->mTypereference.get());
 
     auto p_type = dynamic_cast<Type*>(
       p_type_assignment->mType.get());

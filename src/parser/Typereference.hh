@@ -5,7 +5,7 @@
 namespace OpenASN
 {
   // X.680 08/2015 Annex L
-  class TypeReference : public IProduction
+  class Typereference : public IProduction
   {
     public:
       Production GetType() const override;
