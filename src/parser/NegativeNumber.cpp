@@ -41,41 +41,30 @@ Parse(const std::vector<Word>& asnData,
     return false;
   }
 
-  bool first_char = true;
-  for (const auto& c : std::get<1>(asnData.at(asnDataIndex)))
+  std::vector<Word> asn_data;
+  for (size_t i = asnDataIndex; i < asnDataIndex + 1 && i < asnData.size(); i++)
   {
-    if (first_char)
-    {
-      // First char must be minus
-      if (c != '-')
-      {
-        return false;
-      }
-      else
-      {
-        first_char = false;
-      }
-    }
-    else
-    {
-      // Only numbers allowed
-      if (!isdigit(c))
-      {
-        return false;
-      }
-    }
+    asn_data.push_back(asnData.at(i));
   }
 
-  // Leading zero not allowed
-  if (*(std::get<1>(asnData.at(asnDataIndex)).begin() + 1) == '0')
+  if (std::get<1>(asn_data.at(0)).size() < 2 ||
+      *std::get<1>(asn_data.at(0)).begin() != '-')
   {
     return false;
   }
 
-  mValue = std::get<1>(asnData.at(asnDataIndex));
-  // Do not store the leading negative sign
-  mValue.erase(0, 1);
-  ++asnDataIndex;
+  std::get<1>(asn_data.at(0)) =
+    std::string(std::get<1>(asn_data.at(0)).begin() + 1,
+                std::get<1>(asn_data.at(0)).end());
 
-  return true;
+  int ret = parse(asn_data);
+  if (ret != 0)
+  {
+    asnDataIndex += ret;
+    return true;
+  }
+  else
+  {
+    return false;
+  }
 }

@@ -1,4 +1,4 @@
-#include "Number.hh"
+#include "NegativeRealnumber.hh"
 
 #include "ParseHelper.hh"
 
@@ -7,14 +7,14 @@
 using namespace OpenASN;
 
 Production
-Number::
+NegativeRealnumber::
 GetType() const
 {
-  return Production::NUMBER;
+  return Production::NEGATIVE_REALNUMBER;
 }
 
 bool
-Number::
+NegativeRealnumber::
 Parse(const std::vector<Word>& asnData,
       size_t& asnDataIndex,
       std::vector<std::string>& endStop,
@@ -37,10 +37,20 @@ Parse(const std::vector<Word>& asnData,
   }
 
   std::vector<Word> asn_data;
-  for (size_t i = asnDataIndex; i < asnDataIndex + 1 && i < asnData.size(); i++)
+  for (size_t i = asnDataIndex; i < asnDataIndex + 3 && i < asnData.size(); i++)
   {
     asn_data.push_back(asnData.at(i));
   }
+
+  if (std::get<1>(asn_data.at(0)).size() < 2 ||
+      *std::get<1>(asn_data.at(0)).begin() != '-')
+  {
+    return false;
+  }
+
+  std::get<1>(asn_data.at(0)) =
+    std::string(std::get<1>(asn_data.at(0)).begin() + 1,
+                std::get<1>(asn_data.at(0)).end());
 
   int ret = parse(asn_data);
   if (ret != 0)
@@ -52,28 +62,4 @@ Parse(const std::vector<Word>& asnData,
   {
     return false;
   }
-}
-
-int
-Number::
-parse(const std::vector<Word>& asnData)
-{
-  for (size_t i = 0; i < std::get<1>(asnData.at(0)).size(); i++)
-  {
-    char c = std::get<1>(asnData.at(0)).at(i);
-    if (!isdigit(c))
-    {
-      return 0;
-    }
-    mValue.append(1, c);
-  }
-
-  // Leading zero not allowed
-  if (std::get<1>(asnData.at(0)).size() > 1 &&
-      *(std::get<1>(asnData.at(0)).begin()) == '0')
-  {
-    return 0;
-  }
-
-  return 1;
 }

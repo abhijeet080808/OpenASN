@@ -6,7 +6,7 @@ namespace OpenASN
 {
   #define LOG_GEN(ACTION, OBJ, ASN_DATA, ASN_DATA_IDX, PARSE_PATH)             \
   {                                                                            \
-    SPDLOG_INFO("{}: {} parse \"{}\" [{}]",                                    \
+    SPDLOG_INFO("{}: {} parse \"{}\"\n[{}]",                                   \
                 (ASN_DATA).size() > (ASN_DATA_IDX) ?                           \
                   "["                                                        + \
                   std::to_string(std::get<4>((ASN_DATA).at((ASN_DATA_IDX)))) + \

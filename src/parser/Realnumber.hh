@@ -5,7 +5,7 @@
 namespace OpenASN
 {
   // X.680 08/2015 Annex L
-  class Number: public IProduction
+  class Realnumber: public IProduction
   {
     public:
       Production GetType() const override;
@@ -21,6 +21,9 @@ namespace OpenASN
       int parse(const std::vector<Word>& asnData);
 
     public:
-      std::string mValue;
+      std::string mCoeffBeforeDecimal;
+      std::string mCoeffAfterDecimal;
+      std::string mExponentSign;
+      std::string mExponent;
   };
 }

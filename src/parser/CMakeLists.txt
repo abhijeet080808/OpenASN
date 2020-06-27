@@ -126,6 +126,7 @@ set(GEN_PARSER_SOURCES
   LowerEndValue.cpp
   MAX.cpp
   MIN.cpp
+  MINUS_INFINITY.cpp
   ModuleBody.cpp
   ModuleDefinition.cpp
   ModuleIdentifier.cpp
@@ -140,9 +141,11 @@ set(GEN_PARSER_SOURCES
   NamedValue.cpp
   NamedValueList.cpp
   NameForm.cpp
+  NOT_A_NUMBER.cpp
   NullType.cpp
   NullValue.cpp
   NumberForm.cpp
+  NumericRealValue.cpp
   NumericString.cpp
   OBJECT.cpp
   ObjectDescriptor.cpp
@@ -161,6 +164,7 @@ set(GEN_PARSER_SOURCES
   PDV.cpp
   PermittedAlphabet.cpp
   Plane.cpp
+  PLUS_INFINITY.cpp
   PrefixedType.cpp
   PrefixedValue.cpp
   PresenceConstraint.cpp
@@ -175,6 +179,7 @@ set(GEN_PARSER_SOURCES
   Quadruple.cpp
   REAL.cpp
   RealType.cpp
+  RealValue.cpp
   ReferencedType.cpp
   RELATIVE_OID.cpp
   RELATIVE_OID_IRI.cpp
@@ -209,6 +214,7 @@ set(GEN_PARSER_SOURCES
   SingleValue.cpp
   SIZE.cpp
   SizeConstraint.cpp
+  SpecialRealValue.cpp
   STRING.cpp
   SubsequentArcIdentifier.cpp
   SubtypeConstraint.cpp
@@ -236,7 +242,6 @@ set(GEN_PARSER_SOURCES
   UNIVERSAL.cpp
   UniversalString.cpp
   UnrestrictedCharacterStringType.cpp
-  UnrestrictedCharacterStringValue.cpp
   UpperEndpoint.cpp
   UpperEndValue.cpp
   UsefulType.cpp
@@ -262,9 +267,11 @@ set(PARSER_SOURCES
   Intersections.cpp # TODO
   Modulereference.hh
   NegativeNumber.cpp
+  NegativeRealnumber.cpp
   NonIntegerUnicodeLabel.hh
   Number.cpp
   Psname.hh
+  Realnumber.cpp
   Typereference.cpp
   Unions.cpp # TODO
   Valuereference.hh

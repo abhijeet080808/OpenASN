@@ -1,11 +1,11 @@
 #pragma once
 
-#include "IProduction.hh"
+#include "Realnumber.hh"
 
 namespace OpenASN
 {
   // X.680 08/2015 Annex L
-  class Number: public IProduction
+  class NegativeRealnumber: public Realnumber
   {
     public:
       Production GetType() const override;
@@ -16,11 +16,5 @@ namespace OpenASN
           std::vector<std::string>& endStop,
           std::vector<std::string>& parsePath,
           ProductionParseHistory& parseHistory) override;
-
-    protected:
-      int parse(const std::vector<Word>& asnData);
-
-    public:
-      std::string mValue;
   };
 }

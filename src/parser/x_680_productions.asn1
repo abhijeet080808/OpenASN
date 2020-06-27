@@ -93,6 +93,9 @@ PRESENT                 ::= "PRESENT"
 ABSENT                  ::= "ABSENT"
 PATTERN                 ::= "PATTERN"
 SETTINGS                ::= "SETTINGS"
+PLUS_INFINITY           ::= "PLUS-INFINITY"
+MINUS_INFINITY          ::= "MINUS-INFINITY"
+NOT_A_NUMBER            ::= "NOT-A-NUMBER"
 
 -- LOCAL MODIFICATION
 ModuleDefinition ::=
@@ -339,21 +342,22 @@ BuiltinValue ::=
 -- This has to be placed before CharacterStringValue
   | IRIValue
 -- CharacterStringValue->UnrestrictedCharacterStringValue is also
--- equivalent to EmbeddedPDVValue and ExternalValue
+-- equivalent to EmbeddedPDVValue, ExternalValue and SequenceValue
   | CharacterStringValue
   | ChoiceValue
 --  | EmbeddedPDVValue
   | EnumeratedValue
 --  | ExternalValue
 --  | InstanceOfValue
-  | IntegerValue
   | NullValue
   | ObjectIdentifierValue
 -- OctetStringValue is covered by BitStringValue
 --  | OctetStringValue
---  | RealValue
+  | RealValue
+-- This has to be placed after RealValue
+  | IntegerValue
 --  | RelativeOIDValue
---  | SequenceValue
+  | SequenceValue
 --  | SequenceOfValue
 --  | SetValue
 --  | SetOfValue
@@ -475,19 +479,22 @@ EnumeratedValue ::= identifier
 
 RealType ::= REAL
 
---RealValue ::=
---    NumericRealValue
---  | SpecialRealValue
+RealValue ::=
+    NumericRealValue
+  | SpecialRealValue
 
---NumericRealValue ::=
---    realnumber
---  | "-" realnumber
+-- LOCAL MODIFICATION
+NumericRealValue ::=
+    realnumber
+  | NegativeRealnumber
+-- Removing below as this equivalent to plain SequenceValue
 --  | SequenceValue
 
---SpecialRealValue ::=
---    PLUS-INFINITY
---  | MINUS-INFINITY
---  | NOT-A-NUMBER
+-- LOCAL MODIFICATION
+SpecialRealValue ::=
+    PLUS_INFINITY
+  | MINUS_INFINITY
+  | NOT_A_NUMBER
 
 --XMLRealValue ::= XMLNumericRealValue | XMLSpecialRealValue
 
@@ -914,7 +921,8 @@ CharacterStringType ::=
 
 CharacterStringValue ::=
     RestrictedCharacterStringValue
-  | UnrestrictedCharacterStringValue
+-- Removing below as this equivalent to plain SequenceValue
+--  | UnrestrictedCharacterStringValue
 
 --XMLCharacterStringValue ::=
 --    XMLRestrictedCharacterStringValue
@@ -974,7 +982,7 @@ TableRow ::= number
 
 UnrestrictedCharacterStringType ::= CHARACTER STRING
 
-UnrestrictedCharacterStringValue ::= SequenceValue
+--UnrestrictedCharacterStringValue ::= SequenceValue
 
 --XMLUnrestrictedCharacterStringValue ::= XMLSequenceValue
 
