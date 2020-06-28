@@ -166,7 +166,6 @@ set(GEN_PARSER_SOURCES
   Plane.cpp
   PLUS_INFINITY.cpp
   PrefixedType.cpp
-  PrefixedValue.cpp
   PresenceConstraint.cpp
   PRESENT.cpp
   PrintableString.cpp
@@ -185,10 +184,7 @@ set(GEN_PARSER_SOURCES
   RELATIVE_OID_IRI.cpp
   RelativeIRIType.cpp
   RelativeIRIValue.cpp
-  RelativeOIDComponents.cpp
-  RelativeOIDComponentsList.cpp
   RelativeOIDType.cpp
-  RelativeOIDValue.cpp
   RestrictedCharacterStringType.cpp
   RestrictedCharacterStringValue.cpp
   RootAlternativeTypeList.cpp
@@ -204,11 +200,9 @@ set(GEN_PARSER_SOURCES
   SequenceValue.cpp
   SET.cpp
   SetOfType.cpp
-  SetOfValue.cpp
   SettingName.cpp
   SETTINGS.cpp
   SetType.cpp
-  SetValue.cpp
   SignedNumber.cpp
   SingleTypeConstraint.cpp
   SingleValue.cpp

@@ -351,16 +351,21 @@ BuiltinValue ::=
 --  | InstanceOfValue
   | NullValue
   | ObjectIdentifierValue
--- OctetStringValue is covered by BitStringValue
+-- This is covered by BitStringValue
 --  | OctetStringValue
   | RealValue
 -- This has to be placed after RealValue
   | IntegerValue
+-- This is covered by ObjectIdentifierValue
 --  | RelativeOIDValue
-  | SequenceValue
---  | SequenceOfValue
+-- This is covered under SequenceOfValue
+--  | SequenceValue
+  | SequenceOfValue
+-- This is covered under SequenceOfValue
 --  | SetValue
+-- This is covered under SequenceOfValue
 --  | SetOfValue
+-- This is covered by Value
 --  | PrefixedValue
 --  | TimeValue
 
@@ -698,9 +703,9 @@ SetType ::=
 --  | SET "{" ExtensionAndException OptionalExtensionMarker "}"
   | SET "{" ComponentTypeLists "}"
 
-SetValue ::=
-    "{" ComponentValueList "}"
-  | "{" "}"
+--SetValue ::=
+--    "{" ComponentValueList "}"
+--  | "{" "}"
 
 --XMLSetValue ::=
 --    XMLComponentValueList
@@ -708,10 +713,10 @@ SetValue ::=
 
 SetOfType ::= SET OF Type | SET OF NamedType
 
-SetOfValue ::=
-    "{" ValueList "}"
-  | "{" NamedValueList "}"
-  | "{" "}"
+--SetOfValue ::=
+--    "{" ValueList "}"
+--  | "{" NamedValueList "}"
+--  | "{" "}"
 
 --XMLSetOfValue ::=
 --    XMLValueList
@@ -756,7 +761,7 @@ PrefixedType ::=
     TaggedType
   | EncodingPrefixedType
 
-PrefixedValue ::= Value
+--PrefixedValue ::= Value
 
 --XMLPrefixedValue ::= XMLValue
 
@@ -835,18 +840,18 @@ NameAndNumberForm ::= identifier "(" NumberForm ")"
 -- LOCAL MODIFICATION
 RelativeOIDType ::= RELATIVE_OID
 
-RelativeOIDValue ::= "{" RelativeOIDComponentsList "}"
+--RelativeOIDValue ::= "{" RelativeOIDComponentsList "}"
 
 -- ORDERING CRITICAL
-RelativeOIDComponentsList ::=
-    RelativeOIDComponents RelativeOIDComponentsList
-  | RelativeOIDComponents
+--RelativeOIDComponentsList ::=
+--    RelativeOIDComponents RelativeOIDComponentsList
+--  | RelativeOIDComponents
 
 -- ORDERING CRITICAL
 -- DefinedValue is covered inside NumberForm
-RelativeOIDComponents ::=
-    NameAndNumberForm
-  | NumberForm
+--RelativeOIDComponents ::=
+--    NameAndNumberForm
+--  | NumberForm
 --  | DefinedValue
 
 --XMLRelativeOIDValue ::= XMLRelativeOIDComponentList
