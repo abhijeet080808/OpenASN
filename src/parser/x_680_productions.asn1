@@ -7,15 +7,19 @@
 -- LOCAL ADDITION
 -- This production is not present in spec and is added locally to facilicate
 -- parsing. Eg DEFINITIONS, BEGIN, END, ConstraintList.
-
+--
 -- LOCAL MODIFICATION
 -- Modified production to facilicate parsing. Eg NullType, LowerEndpoint.
-
+--
 -- ORDERING CRITICAL
 -- Ordering is critical here and should be exactly as shown here.
 -- The longer production group with comma is to be tried first.
 -- Also within that production group NamedType is to be tried first to
 -- avoid going into a infinite recursion. Eg AlternativeTypeList.
+--
+-- IGNORED
+-- This production is ignored as parsing another production covers this
+-- production too. Eg DurationRange is covered by ValueRange.
 
 -- LOCAL ADDITION
 DEFINITIONS             ::= "DEFINITIONS"
@@ -101,9 +105,9 @@ NOT_A_NUMBER            ::= "NOT-A-NUMBER"
 ModuleDefinition ::=
   ModuleIdentifier
   DEFINITIONS
-  --EncodingReferenceDefault
-  --TagDefault
-  --ExtensionDefault
+  EncodingReferenceDefault
+  TagDefault
+  ExtensionDefault
   "::="
   BEGIN
   ModuleBody
@@ -114,7 +118,7 @@ ModuleIdentifier ::= modulereference DefinitiveIdentification
 
 DefinitiveIdentification ::=
     DefinitiveOID
-  --| DefinitiveOIDandIRI
+  --| DefinitiveOIDandIRI                                             TODO
   | empty
 
 DefinitiveOID ::= "{" DefinitiveObjIdComponentList "}"
@@ -127,27 +131,27 @@ DefinitiveObjIdComponentList ::=
 
 DefinitiveObjIdComponent ::=
     NameForm
-  --| DefinitiveNumberForm
-  --| DefinitiveNameAndNumberForm
+  --| DefinitiveNumberForm                                            TODO
+  --| DefinitiveNameAndNumberForm                                     TODO
 
 --DefinitiveNumberForm ::= number
 
 --DefinitiveNameAndNumberForm ::= identifier "(" DefinitiveNumberForm ")"
 
---EncodingReferenceDefault ::= encodingreference INSTRUCTIONS | empty
+EncodingReferenceDefault ::= encodingreference INSTRUCTIONS | empty
 
---TagDefault ::=
---    EXPLICIT TAGS
---  | IMPLICIT TAGS
---  | AUTOMATIC TAGS
---  | empty
+TagDefault ::=
+    EXPLICIT TAGS
+  | IMPLICIT TAGS
+  | AUTOMATIC TAGS
+  | empty
 
---ExtensionDefault ::=
---    Extensibility IMPLIED
---  | empty
+ExtensionDefault ::=
+    EXTENSIBILITY IMPLIED
+  | empty
 
 ModuleBody ::=
---    Exports Imports
+--    Exports Imports                                                 TODO
     AssignmentList
   | empty
 
@@ -180,7 +184,7 @@ ModuleBody ::=
 --    Reference
 --  | ParameterizedReference
 
---Reference ::=
+--Reference ::=                                                       TODO
 --    typereference
 --  | valuereference
 --  | objectclassreference
@@ -194,9 +198,9 @@ AssignmentList ::=
 
 Assignment ::=
     TypeAssignment
---  | ValueAssignment
+--  | ValueAssignment                                                 TODO
 --  | XMLValueAssignment
---  | ValueSetTypeAssignment
+--  | ValueSetTypeAssignment                                          TODO
 --  | ObjectClassAssignment
 --  | ObjectAssignment
 --  | ObjectSetAssignment
@@ -277,7 +281,7 @@ Type ::=
   | BuiltinType
   | ReferencedType ConstraintList
   | ReferencedType
---  | TypeWithConstraint
+--  | TypeWithConstraint                                              TODO
 
 -- ORDERING CRITICAL
 -- LOCAL ADDITION
@@ -326,7 +330,7 @@ NamedType ::= identifier Type
 
 Value ::=
     BuiltinValue
---  | ReferencedValue
+--  | ReferencedValue                                                 TODO
 --  | ObjectClassFieldValue
 
 --XMLValue ::=
@@ -367,7 +371,7 @@ BuiltinValue ::=
 --  | SetOfValue
 -- This is covered by Value
 --  | PrefixedValue
---  | TimeValue
+--  | TimeValue                                                       TODO
 
 --XMLBuiltinValue ::=
 --    XMLBitStringValue
@@ -393,7 +397,7 @@ BuiltinValue ::=
 --  | XMLPrefixedValue
 --  | XMLTimeValue
 
---ReferencedValue ::=
+--ReferencedValue ::=                                                 TODO
 --    DefinedValue
 --  | ValueFromObject
 
@@ -456,7 +460,7 @@ EnumeratedType ::= ENUMERATED "{" Enumerations "}"
 
 -- ORDERING CRITICAL
 Enumerations ::=
---    RootEnumeration "," "..." ExceptionSpec "," AdditionalEnumeration
+--    RootEnumeration "," "..." ExceptionSpec "," AdditionalEnumeration TODO
 --  | RootEnumeration "," "..." ExceptionSpec
   RootEnumeration
 
@@ -569,6 +573,7 @@ IdentifierList ::=
 
 OctetStringType ::= OCTET STRING
 
+-- IGNORED
 --OctetStringValue ::=
 --    bstring
 --  | hstring
@@ -588,7 +593,7 @@ NullValue ::= ASN_NULL
 
 SequenceType ::=
     SEQUENCE "{" "}"
---  | SEQUENCE "{" ExtensionAndException OptionalExtensionMarker "}"
+--  | SEQUENCE "{" ExtensionAndException OptionalExtensionMarker "}"  TODO
   | SEQUENCE "{" ComponentTypeLists "}"
 
 -- ORDERING CRITICAL
@@ -601,7 +606,7 @@ Ellipsis ::= "..."
 
 ComponentTypeLists ::=
     RootComponentTypeList
---  | RootComponentTypeList "," ExtensionAndException ExtensionAdditions OptionalExtensionMarker
+--  | RootComponentTypeList "," ExtensionAndException ExtensionAdditions OptionalExtensionMarker                       TODO
 --  | RootComponentTypeList "," ExtensionAndException ExtensionAdditions ExtensionEndMarker "," RootComponentTypeList
 --  | ExtensionAndException ExtensionAdditions ExensionEndMarker "," RootComponentTypeList
 --  | ExtensionAndException ExtensionAdditions OptionalExtensionMarker
@@ -700,9 +705,10 @@ NamedValueList ::=
 
 SetType ::=
     SET "{" "}"
---  | SET "{" ExtensionAndException OptionalExtensionMarker "}"
+--  | SET "{" ExtensionAndException OptionalExtensionMarker "}"       TODO
   | SET "{" ComponentTypeLists "}"
 
+-- IGNORED
 --SetValue ::=
 --    "{" ComponentValueList "}"
 --  | "{" "}"
@@ -713,6 +719,7 @@ SetType ::=
 
 SetOfType ::= SET OF Type | SET OF NamedType
 
+-- IGNORED
 --SetOfValue ::=
 --    "{" ValueList "}"
 --  | "{" NamedValueList "}"
@@ -727,7 +734,7 @@ ChoiceType ::= CHOICE "{" AlternativeTypeLists "}"
 
 AlternativeTypeLists ::=
     RootAlternativeTypeList
---  | RootAlternativeTypeList "," ExtensionAndException ExtensionAdditionAlternatives OptionalExtensionMarker
+--  | RootAlternativeTypeList "," ExtensionAndException ExtensionAdditionAlternatives OptionalExtensionMarker          TODO
 
 RootAlternativeTypeList ::= AlternativeTypeList
 
@@ -761,6 +768,7 @@ PrefixedType ::=
     TaggedType
   | EncodingPrefixedType
 
+-- IGNORED
 --PrefixedValue ::= Value
 
 --XMLPrefixedValue ::= XMLValue
@@ -840,13 +848,16 @@ NameAndNumberForm ::= identifier "(" NumberForm ")"
 -- LOCAL MODIFICATION
 RelativeOIDType ::= RELATIVE_OID
 
+-- IGNORED
 --RelativeOIDValue ::= "{" RelativeOIDComponentsList "}"
 
+-- IGNORED
 -- ORDERING CRITICAL
 --RelativeOIDComponentsList ::=
 --    RelativeOIDComponents RelativeOIDComponentsList
 --  | RelativeOIDComponents
 
+-- IGNORED
 -- ORDERING CRITICAL
 -- DefinedValue is covered inside NumberForm
 --RelativeOIDComponents ::=
@@ -894,19 +905,21 @@ FirstRelativeArcIdentifier ::= ArcIdentifier
 
 EmbeddedPDVType ::= EMBEDDED PDV
 
-EmbeddedPDVValue ::= SequenceValue
+-- IGNORED
+--EmbeddedPDVValue ::= SequenceValue
 
 --XMLEmbeddedPDVValue ::= XMLSequenceValue
 
 ExternalType ::= EXTERNAL
 
-ExternalValue ::= SequenceValue
+-- IGNORED
+--ExternalValue ::= SequenceValue
 
 --XMLExternalValue ::= XMLSequenceValue
 
 TimeType ::= TIME
 
---TimeValue ::= tstring
+--TimeValue ::= tstring                                               TODO
 
 --XMLTimeValue ::= xmltstring
 
@@ -987,6 +1000,7 @@ TableRow ::= number
 
 UnrestrictedCharacterStringType ::= CHARACTER STRING
 
+-- IGNORED
 --UnrestrictedCharacterStringValue ::= SequenceValue
 
 --XMLUnrestrictedCharacterStringValue ::= XMLSequenceValue
@@ -1172,10 +1186,13 @@ PropertyName ::= psname
 
 SettingName ::= psname
 
+-- IGNORED
 --DurationRange ::= ValueRange
 
+-- IGNORED
 --TimePointRange ::= ValueRange
 
+-- IGNORED
 --RecurrenceRange ::= ValueRange
 
 ExceptionSpec ::= "!" ExceptionIdentification | empty

@@ -71,10 +71,10 @@ set(GEN_PARSER_SOURCES
   Ellipsis.cpp
   EMBEDDED.cpp
   EmbeddedPDVType.cpp
-  EmbeddedPDVValue.cpp
   EncodingPrefix.cpp
   EncodingPrefixedType.cpp
   EncodingReference.cpp
+  EncodingReferenceDefault.cpp
   END.cpp
   ENUMERATED.cpp
   EnumeratedType.cpp
@@ -89,10 +89,10 @@ set(GEN_PARSER_SOURCES
   EXPLICIT.cpp
   EXPORTS.cpp
   EXTENSIBILITY.cpp
+  ExtensionDefault.cpp
   ExtensionEndMarker.cpp
   EXTERNAL.cpp
   ExternalType.cpp
-  ExternalValue.cpp
   ExternalTypeReference.cpp
   ExternalValueReference.cpp
   FALSE.cpp
@@ -217,6 +217,7 @@ set(GEN_PARSER_SOURCES
   TableColumn.cpp
   TableRow.cpp
   Tag.cpp
+  TagDefault.cpp
   TaggedType.cpp
   TAGS.cpp
   TeletexString.cpp

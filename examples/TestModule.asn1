@@ -1,4 +1,13 @@
-TestModule DEFINITIONS ::=
+-- ModuleIdentifier
+TestModule
+DEFINITIONS
+-- EncodingReferenceDefault
+TAG INSTRUCTIONS
+-- TagDefault
+AUTOMATIC TAGS
+-- ExtensionDefault
+EXTENSIBILITY IMPLIED
+::=
 BEGIN
 
 Bool                  ::= BOOLEAN
