@@ -103,7 +103,8 @@ int main(int argc, char* argv[])
       if (!module_definition_list.empty())
       {
         SPDLOG_INFO("----------------------------------------");
-        SPDLOG_INFO("Parse \"{}\": PASSED", f);
+        SPDLOG_INFO("Parse \"{}\": PASSED with {} modules",
+                    f, module_definition_list.size());
         SPDLOG_INFO("----------------------------------------");
       }
       else
@@ -119,7 +120,8 @@ int main(int argc, char* argv[])
       if (!module_definition_list.empty())
       {
         SPDLOG_INFO("----------------------------------------");
-        SPDLOG_INFO("Parse \"{}\": PASSED", f);
+        SPDLOG_INFO("Parse \"{}\": PASSED with {} modules",
+                    f, module_definition_list.size());
         SPDLOG_INFO("----------------------------------------");
         for (const auto& module_definition : module_definition_list)
         {

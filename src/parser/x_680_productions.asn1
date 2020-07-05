@@ -13,9 +13,9 @@
 --
 -- ORDERING CRITICAL
 -- Ordering is critical here and should be exactly as shown here.
--- The longer production group with comma is to be tried first.
--- Also within that production group NamedType is to be tried first to
--- avoid going into a infinite recursion. Eg AlternativeTypeList.
+-- Eg AlternativeTypeList - The longer production group with comma is to be
+-- tried first. Also within that production group NamedType is to be tried
+-- first to avoid going into a infinite recursion.
 --
 -- IGNORED
 -- This production is ignored as parsing another production covers this
@@ -32,9 +32,9 @@ INSTRUCTIONS            ::= "INSTRUCTIONS"
 TAGS                    ::= "TAGS"
 EXTENSIBILITY           ::= "EXTENSIBILITY"
 IMPLIED                 ::= "IMPLIED"
-EXPORTS                 ::= "EXPORTS"
+ASN_EXPORTS             ::= "EXPORTS"
 ALL                     ::= "ALL"
-IMPORTS                 ::= "IMPORTS"
+ASN_IMPORTS             ::= "IMPORTS"
 FROM                    ::= "FROM"
 BOOLEAN                 ::= "BOOLEAN"
 TRUE                    ::= "TRUE"
@@ -116,27 +116,29 @@ ModuleDefinition ::=
 
 ModuleIdentifier ::= modulereference DefinitiveIdentification
 
+-- ORDERING CRITICAL
 DefinitiveIdentification ::=
-    DefinitiveOID
-  --| DefinitiveOIDandIRI                                             TODO
+    DefinitiveOIDandIRI
+  | DefinitiveOID
   | empty
 
 DefinitiveOID ::= "{" DefinitiveObjIdComponentList "}"
 
---DefinitiveOIDandIRI ::= DefinitiveOID IRIValue
+DefinitiveOIDandIRI ::= DefinitiveOID IRIValue
 
 DefinitiveObjIdComponentList ::=
     DefinitiveObjIdComponent DefinitiveObjIdComponentList
   | DefinitiveObjIdComponent
 
+-- ORDERING CRITICAL
 DefinitiveObjIdComponent ::=
-    NameForm
-  --| DefinitiveNumberForm                                            TODO
-  --| DefinitiveNameAndNumberForm                                     TODO
+    DefinitiveNumberForm
+  | DefinitiveNameAndNumberForm
+  | NameForm
 
---DefinitiveNumberForm ::= number
+DefinitiveNumberForm ::= number
 
---DefinitiveNameAndNumberForm ::= identifier "(" DefinitiveNumberForm ")"
+DefinitiveNameAndNumberForm ::= identifier "(" DefinitiveNumberForm ")"
 
 EncodingReferenceDefault ::= encodingreference INSTRUCTIONS | empty
 
@@ -151,42 +153,49 @@ ExtensionDefault ::=
   | empty
 
 ModuleBody ::=
---    Exports Imports                                                 TODO
-    AssignmentList
+    Exports Imports AssignmentList
   | empty
 
---Exports ::=
---    EXPORTS SymbolsExported ";"
---  | EXPORTS ALL ";"
---  | empty
+-- ORDERING CRITICAL
+Exports ::=
+    ASN_EXPORTS ALL ";"
+  | ASN_EXPORTS SymbolsExported ";"
+  | empty
 
---SymbolsExported ::= SymbolList | empty
+SymbolsExported ::= SymbolList | empty
 
---Imports ::=
---    IMPORTS SymbolsImported ";"
---  | empty
+Imports ::=
+    ASN_IMPORTS SymbolsImported ";"
+  | empty
 
---SymbolsImported ::= SymbolsFromModuleList | empty
+SymbolsImported ::= SymbolsFromModuleList | empty
 
 -- ORDERING CRITICAL
---SymbolsFromModuleList ::=
---    SymbolsFromModule SymbolsFromModuleList
---  | SymbolsFromModule
+SymbolsFromModuleList ::=
+    SymbolsFromModule SymbolsFromModuleList
+  | SymbolsFromModule
 
---SymbolsFromModule ::= SymbolList FROM GlobalModuleReference
+SymbolsFromModule ::= SymbolList FROM GlobalModuleReference
+
+GlobalModuleReference ::= modulereference AssignedIdentifier
+
+AssignedIdentifier ::=
+    ObjectIdentifierValue
+  | DefinedValue
+  | empty
 
 -- ORDERING CRITICAL
---SymbolList ::=
---    Symbol "," SymbolList
---  | Symbol
+SymbolList ::=
+    Symbol "," SymbolList
+  | Symbol
 
---Symbol ::=
---    Reference
+Symbol ::=
+    Reference
 --  | ParameterizedReference
 
---Reference ::=                                                       TODO
---    typereference
---  | valuereference
+Reference ::=
+    typereference
+  | valuereference
 --  | objectclassreference
 --  | objectreference
 --  | objectsetreference

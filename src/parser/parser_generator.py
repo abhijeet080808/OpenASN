@@ -193,6 +193,8 @@ def get_parse_production_group_fn_name(production_group):
                 fn_name += "TripleDot"
             elif production[1:-1] == ":":
                 fn_name += "Colon"
+            elif production[1:-1] == ";":
+                fn_name += "Semicolon"
             elif production[1:-1] == "!":
                 fn_name += "Not"
             elif production[1:-1] == "^":

@@ -9,9 +9,12 @@ set(GEN_PARSER_SOURCES
   AlternativeTypeLists.cpp
   APPLICATION.cpp
   ArcIdentifier.cpp
-  ASN_INCLUDES.cpp
+  ASN_EXPORTS.cpp
   ASN_IDENTIFIER.cpp
+  ASN_IMPORTS.cpp
+  ASN_INCLUDES.cpp
   ASN_NULL.cpp
+  AssignedIdentifier.cpp
   Assignment.cpp
   AssignmentList.cpp
   AUTOMATIC.cpp
@@ -59,9 +62,12 @@ set(GEN_PARSER_SOURCES
   DefinedValue.cpp
   DEFINITIONS.cpp
   DefinitiveIdentification.cpp
+  DefinitiveNameAndNumberForm.cpp
+  DefinitiveNumberForm.cpp
   DefinitiveObjIdComponent.cpp
   DefinitiveObjIdComponentList.cpp
   DefinitiveOID.cpp
+  DefinitiveOIDandIRI.cpp
   DURATION.cpp
   DurationType.cpp
   Elements.cpp
@@ -87,7 +93,7 @@ set(GEN_PARSER_SOURCES
   ExceptionSpec.cpp
   Exclusions.cpp
   EXPLICIT.cpp
-  EXPORTS.cpp
+  Exports.cpp
   EXTENSIBILITY.cpp
   ExtensionDefault.cpp
   ExtensionEndMarker.cpp
@@ -102,13 +108,14 @@ set(GEN_PARSER_SOURCES
   FullSpecification.cpp
   GeneralizedTime.cpp
   GeneralString.cpp
+  GlobalModuleReference.cpp
   GraphicString.cpp
   Group.cpp
   IA5String.cpp
   IdentifierList.cpp
   IMPLICIT.cpp
   IMPLIED.cpp
-  IMPORTS.cpp
+  Imports.cpp
   Includes.cpp
   InnerTypeConstraints.cpp
   INSTRUCTIONS.cpp
@@ -179,6 +186,7 @@ set(GEN_PARSER_SOURCES
   REAL.cpp
   RealType.cpp
   RealValue.cpp
+  Reference.cpp
   ReferencedType.cpp
   RELATIVE_OID.cpp
   RELATIVE_OID_IRI.cpp
@@ -213,6 +221,12 @@ set(GEN_PARSER_SOURCES
   SubsequentArcIdentifier.cpp
   SubtypeConstraint.cpp
   SubtypeElements.cpp
+  Symbol.cpp
+  SymbolList.cpp
+  SymbolsExported.cpp
+  SymbolsFromModule.cpp
+  SymbolsFromModuleList.cpp
+  SymbolsImported.cpp
   T61String.cpp
   TableColumn.cpp
   TableRow.cpp
