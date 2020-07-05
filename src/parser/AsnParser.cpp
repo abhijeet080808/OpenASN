@@ -14,7 +14,7 @@
 
 using namespace OpenASN;
 
-std::shared_ptr<IProduction>
+std::vector<std::shared_ptr<IProduction>>
 AsnParser::
 Parse(const std::string& asnFilePath)
 {
@@ -47,7 +47,7 @@ Parse(const std::string& asnFilePath)
   {
     SPDLOG_ERROR("Parsing of empty file \"{}\" failed",
                  asnFilePath);
-    return nullptr;
+    return std::vector<std::shared_ptr<IProduction>>();
   }
 
   // remove all comments of type -- xx -- and /* xx */
@@ -284,36 +284,34 @@ Parse(const std::string& asnFilePath)
   }
 
   size_t asn_data_index = 0;
-  std::vector<std::string> end_stop;
-  std::vector<std::string> parse_path;
-  ProductionParseHistory parse_history;
-  LOG_GEN("STARTED",
-          "ModuleDefinition",
-          parsed_asn_data,
-          asn_data_index,
-          parse_path);
-  auto module_definition =
-    ProductionFactory::Get(Production::MODULE_DEFINITION);
-  if (module_definition->Parse(parsed_asn_data,
-                               asn_data_index,
-                               end_stop,
-                               parse_path,
-                               parse_history))
+  std::vector<std::shared_ptr<IProduction>> module_definition_list;
+
+  while (asn_data_index < parsed_asn_data.size())
   {
-    LOG_GEN("PASSED",
-            "ModuleDefinition",
-            parsed_asn_data,
-            asn_data_index,
-            parse_path);
-    return module_definition;
+    std::vector<std::string> end_stop;
+    std::vector<std::string> parse_path;
+    ProductionParseHistory parse_history;
+
+    // Allow LoggingMacros to work
+    auto obj = "ModuleDefinition";
+    const auto& asnData = parsed_asn_data;
+    auto& asnDataIndex = asn_data_index;
+    auto& parsePath = parse_path;
+    LOG_START();
+
+    auto prod = ProductionFactory::Get(
+        Production::MODULE_DEFINITION);
+    if (prod->Parse(asnData, asnDataIndex, end_stop, parsePath, parse_history))
+    {
+      module_definition_list.push_back(prod);
+      LOG_PASS();
+    }
+    else
+    {
+      LOG_FAIL();
+      return std::vector<std::shared_ptr<IProduction>>();
+    }
   }
-  else
-  {
-    LOG_GEN("FAILED",
-            "ModuleDefinition",
-            parsed_asn_data,
-            asn_data_index,
-            parse_path);
-    return nullptr;
-  }
+
+  return module_definition_list;
 }

@@ -97,10 +97,10 @@ int main(int argc, char* argv[])
 
   for (const auto& f : asn_files)
   {
-    auto module_definition = p.Parse(f);
+    auto module_definition_list = p.Parse(f);
     if (parse_only_mode)
     {
-      if (module_definition)
+      if (!module_definition_list.empty())
       {
         SPDLOG_INFO("----------------------------------------");
         SPDLOG_INFO("Parse \"{}\": PASSED", f);
@@ -116,12 +116,15 @@ int main(int argc, char* argv[])
     }
     else
     {
-      if (module_definition)
+      if (!module_definition_list.empty())
       {
         SPDLOG_INFO("----------------------------------------");
         SPDLOG_INFO("Parse \"{}\": PASSED", f);
         SPDLOG_INFO("----------------------------------------");
-        g.Generate(dynamic_cast<ModuleDefinition*>(module_definition.get()));
+        for (const auto& module_definition : module_definition_list)
+        {
+          g.Generate(dynamic_cast<ModuleDefinition*>(module_definition.get()));
+        }
       }
       else
       {

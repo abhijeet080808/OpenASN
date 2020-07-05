@@ -1,5 +1,11 @@
+TestModule1
+DEFINITIONS
+::=
+BEGIN
+END
+
 -- ModuleIdentifier
-TestModule
+TestModule2
 DEFINITIONS
 -- EncodingReferenceDefault
 TAG INSTRUCTIONS
