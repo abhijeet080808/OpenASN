@@ -81,6 +81,8 @@ parse(const std::vector<Word>& asnData)
   // After e, leading zeros are not allowed
   //
   // In general the form is - <coefficient>[eE][+-]<exponent>
+  //
+  // AsnData is split on decimal point
 
   RN_STATE state = RN_STATE::COEFF_BEFORE_DECIMAL;
   bool e_parsed = false;
@@ -183,7 +185,17 @@ parse(const std::vector<Word>& asnData)
           }
           else
           {
-            return 0;
+            if (i == 0)
+            {
+              // The decimal point is NOT a COEFF_AFTER_DECIMAL scenario and is
+              // present for other productions. Consider to have parsed upto
+              // COEFF_BEFORE_DECIMAL and exit
+              return 1;
+            }
+            else
+            {
+              return 0;
+            }
           }
           break;
 

@@ -121,7 +121,6 @@ set(GEN_PARSER_SOURCES
   INSTRUCTIONS.cpp
   INTEGER.cpp
   IntegerType.cpp
-  IntegerValue.cpp
   INTERSECTION.cpp
   IntersectionElements.cpp
   IntersectionMark.cpp

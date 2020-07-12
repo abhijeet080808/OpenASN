@@ -207,7 +207,7 @@ AssignmentList ::=
 
 Assignment ::=
     TypeAssignment
---  | ValueAssignment                                                 TODO
+  | ValueAssignment
 --  | XMLValueAssignment
 --  | ValueSetTypeAssignment                                          TODO
 --  | ObjectClassAssignment
@@ -367,8 +367,9 @@ BuiltinValue ::=
 -- This is covered by BitStringValue
 --  | OctetStringValue
   | RealValue
--- This has to be placed after RealValue
-  | IntegerValue
+-- This is mostly covered under RealValue and identifier is covered under
+-- EnumeratedValue
+--  | IntegerValue
 -- This is covered by ObjectIdentifierValue
 --  | RelativeOIDValue
 -- This is covered under SequenceOfValue
@@ -450,7 +451,7 @@ SignedNumber ::=
   | NegativeNumber
 
 -- ORDERING CRITICAL
-IntegerValue ::= SignedNumber | identifier
+--IntegerValue ::= SignedNumber | identifier
 
 --XMLIntegerValue ::=
 --    XMLSignedNumber

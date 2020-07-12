@@ -36,12 +36,14 @@ Parse(const std::vector<Word>& asnData,
     return false;
   }
 
+  // Real number can have 3 words where the second word is the decimal point
   std::vector<Word> asn_data;
   for (size_t i = asnDataIndex; i < asnDataIndex + 3 && i < asnData.size(); i++)
   {
     asn_data.push_back(asnData.at(i));
   }
 
+  // First character of first word must be minus symbol
   if (std::get<1>(asn_data.at(0)).size() < 2 ||
       *std::get<1>(asn_data.at(0)).begin() != '-')
   {

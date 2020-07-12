@@ -190,7 +190,7 @@ Sequence              ::= SEQUENCE {
   seqOctetStrVal2       OCTET STRING DEFAULT 'ABCD1100'H,
   seqOctetStrVal3       OCTET STRING DEFAULT CONTAINING 'ABCD1100'H,
   seqReal               REAL,
--- Simple numbers such as 10 etc are parsed as Number instead of Realnumber
+-- Simple numbers such as 10 etc are also parsed as Realnumber
   seqRealVal1           REAL DEFAULT 0e1,
   seqRealVal2           REAL DEFAULT 0.e1,
   seqRealVal3           REAL DEFAULT 0.1e1,
@@ -370,5 +370,10 @@ PcConstrainedType1    ::= BOOLEAN (PATTERN TRUE)
 --PropertySettings
 PsConstrainedType1    ::= DATE (SETTINGS "Basic=Date Date=YMD")
 PsConstrainedType2    ::= TIME (SETTINGS "Midnight=Start")
+
+--------------------------------------------------------------------------------
+
+valRefBool BOOLEAN    ::= TRUE
+valRefInt  INTEGER    ::= 1
 
 END
