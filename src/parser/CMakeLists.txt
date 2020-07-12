@@ -260,6 +260,8 @@ set(GEN_PARSER_SOURCES
   ValueConstraint.cpp
   ValueList.cpp
   ValueRange.cpp
+  ValueSet.cpp
+  ValueSetTypeAssignment.cpp
   VideotexString.cpp
   VisibleString.cpp
   WITH.cpp

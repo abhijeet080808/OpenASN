@@ -209,7 +209,7 @@ Assignment ::=
     TypeAssignment
   | ValueAssignment
 --  | XMLValueAssignment
---  | ValueSetTypeAssignment                                          TODO
+  | ValueSetTypeAssignment
 --  | ObjectClassAssignment
 --  | ObjectAssignment
 --  | ObjectSetAssignment
@@ -263,9 +263,9 @@ ValueAssignment ::= valuereference Type "::=" Value
 --    "<" & NonParameterizedTypeName ">" XMLValue "</" & NonParameterizedTypeName ">"
 --  | "<" & NonParameterizedTypeName "/>"
 
---ValueSetTypeAssignment ::= typereference Type "::=" ValueSet
+ValueSetTypeAssignment ::= typereference Type "::=" ValueSet
 
---ValueSet ::= "{" ElementSetSpecs "}"
+ValueSet ::= "{" ElementSetSpecs "}"
 
 -- ORDERING CRITICAL
 -- LOCAL MODIFICATION

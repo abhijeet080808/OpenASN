@@ -373,7 +373,15 @@ PsConstrainedType2    ::= TIME (SETTINGS "Midnight=Start")
 
 --------------------------------------------------------------------------------
 
-valRefBool BOOLEAN    ::= TRUE
-valRefInt  INTEGER    ::= 1
+-- TODO more examples
+valRefBool BOOLEAN          ::= TRUE
+valRefInt  INTEGER          ::= 1
+
+--------------------------------------------------------------------------------
+
+-- TODO more examples
+ValSetTypeRef1 BOOLEAN      ::= { TRUE,..., FALSE }
+ValSetTypeRef2 BOOLEAN      ::= { TRUE,... }
+ValSetTypeRef3 BOOLEAN      ::= { TRUE }
 
 END
