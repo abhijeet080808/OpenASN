@@ -1,6 +1,6 @@
 set(LIB_NAME parser)
 
-set(GEN_PARSER_SOURCES
+set(GENERATED_PARSER_SOURCES
   ABSENT.cpp
   AdditionalElementSetSpec.cpp
   AdditionalEnumeration.cpp
@@ -270,7 +270,7 @@ set(GEN_PARSER_SOURCES
 set(PARSER_SOURCES
   Bstring.cpp
   Cstring.cpp
-  Encodingreference.cpp
+  EncodingReferencePrime.cpp
   Hstring.cpp
   Identifier.cpp
   IntegerUnicodeLabel.hh
@@ -287,7 +287,7 @@ set(PARSER_SOURCES
   Valuereference.hh
 )
 
-set(GEN_SOURCES
+set(GENERATED_SOURCES
   ProductionDefs.hh
   ProductionFactory.cpp
 )
@@ -297,16 +297,16 @@ set(SOURCES
   ParseHelper.cpp
 )
 
-foreach(GEN_PARSER_SOURCE ${GEN_PARSER_SOURCES})
-  string(REPLACE ".cpp" "" CLASS_NAME ${GEN_PARSER_SOURCE})
-  list(APPEND GEN_PARSER_HEADERS ${CLASS_NAME}.hh)
+foreach(GENERATED_PARSER_SOURCE ${GENERATED_PARSER_SOURCES})
+  string(REPLACE ".cpp" "" CLASS_NAME ${GENERATED_PARSER_SOURCE})
+  list(APPEND GENERATED_PARSER_HEADERS ${CLASS_NAME}.hh)
 endforeach()
 
-foreach(GEN_SOURCE ${GEN_SOURCES})
-  string(REPLACE ".cpp" "" CLASS_NAME ${GEN_SOURCE})
+foreach(GENERATED_SOURCE ${GENERATED_SOURCES})
+  string(REPLACE ".cpp" "" CLASS_NAME ${GENERATED_SOURCE})
   # The list also contains a few header only source files
   string(REPLACE ".hh" "" CLASS_NAME ${CLASS_NAME})
-  list(APPEND GEN_HEADERS ${CLASS_NAME}.hh)
+  list(APPEND GENERATED_HEADERS ${CLASS_NAME}.hh)
 endforeach()
 
 foreach(PARSER_SOURCE ${PARSER_SOURCES})
@@ -317,10 +317,10 @@ foreach(PARSER_SOURCE ${PARSER_SOURCES})
 endforeach()
 
 add_custom_command(
-  OUTPUT  ${GEN_PARSER_HEADERS}
-          ${GEN_PARSER_SOURCES}
-          ${GEN_HEADERS}
-          ${GEN_SOURCES}
+  OUTPUT  ${GENERATED_PARSER_HEADERS}
+          ${GENERATED_PARSER_SOURCES}
+          ${GENERATED_HEADERS}
+          ${GENERATED_SOURCES}
   COMMAND ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/parser_generator.py
           -a ${CMAKE_CURRENT_SOURCE_DIR}/x_680_productions.asn1
           -s ${PARSER_NAMES}
@@ -332,17 +332,18 @@ add_custom_command(
 )
 
 add_custom_target(genparser
-  DEPENDS ${GEN_HEADERS}
-          ${GEN_SOURCES}
-          ${GEN_PARSER_HEADERS}
-          ${GEN_PARSER_SOURCES}
+  DEPENDS ${GENERATED_HEADERS}
+          ${GENERATED_SOURCES}
+          ${GENERATED_PARSER_HEADERS}
+          ${GENERATED_PARSER_SOURCES}
 )
 
 add_library(${LIB_NAME}
   ${SOURCES}
-  ${GEN_SOURCES}
   ${PARSER_SOURCES}
-  ${GEN_PARSER_SOURCES})
+  ${GENERATED_SOURCES}
+  ${GENERATED_PARSER_SOURCES}
+)
 add_dependencies(${LIB_NAME} genparser)
 
 #target_compile_options

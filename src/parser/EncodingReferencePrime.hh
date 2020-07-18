@@ -5,7 +5,7 @@
 namespace OpenASN
 {
   // X.680 08/2015 Annex L
-  class Encodingreference : public IProduction
+  class EncodingReferencePrime : public IProduction
   {
     public:
       Production GetType() const override;

@@ -140,7 +140,8 @@ DefinitiveNumberForm ::= number
 
 DefinitiveNameAndNumberForm ::= identifier "(" DefinitiveNumberForm ")"
 
-EncodingReferenceDefault ::= encodingreference INSTRUCTIONS | empty
+-- LOCAL MODIFICATION
+EncodingReferenceDefault ::= EncodingReferencePrime INSTRUCTIONS | empty
 
 TagDefault ::=
     EXPLICIT TAGS
@@ -798,8 +799,9 @@ TaggedType ::=
 
 Tag ::= "[" EncodingReference Class ClassNumber "]"
 
+-- LOCAL MODIFICATION
 EncodingReference ::=
-    encodingreference ":"
+    EncodingReferencePrime ":"
   | empty
 
 ClassNumber ::=
