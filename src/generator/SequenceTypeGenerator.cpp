@@ -37,10 +37,10 @@ SequenceTypeGenerator(const std::string& identifier,
   auto p_component_type_list = dynamic_cast<ComponentTypeList*>(
       p_root_component_type_list->mComponentTypeList.get());
 
-  while (p_component_type_list)
+  for (const auto& component_type : p_component_type_list->mComponentTypeList)
   {
     auto p_component_type = dynamic_cast<ComponentType*>(
-      p_component_type_list->mComponentType.get());
+      component_type.get());
 
     auto p_named_type = dynamic_cast<NamedType*>(
       p_component_type->mNamedType.get());
@@ -85,9 +85,6 @@ SequenceTypeGenerator(const std::string& identifier,
     {
       assert(false);
     }
-
-    p_component_type_list = dynamic_cast<ComponentTypeList*>(
-        p_component_type_list->mComponentTypeList.get());
   }
 }
 

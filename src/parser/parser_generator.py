@@ -14,8 +14,9 @@ def camel_case_to_snake_case(string):
 
 def append_must_parse(fd,
                       production,
-                      indentation,
-                      end_stop_production):
+                      end_stop_production,
+                      add_to_list,
+                      indentation):
     ind = " " * indentation
 
     # Escape double quote for C++ code
@@ -51,8 +52,12 @@ def append_must_parse(fd,
     fd.write(ind + "    {\n")
     if (end_stop_production):
         fd.write(ind + "      endStop.pop_back();\n")
-    fd.write(ind + "      m%s = existing_prod_iter->second.first;\n"
-        % cpp_production)
+    if add_to_list:
+        fd.write(ind + "      m%sList.push_back(" % (cpp_production) +
+            "existing_prod_iter->second.first);\n")
+    else:
+        fd.write(ind + "      m%s = existing_prod_iter->second.first;\n"
+            % cpp_production)
     fd.write(ind + "      asnDataIndex = existing_prod_iter->second.second;\n")
     fd.write(ind + "      LOG_PASS();\n")
     fd.write(ind + "    }\n")
@@ -70,7 +75,10 @@ def append_must_parse(fd,
     fd.write(ind + "  {\n")
     if (end_stop_production):
         fd.write(ind + "    endStop.pop_back();\n")
-    fd.write(ind + "    m%s = prod;\n" % (cpp_production))
+    if add_to_list:
+        fd.write(ind + "    m%sList.push_back(prod);\n" % (cpp_production))
+    else:
+        fd.write(ind + "    m%s = prod;\n" % (cpp_production))
     fd.write(ind + "    // Store the production and asnDataIndex after " +
         "parse consumes one or more\n")
     fd.write(ind + "    // words, for later use if necessary\n")
@@ -123,6 +131,86 @@ def is_reserved_production(production):
             return False
 
     return True
+
+
+def is_recursive_production(production, production_or_groups):
+    # Check if production is of form -
+    #
+    # AssignmentList ::=
+    #     Assignment
+    #   | AssignmentList Assignment
+    #
+    # production_or_groups -
+    # [['Assignment'], ['AssignmentList', 'Assignment']]
+    #
+    # Return in order (Assignment, None)
+    #
+    # NamedNumberList ::=
+    #     NamedNumber
+    #   | NamedNumberList "," NamedNumber
+    #
+    # production_or_groups -
+    # [['NamedNumber'], ['NamedNumberList', '","', 'NamedNumber']]
+    #
+    # Return in order (NamedNumber, ",")
+    #
+    # The production_or_groups ordering does not matter
+
+    list_production_name = production[0]
+
+    if len(production_or_groups) != 2:
+        return (None, None)
+
+    item_production_name = ""
+    if len(production_or_groups[0]) == 1:
+        item_production_name = production_or_groups[0][0]
+    elif len(production_or_groups[1]) == 1:
+        item_production_name = production_or_groups[1][0]
+    else:
+        return (None, None)
+
+    if len(production_or_groups[0]) == 2:
+        if production_or_groups[0][0] == list_production_name and \
+           production_or_groups[0][1] == item_production_name:
+               return (item_production_name, None)
+        elif production_or_groups[0][1] == list_production_name and \
+             production_or_groups[0][0] == item_production_name:
+                 return (item_production_name, None)
+        else:
+            return (None, None)
+    elif len(production_or_groups[1]) == 2:
+        if production_or_groups[1][0] == list_production_name and \
+           production_or_groups[1][1] == item_production_name:
+               return (item_production_name, None)
+        elif production_or_groups[1][1] == list_production_name and \
+             production_or_groups[1][0] == item_production_name:
+                 return (item_production_name, None)
+        else:
+            return (None, None)
+    elif len(production_or_groups[0]) == 3:
+        if production_or_groups[0][0] == list_production_name and \
+           production_or_groups[0][1] == '","' and \
+           production_or_groups[0][2] == item_production_name:
+               return (item_production_name, production_or_groups[0][1])
+        elif production_or_groups[0][2] == list_production_name and \
+             production_or_groups[0][1] == '","' and \
+             production_or_groups[0][0] == item_production_name:
+                 return (item_production_name, production_or_groups[0][1])
+        else:
+            return (None, None)
+    elif len(production_or_groups[1]) == 3:
+        if production_or_groups[1][0] == list_production_name and \
+           production_or_groups[1][1] == '","' and \
+           production_or_groups[1][2] == item_production_name:
+               return (item_production_name, production_or_groups[1][1])
+        elif production_or_groups[1][2] == list_production_name and \
+             production_or_groups[1][1] == '","' and \
+             production_or_groups[1][0] == item_production_name:
+                 return (item_production_name, production_or_groups[1][1])
+        else:
+            return (None, None)
+    else:
+        return (None, None)
 
 
 def get_cpp_production_name(production):
@@ -238,6 +326,7 @@ def append_parse_production_group_decl(fd, production_group, indentation):
 def append_parse_production_group_defn(fd,
                                        production_name,
                                        production_group,
+                                       add_to_list,
                                        indentation):
     ind = " " * indentation
 
@@ -282,8 +371,9 @@ def append_parse_production_group_defn(fd,
             else:
                 append_must_parse(fd,
                                   production,
-                                  indentation + 2,
-                                  end_stop_production)
+                                  end_stop_production,
+                                  add_to_list,
+                                  indentation + 2)
                 is_non_char_prod_present = True
 
         if is_non_char_prod_present is False:
@@ -319,6 +409,182 @@ def read_file(asn_file):
 
     #print(productions)
     return productions
+
+
+def generate_recursive_production_cpp_header(production,
+                                             production_list_item_name,
+                                             production_list_separator):
+    production_name = production[0]
+
+    member_variable = get_cpp_production_name(production_list_item_name)
+
+    fd = open(production_name + ".hh", "w")
+
+    fd.write("///////////////////////////////////////\n")
+    fd.write("// THIS HEADER FILE IS AUTOGENERATED //\n")
+    fd.write("///////////////////////////////////////\n")
+    fd.write("\n")
+    fd.write("#pragma once\n")
+    fd.write("\n")
+    fd.write("#include \"parser/IProduction.hh\"\n")
+    fd.write("\n")
+    fd.write("#include <vector>\n")
+    fd.write("\n")
+    fd.write("namespace OpenASN\n")
+    fd.write("{\n")
+    fd.write("  // X.680 08/2015 Annex L\n")
+    fd.write("  class %s : public IProduction\n" % production_name)
+    fd.write("  {\n")
+    fd.write("    public:\n")
+    fd.write("      Production GetType() const override;\n")
+    fd.write("\n")
+    fd.write("      bool Parse(\n")
+    fd.write("        const std::vector<Word>& asnData,\n")
+    fd.write("        size_t& asnDataIndex,\n")
+    fd.write("        std::vector<std::string>& endStop,\n")
+    fd.write("        std::vector<std::string>& parsePath,\n")
+    fd.write("        ProductionParseHistory& parseHistory) override;\n")
+    fd.write("\n")
+    fd.write("    private:\n")
+
+    append_parse_production_group_decl(fd, [production_list_item_name], 6)
+
+    if production_list_separator:
+        append_parse_production_group_decl(fd, [production_list_separator], 6)
+
+    fd.write("    public:\n")
+    fd.write("      std::vector<std::shared_ptr<IProduction>> m%sList;\n"
+        % member_variable)
+
+    fd.write("  };\n")
+    fd.write("}\n")
+
+    fd.close()
+    print("Generated %s.hh" % production_name)
+
+
+def generate_recursive_production_cpp_source(production,
+                                             production_list_item_name,
+                                             production_list_separator):
+    production_name = production[0]
+
+    fd = open(production_name + ".cpp", "w")
+
+    fd.write("///////////////////////////////////////\n")
+    fd.write("// THIS SOURCE FILE IS AUTOGENERATED //\n")
+    fd.write("///////////////////////////////////////\n")
+    fd.write("\n")
+    fd.write("#include \"%s.hh\"\n" % production_name)
+    fd.write("\n")
+    fd.write("#include \"parser/LoggingMacros.hh\"\n")
+    fd.write("#include \"parser/ParseHelper.hh\"\n")
+    fd.write("#include \"parser/ProductionFactory.hh\"\n")
+    fd.write("\n")
+    fd.write("#include \"spdlog/spdlog.h\"\n")
+    fd.write("\n")
+    fd.write("using namespace OpenASN;\n")
+    fd.write("\n")
+    fd.write("Production\n")
+    fd.write("%s::\n" % production_name)
+    fd.write("GetType() const\n")
+    fd.write("{\n")
+    fd.write("  return Production::%s;\n" %
+               camel_case_to_snake_case(production_name))
+    fd.write("}\n")
+    fd.write("\n")
+    fd.write("bool\n")
+    fd.write("%s::\n" % production_name)
+    fd.write("Parse(\n")
+    fd.write("  const std::vector<Word>& asnData,\n")
+    fd.write("  size_t& asnDataIndex,\n")
+    fd.write("  std::vector<std::string>& endStop,\n")
+    fd.write("  std::vector<std::string>& parsePath,\n")
+    fd.write("  ProductionParseHistory& parseHistory)\n")
+    fd.write("{\n")
+
+    fd.write("  //")
+    for word in production:
+        fd.write(" %s" % word)
+        if word == "::=" or word == "|":
+            fd.write("\n  //  ")
+    fd.write("\n")
+
+    fd.write("\n")
+    fd.write("  parsePath.push_back(\"%s\");\n" % production_name)
+    fd.write("  size_t starting_index = asnDataIndex;\n")
+
+    fd.write("\n")
+    if production_list_separator:
+        fd.write("  bool parsed_separator = false;\n")
+    fd.write("  while (1)\n")
+    fd.write("  {\n")
+    fd.write("    if (!Parse%s(\n"
+        % get_parse_production_group_fn_name([production_list_item_name]))
+    fd.write("          " +
+             "asnData, asnDataIndex, endStop, " +
+             "parsePath, parseHistory))\n")
+    fd.write("    {\n")
+    if production_list_separator:
+        fd.write("      if (parsed_separator)\n")
+        fd.write("      {\n")
+        fd.write("        asnDataIndex = starting_index;\n")
+        fd.write("        parsePath.pop_back();\n")
+        fd.write("        return false;\n")
+        fd.write("      }\n")
+        fd.write("      else\n")
+        fd.write("      {\n")
+        fd.write("        break;\n")
+        fd.write("      }\n")
+    else:
+        fd.write("      break;\n")
+    fd.write("    }\n")
+    if production_list_separator:
+        fd.write("\n")
+        fd.write("    if (!Parse%s(\n"
+            % get_parse_production_group_fn_name([production_list_separator]))
+        fd.write("          " +
+                 "asnData, asnDataIndex, endStop, " +
+                 "parsePath, parseHistory))\n")
+        fd.write("    {\n")
+        fd.write("      break;\n")
+        fd.write("    }\n")
+        fd.write("    else\n")
+        fd.write("    {\n")
+        fd.write("      parsed_separator = true;\n")
+        fd.write("    }\n")
+    fd.write("  }\n")
+    fd.write("\n")
+    fd.write("  if (m%sList.empty())\n"
+        % get_cpp_production_name(production_list_item_name))
+    fd.write("  {\n")
+    fd.write("    asnDataIndex = starting_index;\n")
+    fd.write("    parsePath.pop_back();\n")
+    fd.write("    return false;\n")
+    fd.write("  }\n")
+    fd.write("  else\n")
+    fd.write("  {\n")
+    fd.write("    parsePath.pop_back();\n")
+    fd.write("    return true;\n")
+    fd.write("  }\n")
+    fd.write("}\n")
+
+    fd.write("\n")
+    append_parse_production_group_defn(fd,
+                                       production_name,
+                                       [production_list_item_name],
+                                       True,
+                                       0)
+
+    if production_list_separator:
+        fd.write("\n")
+        append_parse_production_group_defn(fd,
+                                           production_name,
+                                           [production_list_separator],
+                                           True,
+                                           0)
+
+    fd.close()
+    print("Generated %s.cpp" % production_name)
 
 
 def generate_production_cpp_header(production, production_or_groups):
@@ -433,7 +699,7 @@ def generate_production_cpp_source(production, production_or_groups):
                 "asnData, asnDataIndex, endStop, " +
                 "parsePath, parseHistory))\n")
             fd.write("  {\n")
-            fd.write("    parsePath.pop_back();\n");
+            fd.write("    parsePath.pop_back();\n")
             fd.write("    return true;\n")
             fd.write("  }\n")
             fd.write("  else\n")
@@ -444,12 +710,12 @@ def generate_production_cpp_source(production, production_or_groups):
             empty_present = True
             fd.write("\n")
             fd.write("  // empty production\n")
-            fd.write("  parsePath.pop_back();\n");
+            fd.write("  parsePath.pop_back();\n")
             fd.write("  return true;\n")
 
     if empty_present is False:
         fd.write("\n")
-        fd.write("  parsePath.pop_back();\n");
+        fd.write("  parsePath.pop_back();\n")
         fd.write("  return false;\n")
 
     fd.write("}\n")
@@ -459,6 +725,7 @@ def generate_production_cpp_source(production, production_or_groups):
         append_parse_production_group_defn(fd,
                                            production_name,
                                            production_group,
+                                           False,
                                            0)
 
     fd.close()
@@ -592,11 +859,23 @@ def main():
         # [['AssignmentList'], ['empty']]
         # [['LowerEndpoint', '".."', 'UpperEndpoint']]
 
-        generate_production_cpp_header(production,
-                                       production_or_groups)
+        production_list_item_name, production_list_separator = \
+            is_recursive_production(production, production_or_groups)
 
-        generate_production_cpp_source(production,
-                                       production_or_groups)
+        if production_list_item_name:
+            generate_recursive_production_cpp_header(production,
+                                                     production_list_item_name,
+                                                     production_list_separator)
+
+            generate_recursive_production_cpp_source(production,
+                                                     production_list_item_name,
+                                                     production_list_separator)
+        else:
+            generate_production_cpp_header(production,
+                                           production_or_groups)
+
+            generate_production_cpp_source(production,
+                                           production_or_groups)
 
     all_production_names = args.static_productions + \
                            [production[0] for production in productions]

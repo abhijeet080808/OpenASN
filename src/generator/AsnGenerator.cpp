@@ -35,16 +35,12 @@ Generate(const ModuleDefinition* pModuleDefinition)
       p_module_body->mAssignmentList.get());
 
   SPDLOG_INFO("Module: {}", p_module_reference->mValue);
+  SPDLOG_INFO("Assignments: {}", p_assignment_list->mAssignmentList.size());
 
-  while (p_assignment_list)
+  for (const auto& assignment : p_assignment_list->mAssignmentList)
   {
-    auto p_assignment = dynamic_cast<Assignment*>(
-        p_assignment_list->mAssignment.get());
-
+    auto p_assignment = dynamic_cast<Assignment*>(assignment.get());
     generateClass(p_assignment);
-
-    p_assignment_list = dynamic_cast<AssignmentList*>(
-        p_assignment_list->mAssignmentList.get());
   }
 
   return true;

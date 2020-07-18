@@ -127,8 +127,8 @@ DefinitiveOID ::= "{" DefinitiveObjIdComponentList "}"
 DefinitiveOIDandIRI ::= DefinitiveOID IRIValue
 
 DefinitiveObjIdComponentList ::=
-    DefinitiveObjIdComponent DefinitiveObjIdComponentList
-  | DefinitiveObjIdComponent
+    DefinitiveObjIdComponent
+  | DefinitiveObjIdComponent DefinitiveObjIdComponentList
 
 -- ORDERING CRITICAL
 DefinitiveObjIdComponent ::=
@@ -171,10 +171,9 @@ Imports ::=
 
 SymbolsImported ::= SymbolsFromModuleList | empty
 
--- ORDERING CRITICAL
 SymbolsFromModuleList ::=
-    SymbolsFromModule SymbolsFromModuleList
-  | SymbolsFromModule
+    SymbolsFromModule
+  | SymbolsFromModuleList SymbolsFromModule
 
 SymbolsFromModule ::= SymbolList FROM GlobalModuleReference
 
@@ -185,10 +184,9 @@ AssignedIdentifier ::=
   | DefinedValue
   | empty
 
--- ORDERING CRITICAL
 SymbolList ::=
-    Symbol "," SymbolList
-  | Symbol
+    Symbol
+  | SymbolList "," Symbol
 
 Symbol ::=
     Reference
@@ -201,10 +199,9 @@ Reference ::=
 --  | objectreference
 --  | objectsetreference
 
--- ORDERING CRITICAL
 AssignmentList ::=
-    Assignment AssignmentList
-  | Assignment
+    Assignment
+  | AssignmentList Assignment
 
 Assignment ::=
     TypeAssignment
@@ -293,12 +290,11 @@ Type ::=
   | ReferencedType
 --  | TypeWithConstraint                                              TODO
 
--- ORDERING CRITICAL
 -- LOCAL ADDITION
 -- See Type above
 ConstraintList ::=
-    Constraint ConstraintList
-  | Constraint
+    Constraint
+  | ConstraintList Constraint
 
 BuiltinType ::=
     BitStringType
@@ -437,10 +433,9 @@ IntegerType ::=
     INTEGER "{" NamedNumberList "}"
   | INTEGER
 
--- ORDERING CRITICAL
 NamedNumberList ::=
-    NamedNumber "," NamedNumberList
-  | NamedNumber
+    NamedNumber
+  | NamedNumberList "," NamedNumber
 
 NamedNumber ::=
     identifier "(" SignedNumber ")"
@@ -479,10 +474,9 @@ RootEnumeration ::= Enumeration
 
 AdditionalEnumeration ::= Enumeration
 
--- ORDERING CRITICAL
 Enumeration ::=
-    EnumerationItem "," Enumeration
-  | EnumerationItem
+    EnumerationItem
+  | EnumerationItem "," Enumeration
 
 -- ORDERING CRITICAL
 EnumerationItem ::= NamedNumber | identifier
@@ -541,10 +535,9 @@ BitStringType ::=
     BIT STRING "{" NamedBitList "}"
   | BIT STRING
 
--- ORDERING CRITICAL
 NamedBitList ::=
-    NamedBit "," NamedBitList
-  | NamedBit
+    NamedBit
+  | NamedBitList "," NamedBit
 
 NamedBit ::=
     identifier "(" number ")"
@@ -560,8 +553,8 @@ BitStringValue ::=
 
 -- ORDERING CRITICAL
 IdentifierList ::=
-    identifier "," IdentifierList
-  | identifier
+    identifier
+  | IdentifierList "," identifier
 
 --XMLBitStringValue ::=
 --    XMLTypedValue
@@ -577,10 +570,9 @@ IdentifierList ::=
 --    "<" & identifier "/>"
 --  | EmptyElementList "<" & identifier "/>"
 
--- ORDERING CRITICAL
 --TextList ::=
---    identifier TextList
---  | identifier
+--    identifier
+--  | TextList identifier
 
 OctetStringType ::= OCTET STRING
 
@@ -631,8 +623,8 @@ ExtensionEndMarker ::= "," "..."
 --  | empty
 
 --ExtensionAdditionList ::=
---    ExtensionAddition "," ExtensionAdditionList
---  | ExtensionAddition
+--    ExtensionAddition
+--  | ExtensionAdditionList "," ExtensionAddition
 
 --ExtensionAddition ::=
 --    ComponentType
@@ -643,10 +635,9 @@ ExtensionEndMarker ::= "," "..."
 -- ORDERING CRITICAL
 --VersionNumber ::= number ":" | empty
 
--- ORDERING CRITICAL
 ComponentTypeList ::=
-    ComponentType "," ComponentTypeList
-  | ComponentType
+    ComponentType
+  | ComponentTypeList "," ComponentType
 
 -- ORDERING CRITICAL
 ComponentType ::=
@@ -659,19 +650,17 @@ SequenceValue ::=
     "{" ComponentValueList "}"
   | "{" "}"
 
--- ORDERING CRITICAL
 ComponentValueList ::=
-    NamedValue "," ComponentValueList
-  | NamedValue
+    NamedValue
+  | ComponentValueList "," NamedValue
 
 --XMLSequenceValue ::=
 --    XMLComponentValueList
 --  | empty
 
--- ORDERING CRITICAL
 --XMLComponentValueList ::=
---    XMLNamedValue XMLComponentValueList
---  | XMLNamedValue
+--    XMLNamedValue
+--  | XMLComponentValueList XMLNamedValue
 
 -- ORDERING CRITICAL
 SequenceOfType ::= SEQUENCE OF Type | SEQUENCE OF NamedType
@@ -681,34 +670,30 @@ SequenceOfValue ::=
   | "{" NamedValueList "}"
   | "{" "}"
 
--- ORDERING CRITICAL
 ValueList ::=
-    Value "," ValueList
-  | Value
+    Value
+  | ValueList "," Value
 
--- ORDERING CRITICAL
 NamedValueList ::=
-    NamedValue "," NamedValueList
-  | NamedValue
+    NamedValue
+  | NamedValueList "," NamedValue
 
 --XMLSequenceOfValue ::=
 --    XMLValueList
 --  | XMLDelimitedItemList
 --  | empty
 
--- ORDERING CRITICAL
 --XMLValueList ::=
---    XMLValueOrEmpty XMLValueList
---  | XMLValueOrEmpty
+--    XMLValueOrEmpty
+--  | XMLValueOrEmpty XMLValueList
 
 --XMLValueOrEmpty ::=
 --    XMLValue
 --  | "<" & NonParameterizedTypeName "/>"
 
--- ORDERING CRITICAL
 --XMLDelimitedItemList ::=
---    XMLDelimitedItem XMLDelimitedItemList
---  | XMLDelimitedItem
+--    XMLDelimitedItem
+--  | XMLDelimitedItem XMLDelimitedItemList
 
 --XMLDelimitedItem ::=
 --    "<" & NonParameterizedTypeName ">" XMLValue "</" & NonParameterizedTypeName ">"
@@ -753,10 +738,9 @@ RootAlternativeTypeList ::= AlternativeTypeList
 --    "," ExtensionAdditionAlternativesList
 --  | empty
 
--- ORDERING CRITICAL
 --ExtensionAdditionAlternativesList ::=
---    ExtensionAdditionAlternative "," ExtensionAdditionAlternativesList
---  | ExtensionAdditionAlternative
+--    ExtensionAdditionAlternative
+--  | ExtensionAdditionAlternativesList "," ExtensionAdditionAlternative
 
 --ExtensionAdditionAlternative ::=
 --    ExtensionAdditionAlternativesGroup
@@ -764,10 +748,9 @@ RootAlternativeTypeList ::= AlternativeTypeList
 
 --ExtensionAdditionAlternativesGroup ::= "[[" VersionNumber AlternativeTypeList "]]"
 
--- ORDERING CRITICAL
 AlternativeTypeList ::=
-    NamedType "," AlternativeTypeList
-  | NamedType
+    NamedType
+  | AlternativeTypeList "," NamedType
 
 ChoiceValue ::= identifier ":" Value
 
@@ -822,10 +805,9 @@ ObjectIdentifierValue ::=
     "{" DefinedValue ObjIdComponentsList "}"
   | "{" ObjIdComponentsList "}"
 
--- ORDERING CRITICAL
 ObjIdComponentsList ::=
-    ObjIdComponents ObjIdComponentsList
-  | ObjIdComponents
+    ObjIdComponents
+  | ObjIdComponents ObjIdComponentsList
 
 -- ORDERING CRITICAL
 -- DefinedValue is covered inside NumberForm
@@ -844,8 +826,8 @@ NameAndNumberForm ::= identifier "(" NumberForm ")"
 --XMLObjectIdentifierValue ::= XMLObjIdComponentList
 
 --XMLObjIdComponentList ::=
---    XMLObjIdComponent & "." & XMLObjIdComponentList
---  | XMLObjIdComponent
+--    XMLObjIdComponent
+--  | XMLObjIdComponent & "." & XMLObjIdComponentList
 
 -- ORDERING CRITICAL
 --XMLObjIdComponent ::=
@@ -864,10 +846,9 @@ RelativeOIDType ::= RELATIVE_OID
 --RelativeOIDValue ::= "{" RelativeOIDComponentsList "}"
 
 -- IGNORED
--- ORDERING CRITICAL
 --RelativeOIDComponentsList ::=
---    RelativeOIDComponents RelativeOIDComponentsList
---  | RelativeOIDComponents
+--    RelativeOIDComponents
+--  | RelativeOIDComponents RelativeOIDComponentsList
 
 -- IGNORED
 -- ORDERING CRITICAL
@@ -879,10 +860,9 @@ RelativeOIDType ::= RELATIVE_OID
 
 --XMLRelativeOIDValue ::= XMLRelativeOIDComponentList
 
--- ORDERING CRITICAL
 --XMLRelativeOIDComponentList ::=
---    XMLRelativeOIDComponent & "." & XMLRelativeOIDComponentList
---  | XMLRelativeOIDComponent
+--    XMLRelativeOIDComponent
+--  | XMLRelativeOIDComponent & "." & XMLRelativeOIDComponentList
 
 -- ORDERING CRITICAL
 --XMLRelativeOIDComponent ::=
@@ -981,10 +961,9 @@ RestrictedCharacterStringValue ::=
 
 CharacterStringList ::= "{" CharSyms "}"
 
--- ORDERING CRITICAL
 CharSyms ::=
-    CharsDefn "," CharSyms
-  | CharsDefn
+    CharsDefn
+  | CharSyms ","  CharsDefn
 
 CharsDefn ::=
     cstring
@@ -1168,10 +1147,9 @@ FullSpecification ::= "{" TypeConstraints "}"
 
 PartialSpecification ::= "{" "..." "," TypeConstraints "}"
 
--- ORDERING CRITICAL
 TypeConstraints ::=
-    NamedConstraint "," TypeConstraints
-  | NamedConstraint
+    NamedConstraint
+  | NamedConstraint "," TypeConstraints
 
 NamedConstraint ::= identifier ComponentConstraint
 
@@ -1187,10 +1165,9 @@ PatternConstraint ::= PATTERN Value
 -- See 51.10.1
 PropertySettings ::= SETTINGS """ PropertySettingsList """
 
--- ORDERING CRITICAL
 PropertySettingsList ::=
-    PropertyAndSettingPair PropertySettingsList
-  | PropertyAndSettingPair
+    PropertyAndSettingPair
+  | PropertySettingsList PropertyAndSettingPair
 
 PropertyAndSettingPair ::= PropertyName "=" SettingName
 
