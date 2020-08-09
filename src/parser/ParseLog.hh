@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ParseDefs.hh"
+
 #include <map>
 #include <ostream>
 #include <vector>

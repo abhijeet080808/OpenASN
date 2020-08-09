@@ -4,7 +4,6 @@
 #include "ParseLog.hh"
 
 #include "parser/ProductionFactory.hh"
-#include "spdlog/spdlog.h"
 
 using namespace OpenASN;
 

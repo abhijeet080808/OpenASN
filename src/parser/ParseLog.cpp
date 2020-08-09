@@ -1,6 +1,7 @@
 #include "ParseLog.hh"
 
 #include "common/StringManip.hh"
+#include "spdlog/spdlog.h"
 
 #include <cassert>
 
