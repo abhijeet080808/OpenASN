@@ -286,7 +286,7 @@ Parse(const std::string& asnFilePath)
   size_t asn_data_index = 0;
   std::vector<std::shared_ptr<IProduction>> module_definition_list;
 
-  SPDLOG_INFO("Starting parsing of modules");
+  SPDLOG_INFO("Starting parsing of module definitions");
   while (asn_data_index < parsed_asn_data.size())
   {
     std::vector<std::string> end_stop;

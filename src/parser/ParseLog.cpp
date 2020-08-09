@@ -4,6 +4,7 @@
 #include "spdlog/spdlog.h"
 
 #include <cassert>
+#include <sstream>
 
 using namespace OpenASN;
 
