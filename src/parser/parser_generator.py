@@ -30,7 +30,12 @@ def append_must_parse(fd,
         fd.write(ind + "endStop.push_back(\"%s\");\n" % end_stop_production)
         fd.write("\n")
     fd.write(ind + "{ // Parsing %s\n" % cpp_production)
-    fd.write(ind + "  auto obj = \"%s\";\n" % cpp_production)
+    if add_to_list:
+        fd.write(ind + "  auto obj = \"%s\" +\n" % (cpp_production))
+        fd.write(ind + "    std::to_string(m%sList.size());\n"
+            % (cpp_production))
+    else:
+        fd.write(ind + "  auto obj = \"%s\";\n" % cpp_production)
     fd.write(ind + "  LOG_START();\n")
     fd.write("\n")
     fd.write(ind + "  auto prod_index = std::make_pair(\n")
@@ -69,9 +74,24 @@ def append_must_parse(fd,
     fd.write(ind + "      return false;\n")
     fd.write(ind + "    }\n")
     fd.write(ind + "  }\n")
-    fd.write(ind + "  else if (prod->Parse(\n")
-    fd.write(ind + "    " +
-        "asnData, asnDataIndex, endStop, parsePath, parseHistory))\n")
+    if add_to_list:
+        fd.write(ind + "  else if (prod->Parse(\n")
+        fd.write(ind + "    m%sList.size(),\n" % (cpp_production))
+        fd.write(ind + "    true,\n")
+        fd.write(ind + "    asnData,\n")
+        fd.write(ind + "    asnDataIndex,\n")
+        fd.write(ind + "    endStop,\n")
+        fd.write(ind + "    parsePath,\n")
+        fd.write(ind + "    parseHistory))\n")
+    else:
+        fd.write(ind + "  else if (prod->Parse(\n")
+        fd.write(ind + "    0,\n")
+        fd.write(ind + "    false,\n")
+        fd.write(ind + "    asnData,\n")
+        fd.write(ind + "    asnDataIndex,\n")
+        fd.write(ind + "    endStop,\n")
+        fd.write(ind + "    parsePath,\n")
+        fd.write(ind + "    parseHistory))\n")
     fd.write(ind + "  {\n")
     if (end_stop_production):
         fd.write(ind + "    endStop.pop_back();\n")
@@ -439,6 +459,8 @@ def generate_recursive_production_cpp_header(production,
     fd.write("      Production GetType() const override;\n")
     fd.write("\n")
     fd.write("      bool Parse(\n")
+    fd.write("        size_t productionIndex,\n")
+    fd.write("        bool prodIndexPresent,\n")
     fd.write("        const std::vector<Word>& asnData,\n")
     fd.write("        size_t& asnDataIndex,\n")
     fd.write("        std::vector<std::string>& endStop,\n")
@@ -476,8 +498,8 @@ def generate_recursive_production_cpp_source(production,
     fd.write("\n")
     fd.write("#include \"%s.hh\"\n" % production_name)
     fd.write("\n")
-    fd.write("#include \"parser/LoggingMacros.hh\"\n")
     fd.write("#include \"parser/ParseHelper.hh\"\n")
+    fd.write("#include \"parser/ParseLog.hh\"\n")
     fd.write("#include \"parser/ProductionFactory.hh\"\n")
     fd.write("\n")
     fd.write("#include \"spdlog/spdlog.h\"\n")
@@ -495,6 +517,8 @@ def generate_recursive_production_cpp_source(production,
     fd.write("bool\n")
     fd.write("%s::\n" % production_name)
     fd.write("Parse(\n")
+    fd.write("  size_t productionIndex,\n")
+    fd.write("  bool prodIndexPresent,\n")
     fd.write("  const std::vector<Word>& asnData,\n")
     fd.write("  size_t& asnDataIndex,\n")
     fd.write("  std::vector<std::string>& endStop,\n")
@@ -510,7 +534,9 @@ def generate_recursive_production_cpp_source(production,
     fd.write("\n")
 
     fd.write("\n")
-    fd.write("  parsePath.push_back(\"%s\");\n" % production_name)
+    fd.write("  parsePath.push_back(\"%s\" +\n" % production_name)
+    fd.write("    (prodIndexPresent ? std::to_string(productionIndex) " +
+        ": \"\"));\n")
     fd.write("  size_t starting_index = asnDataIndex;\n")
 
     fd.write("\n")
@@ -618,6 +644,8 @@ def generate_production_cpp_header(production, production_or_groups):
     fd.write("      Production GetType() const override;\n")
     fd.write("\n")
     fd.write("      bool Parse(\n")
+    fd.write("        size_t productionIndex,\n")
+    fd.write("        bool prodIndexPresent,\n")
     fd.write("        const std::vector<Word>& asnData,\n")
     fd.write("        size_t& asnDataIndex,\n")
     fd.write("        std::vector<std::string>& endStop,\n")
@@ -652,8 +680,8 @@ def generate_production_cpp_source(production, production_or_groups):
     fd.write("\n")
     fd.write("#include \"%s.hh\"\n" % production_name)
     fd.write("\n")
-    fd.write("#include \"parser/LoggingMacros.hh\"\n")
     fd.write("#include \"parser/ParseHelper.hh\"\n")
+    fd.write("#include \"parser/ParseLog.hh\"\n")
     fd.write("#include \"parser/ProductionFactory.hh\"\n")
     fd.write("\n")
     fd.write("#include \"spdlog/spdlog.h\"\n")
@@ -671,6 +699,8 @@ def generate_production_cpp_source(production, production_or_groups):
     fd.write("bool\n")
     fd.write("%s::\n" % production_name)
     fd.write("Parse(\n")
+    fd.write("  size_t productionIndex,\n")
+    fd.write("  bool prodIndexPresent,\n")
     fd.write("  const std::vector<Word>& asnData,\n")
     fd.write("  size_t& asnDataIndex,\n")
     fd.write("  std::vector<std::string>& endStop,\n")
@@ -686,7 +716,8 @@ def generate_production_cpp_source(production, production_or_groups):
     fd.write("\n")
 
     fd.write("\n")
-    fd.write("  parsePath.push_back(\"%s\");\n" % production_name)
+    fd.write("  parsePath.push_back(\"%s\" +\n" % production_name)
+    fd.write("    (prodIndexPresent ? std::to_string(productionIndex) : \"\"));\n")
     fd.write("  size_t starting_index = asnDataIndex;\n")
 
     empty_present = False

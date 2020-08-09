@@ -1,8 +1,8 @@
 #include "AsnParser.hh"
 
-#include "LoggingMacros.hh"
 #include "ParseDefs.hh"
 #include "ParseHelper.hh"
+#include "ParseLog.hh"
 
 #include "parser/ModuleDefinition.hh"
 #include "parser/ProductionFactory.hh"
@@ -286,13 +286,18 @@ Parse(const std::string& asnFilePath)
   size_t asn_data_index = 0;
   std::vector<std::shared_ptr<IProduction>> module_definition_list;
 
+  SPDLOG_INFO("Starting parsing of modules");
   while (asn_data_index < parsed_asn_data.size())
   {
     std::vector<std::string> end_stop;
     std::vector<std::string> parse_path;
     ProductionParseHistory parse_history;
 
-    // Allow LoggingMacros to work
+    // Mark the start of parse path so that we do not have empty parse path.
+    // This helps ParseLogging to map log to parse path.
+    parse_path.push_back("#");
+
+    // Allow ParseLog to work
     auto obj = "ModuleDefinition";
     const auto& asnData = parsed_asn_data;
     auto& asnDataIndex = asn_data_index;
@@ -301,7 +306,14 @@ Parse(const std::string& asnFilePath)
 
     auto prod = ProductionFactory::Get(
         Production::MODULE_DEFINITION);
-    if (prod->Parse(asnData, asnDataIndex, end_stop, parsePath, parse_history))
+    if (prod->Parse(
+          module_definition_list.size(),
+          true,
+          asnData,
+          asnDataIndex,
+          end_stop,
+          parsePath,
+          parse_history))
     {
       module_definition_list.push_back(prod);
       LOG_PASS();
@@ -312,6 +324,8 @@ Parse(const std::string& asnFilePath)
       return std::vector<std::shared_ptr<IProduction>>();
     }
   }
+
+  ParseLog::GetInstance(parsed_asn_data).Dump();
 
   return module_definition_list;
 }

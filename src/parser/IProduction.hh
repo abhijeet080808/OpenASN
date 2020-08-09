@@ -20,12 +20,15 @@ namespace OpenASN
       virtual Production GetType() const = 0;
 
       virtual bool Parse(
+          size_t productionIndex,
+          bool prodIndexPresent,
           const std::vector<Word>& asnData,
           size_t& asnDataIndex,
           std::vector<std::string>& endStop,
           std::vector<std::string>& parsePath,
           std::map<std::pair<size_t, Production>,
-                   std::pair<std::shared_ptr<IProduction>, size_t>>& parseHistory) = 0;
+                   std::pair<std::shared_ptr<IProduction>,
+                             size_t>>& parseHistory) = 0;
   };
 
   // Each ASN file is split into multiple Word as defined above, with the first

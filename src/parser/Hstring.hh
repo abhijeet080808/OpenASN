@@ -11,6 +11,8 @@ namespace OpenASN
       Production GetType() const override;
 
       bool Parse(
+          size_t productionIndex,
+          bool prodIndexPresent,
           const std::vector<Word>& asnData,
           size_t& asnDataIndex,
           std::vector<std::string>& endStop,

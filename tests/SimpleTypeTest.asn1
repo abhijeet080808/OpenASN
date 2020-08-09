@@ -6,7 +6,7 @@
 -- TestModule
 -- TestModule
 
---Module Under Test--SimpleTypeTest DEFINITIONS----::=----
+--Module Under Test--SimpleTypeTest { abc def } DEFINITIONS----::=----
 ----BEGIN -- module begin
 
 -- # -- SimpleTypeTestBool   ::= BOOLEAN   -- bool builtin type

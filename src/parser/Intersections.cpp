@@ -1,7 +1,7 @@
 #include "Intersections.hh"
 
-#include "LoggingMacros.hh"
 #include "ParseHelper.hh"
+#include "ParseLog.hh"
 
 #include "parser/ProductionFactory.hh"
 #include "spdlog/spdlog.h"
@@ -17,13 +17,17 @@ GetType() const
 
 bool
 Intersections::
-Parse(const std::vector<Word>& asnData,
-      size_t& asnDataIndex,
-      std::vector<std::string>& endStop,
-      std::vector<std::string>& parsePath,
-      ProductionParseHistory& parseHistory)
+Parse(
+    size_t productionIndex,
+    bool prodIndexPresent,
+    const std::vector<Word>& asnData,
+    size_t& asnDataIndex,
+    std::vector<std::string>& endStop,
+    std::vector<std::string>& parsePath,
+    ProductionParseHistory& parseHistory)
 {
-  parsePath.push_back("Intersections");
+  parsePath.push_back("Intersections" +
+      (prodIndexPresent ? std::to_string(productionIndex) : ""));
 
   // Intersections ::=
   //   IntersectionElements
@@ -37,10 +41,18 @@ Parse(const std::vector<Word>& asnData,
 
   while (1)
   {
-    auto obj = "IntersectionElements";
+    auto obj = "IntersectionElements" +
+      std::to_string(mIntersectionElements.size());
     LOG_START();
     auto prod = ProductionFactory::Get(Production::INTERSECTION_ELEMENTS);
-    if (prod->Parse(asnData, asnDataIndex, endStop, parsePath, parseHistory))
+    if (prod->Parse(
+          mIntersectionElements.size(),
+          true,
+          asnData,
+          asnDataIndex,
+          endStop,
+          parsePath,
+          parseHistory))
     {
       mIntersectionElements.push_back(prod);
       LOG_PASS();

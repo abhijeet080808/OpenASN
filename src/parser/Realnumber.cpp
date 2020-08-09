@@ -27,11 +27,14 @@ GetType() const
 
 bool
 Realnumber::
-Parse(const std::vector<Word>& asnData,
-      size_t& asnDataIndex,
-      std::vector<std::string>& endStop,
-      std::vector<std::string>&,
-      ProductionParseHistory&)
+Parse(
+    size_t,
+    bool,
+    const std::vector<Word>& asnData,
+    size_t& asnDataIndex,
+    std::vector<std::string>& endStop,
+    std::vector<std::string>&,
+    ProductionParseHistory&)
 {
   if (asnData.size() <= asnDataIndex)
   {

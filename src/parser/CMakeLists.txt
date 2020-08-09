@@ -295,6 +295,7 @@ set(GENERATED_SOURCES
 set(SOURCES
   AsnParser.cpp
   ParseHelper.cpp
+  ParseLog.cpp
 )
 
 foreach(GENERATED_PARSER_SOURCE ${GENERATED_PARSER_SOURCES})
